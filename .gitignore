@@ -1,0 +1,7 @@
+log/*
+build.properties
+build/
+vendor/
+*.log
+schema.xml
+runtime-conf.xml
