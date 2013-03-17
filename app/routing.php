@@ -25,11 +25,5 @@ $app->match('/api/', function() use ($app) {
 
 // End user front-end
 $app->match('/', function() use ($app) {
-    try {
-        $es = 0/0;
-        return $es;
-    } catch (Exception $e) {
-        $app['monolog']->addError('HAODSLASLD');
-        return "fail";
-    }
+	return "Index";
 });

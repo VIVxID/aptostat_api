@@ -77,7 +77,7 @@ $app->put('/api/report/{reportId}', function(Request $request, $reportId) use ($
         case 400:
             return $app->json(array(
                 'errorCode' => 400,
-                'errorDesc' => 'The id is not a number'
+                'errorDesc' => 'The id provided is not a number'
                 ), 400);
             break;
         case 404:
