@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<database name="Aptostat" defaultIdMethod="native">
+    <table name="Report" phpName="Report">
+        <column name="IdReport" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="Timestamp" type="timestamp" required="true" />
+        <column name="ErrorMessage" type="varchar" size="255" required="true" />
+        <column name="CheckType" type="varchar" size="40" required="true" />
+        <column name="IdSource" type="integer" required="true" />
+        <column name="IdService" type="integer" required="true" />
+        <foreign-key foreignTable="Source" phpName="Source" refPhpName="Report">
+            <reference local="IdSource" foreign="IdSource" />
+        </foreign-key>
+        <foreign-key foreignTable="Service" phpName="Service" refPhpName="Report">
+            <reference local="IdService" foreign="IdService" />
+        </foreign-key>
+    </table>
+    
+    <table name="Source" phpName="Source">
+        <column name="IdSource" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="Name" type="varchar" size="20" required="true" />
+    </table>
+    
+    <table name="Service" phpName="Service">
+        <column name="IdService" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="Name" type="varchar" size="50" required="true" />
+	<unique>
+            <unique-column name="Name" />
+        </unique>
+    </table>
+    
+    <table name="Incident" phpName="Incident">
+        <column name="IdIncident" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="Timestamp" type="timestamp" required="true" />
+    </table>
+    
+    <table name="Message" phpName="Message">
+        <column name="IdMessage" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="IdIncident" type="integer" required="true" />
+        <column name="IdFlag" type="integer" required="true" />
+        <column name="Timestamp" type="timestamp" required="true" />
+        <column name="Text" type="varchar" size="255" required="true" />
+        <column name="Author" type="varchar" size="30" required="true" />
+        <column name="Visible" type="boolean" required="true" />
+        <foreign-key foreignTable="Incident" phpName="Incident" refPhpName="Message">
+            <reference local="IdIncident" foreign="IdIncident" />
+        </foreign-key>
+        <foreign-key foreignTable="Flag" phpName="Flag" refPhpName="Message">
+            <reference local="IdFlag" foreign="IdFlag" />
+        </foreign-key>
+    </table>
+    
+    <table name="Flag" phpName="Flag">
+        <column name="IdFlag" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="Name" type="varchar" size="20" required="true" />
+    </table>
+    
+    <table name="ReportStatus" phpName="ReportStatus">
+	<column name="IdReport" type="integer" required="true" primaryKey="true" />
+	<column name="Timestamp" type="timestamp" required="true" primaryKey="true" />
+        <column name="IdFlag" type="integer" required="true" />
+	<foreign-key foreignTable="Report" phpName="Report" refPhpName="ReportStatus">
+	    <reference local="IdReport" foreign="IdReport" />
+	</foreign-key>
+        <foreign-key foreignTable="Flag" phpName="Flag" refPhpName="ReportStatus">
+            <reference local="IdFlag" foreign="IdFlag" />
+        </foreign-key>
+    </table>
+    
+    <table name="IncidentReport" phpName="IncidentReport" isCrossRef="true">
+        <column name="IdIncident" type="integer" required="true" primaryKey="true" />
+        <column name="IdReport" type="integer" required="true" primaryKey="true" />
+        <foreign-key foreignTable="Report" phpName="Report" refPhpName="IncidentReport" onDelete="cascade">
+            <reference local="IdReport" foreign="IdReport" />
+        </foreign-key>
+        <foreign-key foreignTable="Incident" phpName="Incident" refPhpName="IncidentReport" onDelete="cascade">
+            <reference local="IdIncident" foreign="IdIncident" />
+        </foreign-key>
+    </table>
+    
+</database>
