@@ -75,13 +75,6 @@ $app->post('/api/incident', function(Request $request) use ($app) {
 
 // PUT: api/incident/{incidentId} - Modify incident
 $app->put('/api/incident/{incidentId}', function(Request $request, $incidentId) use ($app) {
-        include 'putIncident.php';
-        return $app->json($out, $code);
-});
-
-// Test greier
-
-$app->put('/api/incident2/{incidentId}', function(Request $request, $incidentId) use ($app) {
     $incident = new aptostatApi\model\Incident;
     $out = null;
     
@@ -144,6 +137,7 @@ $app->put('/api/incident2/{incidentId}', function(Request $request, $incidentId)
         $visibility = $request->request->get('visibility');
         
         $mOut = $incident->addMessage($incidentId, $author, $message, $flag, $visibility);
+        
         if (!is_array($mOut)) {
             switch ($mOut) {
                 case 400:
