@@ -12,10 +12,10 @@ $app->before(function (Request $request) {
 });
 
 // Include report controller
-include '../src/aptostatApi/controller/reportController.php';
+include __DIR__ . '/../src/aptostatApi/controller/reportController.php';
 
 // Incident
-include '../src/AptostatApi/controller/incidentController.php';
+include  __DIR__ . '/../src/AptostatApi/controller/incidentController.php';
 
 // Api
 $app->match('/api/', function() use ($app) {
