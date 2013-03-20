@@ -1,9 +1,8 @@
 <?php
 
 // Initiate propel
-require_once '/var/www/vendor/propel/propel1/runtime/lib/Propel.php';
-Propel::init("/var/www/build/conf/aptostat-conf.php");
-set_include_path("/var/www/build/classes" . PATH_SEPARATOR . get_include_path());
+Propel::init(__DIR__ . '/../../../build/conf/aptostat_api-conf.php');
+set_include_path(__DIR__ . '/../../../build/classes' . PATH_SEPARATOR . get_include_path());
 
 // Load classes
 use Symfony\Component\HttpFoundation\Request;
@@ -67,7 +66,7 @@ $app->get('/api/report/{reportId}', function($reportId) use ($app) {
 $app->put('/api/report/{reportId}', function(Request $request, $reportId) use ($app) {
     $report = new aptostatApi\model\Report;
     $flag = $request->request->get('flag');
-    
+
     switch ($report->modifyFlag($reportId, $flag)) {
         case 200:
             return $app->json(array(

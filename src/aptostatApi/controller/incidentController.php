@@ -1,9 +1,9 @@
 <?php
 
 // Initiate propel
-require_once '/var/www/vendor/propel/propel1/runtime/lib/Propel.php';
-Propel::init("/var/www/build/conf/aptostat-conf.php");
-set_include_path("/var/www/build/classes" . PATH_SEPARATOR . get_include_path());
+//require_once '/var/www/vendor/propel/propel1/runtime/lib/Propel.php';
+Propel::init(__DIR__ . '/../../../build/conf/aptostat_api-conf.php');
+set_include_path(__DIR__ . '/../../../build/classes' . PATH_SEPARATOR . get_include_path());
 
 // Load classes
 use Symfony\Component\HttpFoundation\Request;
@@ -45,15 +45,15 @@ $app->get('/api/incident/{incidentId}', function($incidentId) use ($app) {
 // POST: api/incident - Create a new incident
 $app->post('/api/incident', function(Request $request) use ($app) {
         $incident = new aptostatApi\model\Incident;
-        
+
         $author = $request->request->get('author');
         $message = $request->request->get('message');
         $flag = $request->request->get('flag');
         $reports = $request->request->get('reports');
         $visibility = $request->request->get('visibility');
-        
+
         $out = $incident->create($author, $message, $flag, $reports, $visibility);
-        
+
         if (!is_array($out)) {
             switch ($out) {
                 case 400:
@@ -77,15 +77,15 @@ $app->post('/api/incident', function(Request $request) use ($app) {
 $app->put('/api/incident/{incidentId}', function(Request $request, $incidentId) use ($app) {
     $incident = new aptostatApi\model\Incident;
     $out = null;
-    
+
     // Add or remove reports
     if ($request->request->get('reports')) {
         $reports = $request->request->get('reports');
         $mode = $request->request->get('mode');
-        
+
         if ($mode == 'add') {
             $rOut = $incident->addReport($incidentId, $reports);
-            
+
             switch ($rOut) {
                 case 400:
                     return $app->json(array(
@@ -109,7 +109,7 @@ $app->put('/api/incident/{incidentId}', function(Request $request, $incidentId) 
             }
         } elseif ($mode == 'remove' or $mode == 'delete') {
             $rOut = $incident->removeReport($incidentId, $reports);
-            
+
             switch ($rOut) {
                 case 400:
                     return $app->json(array(
@@ -125,19 +125,19 @@ $app->put('/api/incident/{incidentId}', function(Request $request, $incidentId) 
                     break;
             }
         }
-        
-        
+
+
     }
-    
+
     // Add a new message and status to the incident
     if ($request->request->get('message')) {
         $message = $request->request->get('message');
         $author = $request->request->get('author');
         $flag = $request->request->get('flag');
         $visibility = $request->request->get('visibility');
-        
+
         $mOut = $incident->addMessage($incidentId, $author, $message, $flag, $visibility);
-        
+
         if (!is_array($mOut)) {
             switch ($mOut) {
                 case 400:
@@ -161,7 +161,7 @@ $app->put('/api/incident/{incidentId}', function(Request $request, $incidentId) 
             }
         }
     }
-    
+
     // Build reponse message
     if (isset($rOut)) {
         $out['reports'] = $rOut;
@@ -169,7 +169,7 @@ $app->put('/api/incident/{incidentId}', function(Request $request, $incidentId) 
     if (isset($mOut)) {
         $out['messages'] = $mOut;
     }
-    
+
     // Return out if some of these operations succeeded, else return 400
     if (is_null($out)) {
         return $app->json(array(
@@ -177,6 +177,6 @@ $app->put('/api/incident/{incidentId}', function(Request $request, $incidentId) 
             'errorDesc' => 'Something went wrong. Please check your request'
             ), 400);
     }
-    
+
     return $app->json($out, 200);
 });

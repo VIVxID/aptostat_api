@@ -28,8 +28,8 @@ $app = new Silex\Application($config);
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
     'monolog.name' => 'aptostat',
     'monolog.level' => \Monolog\Logger::DEBUG,
-    'monolog.logfile' => __DIR__.'/../dev.log',
-    
+    'monolog.logfile' => __DIR__.'/log/dev.log',
+
 ));
 
 // Map routes to controllers

@@ -15,14 +15,14 @@ class Report
     private $lastUpdate;
     private $updates = array();
     private $reportList = array();
-    
+
     public function query($id)
     {
         // Check if id is a number
         if (!preg_match('/^\d+$/',$id)) {
             return 400; // Bad request
         }
-        
+
         // Run queries
         $query = \ReportQuery::create()
             ->filterByIdReport($id)
@@ -40,7 +40,7 @@ class Report
             ->join('Report.Source')
             ->withColumn('Source.Name', 'SourceName')
             ->findOne();
-            
+
         $statusQuery = \ReportStatusQuery::create()
             ->filterByIdReport($id)
             ->join('ReportStatus.Flag')
@@ -51,7 +51,7 @@ class Report
         if ($query == null) {
             return 404; // Not found
         }
-        
+
         // Store report information
         $this->idReport = $query->getIdReport();
         $this->timestamp = $query->getTimestamp();
@@ -61,18 +61,18 @@ class Report
         $this->service = $query->getServiceName();
         $this->status = $query->getFlagName();
         $this->lastUpdate = $query->getFlagTime();
-        
+
         // Store status updates history
         foreach ($statusQuery as $state) {
             $this->updates[] = array(
                 'status' => $state->getFlagName(),
                 'timestamp' => $state->getTimestamp()
             );
-        } 
-        
+        }
+
         return 200; // Ok
     }
-    
+
     public function get()
     {
         // Format the information into an array
@@ -86,15 +86,16 @@ class Report
             'status' => $this->status,
             'lastUpdate' => $this->lastUpdate
             );
-        
+
         // Attach status updates history
         $out['report']['updates'] = $this->updates;
-        
+
         return $out;
     }
 
     public function queryList()
     {
+        $out = array();
         // Run queries
         // Get reports that are not part of any incidents
         $queryNonInc = \ReportQuery::create()
@@ -151,15 +152,15 @@ class Report
         if ($queryNonInc == null and $queryInc == null) {
             return 404; // Not found
         }
-        
+
         // Get list of flag types and format the list
         $queryFlag = \FlagQuery::create()
             ->find();
-        
+
         foreach ($queryFlag as $flag) {
             $flags[$flag->getIdFlag()] = $flag->getName();
         }
-                
+
         // Format the result - Reports connected to an incident
         foreach ($queryInc as $report) {
             $out['report']['incidents'][$report->getIdIncident()]['reports'][] = array(
@@ -180,7 +181,7 @@ class Report
                 'status' => $flags[$report->getIdFlag()]
             );
         }
-        
+
         // Format the result - Reports not connected to an incident
         if ($queryNonInc != null) {
             foreach ($queryNonInc as $report) {
@@ -194,10 +195,10 @@ class Report
                 );
             }
         }
-        
+
         // Store the result
         $this->reportList = $out;
-        
+
         return 200; // Ok
     }
 
@@ -205,29 +206,29 @@ class Report
     {
         return $this->reportList;
     }
-    
+
     public function modifyFlag($id, $flagId)
     {
         // Check if ids are numbers and flagId is a number between 1-6
         if (!preg_match('/^\d+$/',$id) or !preg_match('/^\d+$/',$flagId)) {
             return 400; // Bad request
         }
-        
+
         // Check if report exists
         $check = \ReportQuery::create()->findPK($id);
         if ($check == null) {
             return 404;
         }
-        
+
         // Prepare statement
         $query = new \ReportStatus();
         $query->setIdReport($id);
         $query->setTimestamp(time());
         $query->setIdFlag($flagId);
-        
+
         // Execute statement
         $query->save();
-        
+
         return 200; // Ok
     }
 }
