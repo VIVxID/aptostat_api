@@ -1,20 +1,13 @@
 app/log
 log/*
 build.properties
-build/
+build/conf/aptostat_api-conf.php
 vendor/
 *.log
 runtime-conf.xml
 # Bootstrap
 app/bootstrap*
 
-# Symfony directories
-vendor/*
-*/logs/*
-*/cache/*
-web/uploads/*
-web/bundles/*
-
-# Configuration files
-app/config/parameters.ini
-app/config/parameters.yml
+vendor
+misc
+data

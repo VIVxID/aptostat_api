@@ -6,59 +6,32 @@ set_include_path(__DIR__ . '/../../../build/classes' . PATH_SEPARATOR . get_incl
 
 // Load classes
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 // GET: /report - Return a list of reports
 $app->get('/api/report', function() use ($app) {
-    $report = new aptostatApi\model\Report;
-    $status = $report->queryList();
+    $reportService = new aptostatApi\Service\ReportService();
+    $reports = $reportService->getList();
 
-    switch ($status) {
-        case 200:
-            return $app->json($report->getList(), 200);
-            break;
-        case 404:
-            return $app->json(array(
-                'errorCode' => 404,
-                'errorDesc' => 'No reports found'
-                ), 404);
-            break;
-        default:
-            return $app->json(array(
-                'errorCode' => 500,
-                'errorDesc' => 'Internal server error'
-                ), 500);
-            break;
-    }
+    return $app->json($reports);
 });
 
 // GET: /report/{id} - Return a spesific report
 $app->get('/api/report/{reportId}', function($reportId) use ($app) {
-    $report = new aptostatApi\model\Report;
-    $status = $report->query($reportId);
+    $reportService = new aptostatApi\Service\ReportService();
 
-    switch ($status) {
-        case 200:
-            return $app->json($report->get(), 200);
-            break;
-        case 400:
-            return $app->json(array(
-                'errorCode' => 400,
-                'errorDesc' => 'Id requested is not a number'
-                ), 400);
-            break;
-        case 404:
-            return $app->json(array(
-                'errorCode' => 404,
-                'errorDesc' => 'Report with that ID not found'
-                ), 404);
-            break;
-        default:
-            return $app->json(array(
-                'errorCode' => 500,
-                'errorDesc' => 'Internal server error'
-                ), 500);
-            break;
+    try {
+        $report = $reportService->getReportById($reportId);
+        return $app->json(array('report' => $report));
+    } catch (\InvalidArgumentException $e) {
+        return $app->json(array(
+                'errorCode' => $e->getCode(),
+                'errorDesc' => $e->getMessage()
+            ), $e->getCode());
+    } catch (\aptostatApi\Service\Exception\NotFoundException $e) {
+        return $app->json(array(
+                'errorCode' => $e->getCode(),
+                'errorDesc' => $e->getMessage()
+            ), $e->getCode());
     }
 });
 

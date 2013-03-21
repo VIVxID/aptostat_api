@@ -1,7 +1,6 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 // Fetch http package and parameters
 $app->before(function (Request $request) {
@@ -11,13 +10,9 @@ $app->before(function (Request $request) {
     }
 });
 
-// Include report controller
 include __DIR__ . '/../src/aptostatApi/controller/reportController.php';
-
-// Incident
 include  __DIR__ . '/../src/AptostatApi/controller/incidentController.php';
 
-// Api
 $app->match('/api/', function() use ($app) {
         $out = array('statusDesc' => 'Read documentation for proper use of the API');
         return $app->json($out, 200);
