@@ -26,8 +26,8 @@ $app->match('/api/', function() use ($app) {
 	return $app->json($out, 200);
 });
 
-
 // End user front-end
 $app->match('/', function() use ($app) {
-	return 'Index! Root APPIIIIII';
+    $out = array('statusDesc' => 'Read documentation for proper use of the API');
+	return $app->json($out, 200);
 });
