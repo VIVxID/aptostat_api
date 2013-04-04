@@ -1,3 +1,9 @@
+log/*
+build.properties
+build/
+vendor/
+*.log
+runtime-conf.xml
 # Bootstrap
 app/bootstrap*
 
