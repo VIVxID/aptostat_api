@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Aptostat_api
 The API-part of Aptostat.
 
@@ -43,9 +42,3 @@ Create log dir and make it writable:
     - Username
     - Password
     - API-token
-=======
-api
-===
-
-api
->>>>>>> aab8ce17d327b62fb9ac7bceaaece2b0d1f05967
