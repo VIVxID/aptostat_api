@@ -42,10 +42,10 @@ abstract class BaseMessage extends BaseObject implements Persistent
     protected $idincident;
 
     /**
-     * The value for the idflag field.
-     * @var        int
+     * The value for the flag field.
+     * @var        string
      */
-    protected $idflag;
+    protected $flag;
 
     /**
      * The value for the timestamp field.
@@ -66,20 +66,15 @@ abstract class BaseMessage extends BaseObject implements Persistent
     protected $author;
 
     /**
-     * The value for the visible field.
+     * The value for the hidden field.
      * @var        boolean
      */
-    protected $visible;
+    protected $hidden;
 
     /**
      * @var        Incident
      */
     protected $aIncident;
-
-    /**
-     * @var        Flag
-     */
-    protected $aFlag;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -122,13 +117,13 @@ abstract class BaseMessage extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [idflag] column value.
+     * Get the [flag] column value.
      *
-     * @return int
+     * @return string
      */
-    public function getIdflag()
+    public function getFlag()
     {
-        return $this->idflag;
+        return $this->flag;
     }
 
     /**
@@ -192,13 +187,13 @@ abstract class BaseMessage extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [visible] column value.
+     * Get the [hidden] column value.
      *
      * @return boolean
      */
-    public function getVisible()
+    public function getHidden()
     {
-        return $this->visible;
+        return $this->hidden;
     }
 
     /**
@@ -248,29 +243,25 @@ abstract class BaseMessage extends BaseObject implements Persistent
     } // setIdincident()
 
     /**
-     * Set the value of [idflag] column.
+     * Set the value of [flag] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return Message The current object (for fluent API support)
      */
-    public function setIdflag($v)
+    public function setFlag($v)
     {
         if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
-        if ($this->idflag !== $v) {
-            $this->idflag = $v;
-            $this->modifiedColumns[] = MessagePeer::IDFLAG;
-        }
-
-        if ($this->aFlag !== null && $this->aFlag->getIdflag() !== $v) {
-            $this->aFlag = null;
+        if ($this->flag !== $v) {
+            $this->flag = $v;
+            $this->modifiedColumns[] = MessagePeer::FLAG;
         }
 
 
         return $this;
-    } // setIdflag()
+    } // setFlag()
 
     /**
      * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
@@ -338,7 +329,7 @@ abstract class BaseMessage extends BaseObject implements Persistent
     } // setAuthor()
 
     /**
-     * Sets the value of the [visible] column.
+     * Sets the value of the [hidden] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -347,7 +338,7 @@ abstract class BaseMessage extends BaseObject implements Persistent
      * @param boolean|integer|string $v The new value
      * @return Message The current object (for fluent API support)
      */
-    public function setVisible($v)
+    public function setHidden($v)
     {
         if ($v !== null) {
             if (is_string($v)) {
@@ -357,14 +348,14 @@ abstract class BaseMessage extends BaseObject implements Persistent
             }
         }
 
-        if ($this->visible !== $v) {
-            $this->visible = $v;
-            $this->modifiedColumns[] = MessagePeer::VISIBLE;
+        if ($this->hidden !== $v) {
+            $this->hidden = $v;
+            $this->modifiedColumns[] = MessagePeer::HIDDEN;
         }
 
 
         return $this;
-    } // setVisible()
+    } // setHidden()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -400,11 +391,11 @@ abstract class BaseMessage extends BaseObject implements Persistent
 
             $this->idmessage = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->idincident = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->idflag = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->flag = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->timestamp = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->text = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->author = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->visible = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
+            $this->hidden = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -438,9 +429,6 @@ abstract class BaseMessage extends BaseObject implements Persistent
 
         if ($this->aIncident !== null && $this->idincident !== $this->aIncident->getIdincident()) {
             $this->aIncident = null;
-        }
-        if ($this->aFlag !== null && $this->idflag !== $this->aFlag->getIdflag()) {
-            $this->aFlag = null;
         }
     } // ensureConsistency
 
@@ -482,7 +470,6 @@ abstract class BaseMessage extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aIncident = null;
-            $this->aFlag = null;
         } // if (deep)
     }
 
@@ -608,13 +595,6 @@ abstract class BaseMessage extends BaseObject implements Persistent
                 $this->setIncident($this->aIncident);
             }
 
-            if ($this->aFlag !== null) {
-                if ($this->aFlag->isModified() || $this->aFlag->isNew()) {
-                    $affectedRows += $this->aFlag->save($con);
-                }
-                $this->setFlag($this->aFlag);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -658,8 +638,8 @@ abstract class BaseMessage extends BaseObject implements Persistent
         if ($this->isColumnModified(MessagePeer::IDINCIDENT)) {
             $modifiedColumns[':p' . $index++]  = '`IdIncident`';
         }
-        if ($this->isColumnModified(MessagePeer::IDFLAG)) {
-            $modifiedColumns[':p' . $index++]  = '`IdFlag`';
+        if ($this->isColumnModified(MessagePeer::FLAG)) {
+            $modifiedColumns[':p' . $index++]  = '`Flag`';
         }
         if ($this->isColumnModified(MessagePeer::TIMESTAMP)) {
             $modifiedColumns[':p' . $index++]  = '`Timestamp`';
@@ -670,8 +650,8 @@ abstract class BaseMessage extends BaseObject implements Persistent
         if ($this->isColumnModified(MessagePeer::AUTHOR)) {
             $modifiedColumns[':p' . $index++]  = '`Author`';
         }
-        if ($this->isColumnModified(MessagePeer::VISIBLE)) {
-            $modifiedColumns[':p' . $index++]  = '`Visible`';
+        if ($this->isColumnModified(MessagePeer::HIDDEN)) {
+            $modifiedColumns[':p' . $index++]  = '`Hidden`';
         }
 
         $sql = sprintf(
@@ -690,8 +670,8 @@ abstract class BaseMessage extends BaseObject implements Persistent
                     case '`IdIncident`':
                         $stmt->bindValue($identifier, $this->idincident, PDO::PARAM_INT);
                         break;
-                    case '`IdFlag`':
-                        $stmt->bindValue($identifier, $this->idflag, PDO::PARAM_INT);
+                    case '`Flag`':
+                        $stmt->bindValue($identifier, $this->flag, PDO::PARAM_STR);
                         break;
                     case '`Timestamp`':
                         $stmt->bindValue($identifier, $this->timestamp, PDO::PARAM_STR);
@@ -702,8 +682,8 @@ abstract class BaseMessage extends BaseObject implements Persistent
                     case '`Author`':
                         $stmt->bindValue($identifier, $this->author, PDO::PARAM_STR);
                         break;
-                    case '`Visible`':
-                        $stmt->bindValue($identifier, (int) $this->visible, PDO::PARAM_INT);
+                    case '`Hidden`':
+                        $stmt->bindValue($identifier, (int) $this->hidden, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -810,12 +790,6 @@ abstract class BaseMessage extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->aFlag !== null) {
-                if (!$this->aFlag->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aFlag->getValidationFailures());
-                }
-            }
-
 
             if (($retval = MessagePeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
@@ -864,7 +838,7 @@ abstract class BaseMessage extends BaseObject implements Persistent
                 return $this->getIdincident();
                 break;
             case 2:
-                return $this->getIdflag();
+                return $this->getFlag();
                 break;
             case 3:
                 return $this->getTimestamp();
@@ -876,7 +850,7 @@ abstract class BaseMessage extends BaseObject implements Persistent
                 return $this->getAuthor();
                 break;
             case 6:
-                return $this->getVisible();
+                return $this->getHidden();
                 break;
             default:
                 return null;
@@ -909,18 +883,15 @@ abstract class BaseMessage extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getIdmessage(),
             $keys[1] => $this->getIdincident(),
-            $keys[2] => $this->getIdflag(),
+            $keys[2] => $this->getFlag(),
             $keys[3] => $this->getTimestamp(),
             $keys[4] => $this->getText(),
             $keys[5] => $this->getAuthor(),
-            $keys[6] => $this->getVisible(),
+            $keys[6] => $this->getHidden(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aIncident) {
                 $result['Incident'] = $this->aIncident->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aFlag) {
-                $result['Flag'] = $this->aFlag->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -963,7 +934,7 @@ abstract class BaseMessage extends BaseObject implements Persistent
                 $this->setIdincident($value);
                 break;
             case 2:
-                $this->setIdflag($value);
+                $this->setFlag($value);
                 break;
             case 3:
                 $this->setTimestamp($value);
@@ -975,7 +946,7 @@ abstract class BaseMessage extends BaseObject implements Persistent
                 $this->setAuthor($value);
                 break;
             case 6:
-                $this->setVisible($value);
+                $this->setHidden($value);
                 break;
         } // switch()
     }
@@ -1003,11 +974,11 @@ abstract class BaseMessage extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setIdmessage($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setIdincident($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setIdflag($arr[$keys[2]]);
+        if (array_key_exists($keys[2], $arr)) $this->setFlag($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setTimestamp($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setText($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setAuthor($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setVisible($arr[$keys[6]]);
+        if (array_key_exists($keys[6], $arr)) $this->setHidden($arr[$keys[6]]);
     }
 
     /**
@@ -1021,11 +992,11 @@ abstract class BaseMessage extends BaseObject implements Persistent
 
         if ($this->isColumnModified(MessagePeer::IDMESSAGE)) $criteria->add(MessagePeer::IDMESSAGE, $this->idmessage);
         if ($this->isColumnModified(MessagePeer::IDINCIDENT)) $criteria->add(MessagePeer::IDINCIDENT, $this->idincident);
-        if ($this->isColumnModified(MessagePeer::IDFLAG)) $criteria->add(MessagePeer::IDFLAG, $this->idflag);
+        if ($this->isColumnModified(MessagePeer::FLAG)) $criteria->add(MessagePeer::FLAG, $this->flag);
         if ($this->isColumnModified(MessagePeer::TIMESTAMP)) $criteria->add(MessagePeer::TIMESTAMP, $this->timestamp);
         if ($this->isColumnModified(MessagePeer::TEXT)) $criteria->add(MessagePeer::TEXT, $this->text);
         if ($this->isColumnModified(MessagePeer::AUTHOR)) $criteria->add(MessagePeer::AUTHOR, $this->author);
-        if ($this->isColumnModified(MessagePeer::VISIBLE)) $criteria->add(MessagePeer::VISIBLE, $this->visible);
+        if ($this->isColumnModified(MessagePeer::HIDDEN)) $criteria->add(MessagePeer::HIDDEN, $this->hidden);
 
         return $criteria;
     }
@@ -1090,11 +1061,11 @@ abstract class BaseMessage extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setIdincident($this->getIdincident());
-        $copyObj->setIdflag($this->getIdflag());
+        $copyObj->setFlag($this->getFlag());
         $copyObj->setTimestamp($this->getTimestamp());
         $copyObj->setText($this->getText());
         $copyObj->setAuthor($this->getAuthor());
-        $copyObj->setVisible($this->getVisible());
+        $copyObj->setHidden($this->getHidden());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1206,69 +1177,17 @@ abstract class BaseMessage extends BaseObject implements Persistent
     }
 
     /**
-     * Declares an association between this object and a Flag object.
-     *
-     * @param             Flag $v
-     * @return Message The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setFlag(Flag $v = null)
-    {
-        if ($v === null) {
-            $this->setIdflag(NULL);
-        } else {
-            $this->setIdflag($v->getIdflag());
-        }
-
-        $this->aFlag = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Flag object, it will not be re-added.
-        if ($v !== null) {
-            $v->addMessage($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Flag object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Flag The associated Flag object.
-     * @throws PropelException
-     */
-    public function getFlag(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aFlag === null && ($this->idflag !== null) && $doQuery) {
-            $this->aFlag = FlagQuery::create()->findPk($this->idflag, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aFlag->addMessages($this);
-             */
-        }
-
-        return $this->aFlag;
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->idmessage = null;
         $this->idincident = null;
-        $this->idflag = null;
+        $this->flag = null;
         $this->timestamp = null;
         $this->text = null;
         $this->author = null;
-        $this->visible = null;
+        $this->hidden = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1294,15 +1213,11 @@ abstract class BaseMessage extends BaseObject implements Persistent
             if ($this->aIncident instanceof Persistent) {
               $this->aIncident->clearAllReferences($deep);
             }
-            if ($this->aFlag instanceof Persistent) {
-              $this->aFlag->clearAllReferences($deep);
-            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         $this->aIncident = null;
-        $this->aFlag = null;
     }
 
     /**

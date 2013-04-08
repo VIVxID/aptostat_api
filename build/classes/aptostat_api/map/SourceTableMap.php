@@ -36,9 +36,9 @@ class SourceTableMap extends TableMap
         $this->setPhpName('Source');
         $this->setClassname('Source');
         $this->setPackage('aptostat_api');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('IdSource', 'Idsource', 'INTEGER', true, null, null);
+        $this->addPrimaryKey('IdSource', 'Idsource', 'VARCHAR', true, 255, null);
         $this->addColumn('Name', 'Name', 'VARCHAR', true, 20, null);
         // validators
     } // initialize()

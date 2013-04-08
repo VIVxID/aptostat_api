@@ -13,12 +13,13 @@ $app->before(function (Request $request) {
 include __DIR__ . '/../src/aptostatApi/controller/reportController.php';
 include  __DIR__ . '/../src/AptostatApi/controller/incidentController.php';
 
-$app->match('/api/', function() use ($app) {
+$app->match('/api', function() use ($app) {
         $out = array('statusDesc' => 'Read documentation for proper use of the API');
         return $app->json($out, 200);
 });
 
 // End user front-end
 $app->match('/', function() use ($app) {
-	return "Index";
+        $out = array('statusDesc' => 'Read documentation for proper use of the API');
+        return $app->json($out, 200);
 });

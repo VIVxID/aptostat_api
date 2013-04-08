@@ -15,5 +15,4 @@
  */
 class ReportPeer extends BaseReportPeer
 {
-    const RESPONDING = 5;
 }

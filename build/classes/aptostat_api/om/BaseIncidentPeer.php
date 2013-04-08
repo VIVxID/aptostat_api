@@ -24,16 +24,19 @@ abstract class BaseIncidentPeer
     const TM_CLASS = 'IncidentTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /** the column name for the IdIncident field */
     const IDINCIDENT = 'Incident.IdIncident';
+
+    /** the column name for the Title field */
+    const TITLE = 'Incident.Title';
 
     /** the column name for the Timestamp field */
     const TIMESTAMP = 'Incident.Timestamp';
@@ -57,12 +60,12 @@ abstract class BaseIncidentPeer
      * e.g. IncidentPeer::$fieldNames[IncidentPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idincident', 'Timestamp', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idincident', 'timestamp', ),
-        BasePeer::TYPE_COLNAME => array (IncidentPeer::IDINCIDENT, IncidentPeer::TIMESTAMP, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDINCIDENT', 'TIMESTAMP', ),
-        BasePeer::TYPE_FIELDNAME => array ('IdIncident', 'Timestamp', ),
-        BasePeer::TYPE_NUM => array (0, 1, )
+        BasePeer::TYPE_PHPNAME => array ('Idincident', 'Title', 'Timestamp', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idincident', 'title', 'timestamp', ),
+        BasePeer::TYPE_COLNAME => array (IncidentPeer::IDINCIDENT, IncidentPeer::TITLE, IncidentPeer::TIMESTAMP, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDINCIDENT', 'TITLE', 'TIMESTAMP', ),
+        BasePeer::TYPE_FIELDNAME => array ('IdIncident', 'Title', 'Timestamp', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, )
     );
 
     /**
@@ -72,12 +75,12 @@ abstract class BaseIncidentPeer
      * e.g. IncidentPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idincident' => 0, 'Timestamp' => 1, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idincident' => 0, 'timestamp' => 1, ),
-        BasePeer::TYPE_COLNAME => array (IncidentPeer::IDINCIDENT => 0, IncidentPeer::TIMESTAMP => 1, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDINCIDENT' => 0, 'TIMESTAMP' => 1, ),
-        BasePeer::TYPE_FIELDNAME => array ('IdIncident' => 0, 'Timestamp' => 1, ),
-        BasePeer::TYPE_NUM => array (0, 1, )
+        BasePeer::TYPE_PHPNAME => array ('Idincident' => 0, 'Title' => 1, 'Timestamp' => 2, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idincident' => 0, 'title' => 1, 'timestamp' => 2, ),
+        BasePeer::TYPE_COLNAME => array (IncidentPeer::IDINCIDENT => 0, IncidentPeer::TITLE => 1, IncidentPeer::TIMESTAMP => 2, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDINCIDENT' => 0, 'TITLE' => 1, 'TIMESTAMP' => 2, ),
+        BasePeer::TYPE_FIELDNAME => array ('IdIncident' => 0, 'Title' => 1, 'Timestamp' => 2, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, )
     );
 
     /**
@@ -152,9 +155,11 @@ abstract class BaseIncidentPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(IncidentPeer::IDINCIDENT);
+            $criteria->addSelectColumn(IncidentPeer::TITLE);
             $criteria->addSelectColumn(IncidentPeer::TIMESTAMP);
         } else {
             $criteria->addSelectColumn($alias . '.IdIncident');
+            $criteria->addSelectColumn($alias . '.Title');
             $criteria->addSelectColumn($alias . '.Timestamp');
         }
     }

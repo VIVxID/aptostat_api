@@ -7,9 +7,11 @@
  *
  *
  * @method IncidentQuery orderByIdincident($order = Criteria::ASC) Order by the IdIncident column
+ * @method IncidentQuery orderByTitle($order = Criteria::ASC) Order by the Title column
  * @method IncidentQuery orderByTimestamp($order = Criteria::ASC) Order by the Timestamp column
  *
  * @method IncidentQuery groupByIdincident() Group by the IdIncident column
+ * @method IncidentQuery groupByTitle() Group by the Title column
  * @method IncidentQuery groupByTimestamp() Group by the Timestamp column
  *
  * @method IncidentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -27,9 +29,11 @@
  * @method Incident findOne(PropelPDO $con = null) Return the first Incident matching the query
  * @method Incident findOneOrCreate(PropelPDO $con = null) Return the first Incident matching the query, or a new Incident object populated from the query conditions when no match is found
  *
+ * @method Incident findOneByTitle(string $Title) Return the first Incident filtered by the Title column
  * @method Incident findOneByTimestamp(string $Timestamp) Return the first Incident filtered by the Timestamp column
  *
  * @method array findByIdincident(int $IdIncident) Return Incident objects filtered by the IdIncident column
+ * @method array findByTitle(string $Title) Return Incident objects filtered by the Title column
  * @method array findByTimestamp(string $Timestamp) Return Incident objects filtered by the Timestamp column
  *
  * @package    propel.generator.aptostat_api.om
@@ -134,7 +138,7 @@ abstract class BaseIncidentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `IdIncident`, `Timestamp` FROM `Incident` WHERE `IdIncident` = :p0';
+        $sql = 'SELECT `IdIncident`, `Title`, `Timestamp` FROM `Incident` WHERE `IdIncident` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -263,6 +267,35 @@ abstract class BaseIncidentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(IncidentPeer::IDINCIDENT, $idincident, $comparison);
+    }
+
+    /**
+     * Filter the query on the Title column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTitle('fooValue');   // WHERE Title = 'fooValue'
+     * $query->filterByTitle('%fooValue%'); // WHERE Title LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $title The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return IncidentQuery The current query, for fluid interface
+     */
+    public function filterByTitle($title = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($title)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $title)) {
+                $title = str_replace('*', '%', $title);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(IncidentPeer::TITLE, $title, $comparison);
     }
 
     /**

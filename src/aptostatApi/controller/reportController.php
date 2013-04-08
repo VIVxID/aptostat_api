@@ -6,63 +6,42 @@ set_include_path(__DIR__ . '/../../../build/classes' . PATH_SEPARATOR . get_incl
 
 // Load classes
 use Symfony\Component\HttpFoundation\Request;
+use aptostatApi\Service\ResponseService;
 
 // GET: /report - Return a list of reports
-$app->get('/api/report', function() use ($app) {
+$app->get('/api/report', function(Request $param) use ($app) {
     $reportService = new aptostatApi\Service\ReportService();
-    $reports = $reportService->getList();
+    $limit = $param->query->get('limit');
+    $offset = $param->query->get('offset');
 
-    return $app->json($reports);
+    try {
+        $reportList = $reportService->getList($limit, $offset);
+        return $app->json($reportList);
+    } catch (Exception $e) {
+        return $app->json(ResponseService::errorResponse($e), $e->getCode());
+    }
 });
 
-// GET: /report/{id} - Return a spesific report
+// GET: /report/{id} - Return a specific report
 $app->get('/api/report/{reportId}', function($reportId) use ($app) {
     $reportService = new aptostatApi\Service\ReportService();
 
     try {
         $report = $reportService->getReportById($reportId);
         return $app->json(array('report' => $report));
-    } catch (\InvalidArgumentException $e) {
-        return $app->json(array(
-                'errorCode' => $e->getCode(),
-                'errorDesc' => $e->getMessage()
-            ), $e->getCode());
-    } catch (\aptostatApi\Service\Exception\NotFoundException $e) {
-        return $app->json(array(
-                'errorCode' => $e->getCode(),
-                'errorDesc' => $e->getMessage()
-            ), $e->getCode());
+    } catch (Exception $e) {
+        return $app->json(ResponseService::errorResponse($e), $e->getCode());
     }
 });
 
 // PUT: /report/{reportId} - Modify report
-$app->put('/api/report/{reportId}', function(Request $request, $reportId) use ($app) {
-    $report = new aptostatApi\model\Report;
-    $flag = $request->request->get('flag');
+$app->put('/api/report/{reportId}', function(Request $param, $reportId) use ($app) {
+    $reportService = new aptostatApi\Service\ReportService();
 
-    switch ($report->modifyFlag($reportId, $flag)) {
-        case 200:
-            return $app->json(array(
-                'message' => 'Report ' . $reportId . ' has been successfully modified'
-                ), 200);
-            break;
-        case 400:
-            return $app->json(array(
-                'errorCode' => 400,
-                'errorDesc' => 'The id provided is not a number'
-                ), 400);
-            break;
-        case 404:
-            return $app->json(array(
-                'errorCode' => 404,
-                'errorDesc' => 'Report with that ID not found'
-                ), 404);
-            break;
-        default:
-            return $app->json(array(
-               'errorCode' => 500,
-               'errorDesc' => 'Internal server error'
-               ), 500);
-            break;
+    try {
+        $reportService->modify($reportId, $param);
+        return $app->json(ResponseService::successResponse('The modification was successful'));
+    } catch (Exception $e) {
+        return $app->json(ResponseService::errorResponse($e), $e->getCode());
     }
 });

@@ -8,11 +8,11 @@
  *
  * @method ReportStatusQuery orderByIdreport($order = Criteria::ASC) Order by the IdReport column
  * @method ReportStatusQuery orderByTimestamp($order = Criteria::ASC) Order by the Timestamp column
- * @method ReportStatusQuery orderByIdflag($order = Criteria::ASC) Order by the IdFlag column
+ * @method ReportStatusQuery orderByFlag($order = Criteria::ASC) Order by the Flag column
  *
  * @method ReportStatusQuery groupByIdreport() Group by the IdReport column
  * @method ReportStatusQuery groupByTimestamp() Group by the Timestamp column
- * @method ReportStatusQuery groupByIdflag() Group by the IdFlag column
+ * @method ReportStatusQuery groupByFlag() Group by the Flag column
  *
  * @method ReportStatusQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ReportStatusQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -22,20 +22,16 @@
  * @method ReportStatusQuery rightJoinReport($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Report relation
  * @method ReportStatusQuery innerJoinReport($relationAlias = null) Adds a INNER JOIN clause to the query using the Report relation
  *
- * @method ReportStatusQuery leftJoinFlag($relationAlias = null) Adds a LEFT JOIN clause to the query using the Flag relation
- * @method ReportStatusQuery rightJoinFlag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Flag relation
- * @method ReportStatusQuery innerJoinFlag($relationAlias = null) Adds a INNER JOIN clause to the query using the Flag relation
- *
  * @method ReportStatus findOne(PropelPDO $con = null) Return the first ReportStatus matching the query
  * @method ReportStatus findOneOrCreate(PropelPDO $con = null) Return the first ReportStatus matching the query, or a new ReportStatus object populated from the query conditions when no match is found
  *
  * @method ReportStatus findOneByIdreport(int $IdReport) Return the first ReportStatus filtered by the IdReport column
  * @method ReportStatus findOneByTimestamp(string $Timestamp) Return the first ReportStatus filtered by the Timestamp column
- * @method ReportStatus findOneByIdflag(int $IdFlag) Return the first ReportStatus filtered by the IdFlag column
+ * @method ReportStatus findOneByFlag(string $Flag) Return the first ReportStatus filtered by the Flag column
  *
  * @method array findByIdreport(int $IdReport) Return ReportStatus objects filtered by the IdReport column
  * @method array findByTimestamp(string $Timestamp) Return ReportStatus objects filtered by the Timestamp column
- * @method array findByIdflag(int $IdFlag) Return ReportStatus objects filtered by the IdFlag column
+ * @method array findByFlag(string $Flag) Return ReportStatus objects filtered by the Flag column
  *
  * @package    propel.generator.aptostat_api.om
  */
@@ -126,7 +122,7 @@ abstract class BaseReportStatusQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `IdReport`, `Timestamp`, `IdFlag` FROM `ReportStatus` WHERE `IdReport` = :p0 AND `Timestamp` = :p1';
+        $sql = 'SELECT `IdReport`, `Timestamp`, `Flag` FROM `ReportStatus` WHERE `IdReport` = :p0 AND `Timestamp` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -315,47 +311,32 @@ abstract class BaseReportStatusQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the IdFlag column
+     * Filter the query on the Flag column
      *
      * Example usage:
      * <code>
-     * $query->filterByIdflag(1234); // WHERE IdFlag = 1234
-     * $query->filterByIdflag(array(12, 34)); // WHERE IdFlag IN (12, 34)
-     * $query->filterByIdflag(array('min' => 12)); // WHERE IdFlag >= 12
-     * $query->filterByIdflag(array('max' => 12)); // WHERE IdFlag <= 12
+     * $query->filterByFlag('fooValue');   // WHERE Flag = 'fooValue'
+     * $query->filterByFlag('%fooValue%'); // WHERE Flag LIKE '%fooValue%'
      * </code>
      *
-     * @see       filterByFlag()
-     *
-     * @param     mixed $idflag The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $flag The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ReportStatusQuery The current query, for fluid interface
      */
-    public function filterByIdflag($idflag = null, $comparison = null)
+    public function filterByFlag($flag = null, $comparison = null)
     {
-        if (is_array($idflag)) {
-            $useMinMax = false;
-            if (isset($idflag['min'])) {
-                $this->addUsingAlias(ReportStatusPeer::IDFLAG, $idflag['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($idflag['max'])) {
-                $this->addUsingAlias(ReportStatusPeer::IDFLAG, $idflag['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($flag)) {
                 $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $flag)) {
+                $flag = str_replace('*', '%', $flag);
+                $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(ReportStatusPeer::IDFLAG, $idflag, $comparison);
+        return $this->addUsingAlias(ReportStatusPeer::FLAG, $flag, $comparison);
     }
 
     /**
@@ -432,82 +413,6 @@ abstract class BaseReportStatusQuery extends ModelCriteria
         return $this
             ->joinReport($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Report', 'ReportQuery');
-    }
-
-    /**
-     * Filter the query by a related Flag object
-     *
-     * @param   Flag|PropelObjectCollection $flag The related object(s) to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 ReportStatusQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByFlag($flag, $comparison = null)
-    {
-        if ($flag instanceof Flag) {
-            return $this
-                ->addUsingAlias(ReportStatusPeer::IDFLAG, $flag->getIdflag(), $comparison);
-        } elseif ($flag instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(ReportStatusPeer::IDFLAG, $flag->toKeyValue('PrimaryKey', 'Idflag'), $comparison);
-        } else {
-            throw new PropelException('filterByFlag() only accepts arguments of type Flag or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Flag relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return ReportStatusQuery The current query, for fluid interface
-     */
-    public function joinFlag($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Flag');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Flag');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Flag relation Flag object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   FlagQuery A secondary query class using the current class as primary query
-     */
-    public function useFlagQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinFlag($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Flag', 'FlagQuery');
     }
 
     /**

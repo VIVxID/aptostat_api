@@ -40,11 +40,11 @@ class MessageTableMap extends TableMap
         // columns
         $this->addPrimaryKey('IdMessage', 'Idmessage', 'INTEGER', true, null, null);
         $this->addForeignKey('IdIncident', 'Idincident', 'INTEGER', 'Incident', 'IdIncident', true, null, null);
-        $this->addForeignKey('IdFlag', 'Idflag', 'INTEGER', 'Flag', 'IdFlag', true, null, null);
+        $this->addColumn('Flag', 'Flag', 'VARCHAR', true, 255, null);
         $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, null);
         $this->addColumn('Text', 'Text', 'VARCHAR', true, 255, null);
         $this->addColumn('Author', 'Author', 'VARCHAR', true, 30, null);
-        $this->addColumn('Visible', 'Visible', 'BOOLEAN', true, 1, null);
+        $this->addColumn('Hidden', 'Hidden', 'BOOLEAN', true, 1, null);
         // validators
     } // initialize()
 
@@ -54,7 +54,6 @@ class MessageTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Incident', 'Incident', RelationMap::MANY_TO_ONE, array('IdIncident' => 'IdIncident', ), null, null);
-        $this->addRelation('Flag', 'Flag', RelationMap::MANY_TO_ONE, array('IdFlag' => 'IdFlag', ), null, null);
     } // buildRelations()
 
 } // MessageTableMap

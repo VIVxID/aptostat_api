@@ -42,8 +42,9 @@ class ReportTableMap extends TableMap
         $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, null);
         $this->addColumn('ErrorMessage', 'Errormessage', 'VARCHAR', true, 255, null);
         $this->addColumn('CheckType', 'Checktype', 'VARCHAR', true, 40, null);
-        $this->addForeignKey('IdSource', 'Idsource', 'INTEGER', 'Source', 'IdSource', true, null, null);
+        $this->addColumn('Source', 'Source', 'VARCHAR', true, 255, null);
         $this->addForeignKey('IdService', 'Idservice', 'INTEGER', 'Service', 'IdService', true, null, null);
+        $this->addColumn('Hidden', 'Hidden', 'BOOLEAN', true, 1, null);
         // validators
     } // initialize()
 
@@ -52,7 +53,6 @@ class ReportTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Source', 'Source', RelationMap::MANY_TO_ONE, array('IdSource' => 'IdSource', ), null, null);
         $this->addRelation('Service', 'Service', RelationMap::MANY_TO_ONE, array('IdService' => 'IdService', ), null, null);
         $this->addRelation('ReportStatus', 'ReportStatus', RelationMap::ONE_TO_MANY, array('IdReport' => 'IdReport', ), null, null, 'ReportStatuss');
         $this->addRelation('IncidentReport', 'IncidentReport', RelationMap::ONE_TO_MANY, array('IdReport' => 'IdReport', ), 'CASCADE', null, 'IncidentReports');

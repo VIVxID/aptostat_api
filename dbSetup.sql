@@ -1,0 +1,9 @@
+INSERT INTO Flag VALUES ('WARNING', 'Warning');
+INSERT INTO Flag VALUES ('CRITICAL', 'Critical');
+INSERT INTO Flag VALUES ('INTERNAL', 'Internal');
+INSERT INTO Flag VALUES ('IGNORED', 'Ignored');
+INSERT INTO Flag VALUES ('RESPONDING', 'Responding');
+INSERT INTO Flag VALUES ('RESOLVED', 'Resolved');
+
+INSERT INTO Source VALUES ('NAGIOS', 'Nagios');
+INSERT INTO Source VALUES ('PINGDOM', 'Pingdom');

@@ -31,7 +31,7 @@ abstract class BaseFlag extends BaseObject implements Persistent
 
     /**
      * The value for the idflag field.
-     * @var        int
+     * @var        string
      */
     protected $idflag;
 
@@ -88,7 +88,7 @@ abstract class BaseFlag extends BaseObject implements Persistent
     /**
      * Get the [idflag] column value.
      *
-     * @return int
+     * @return string
      */
     public function getIdflag()
     {
@@ -108,13 +108,13 @@ abstract class BaseFlag extends BaseObject implements Persistent
     /**
      * Set the value of [idflag] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return Flag The current object (for fluent API support)
      */
     public function setIdflag($v)
     {
         if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->idflag !== $v) {
@@ -179,7 +179,7 @@ abstract class BaseFlag extends BaseObject implements Persistent
     {
         try {
 
-            $this->idflag = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->idflag = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
             $this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->resetModified();
 
@@ -433,10 +433,6 @@ abstract class BaseFlag extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = FlagPeer::IDFLAG;
-        if (null !== $this->idflag) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . FlagPeer::IDFLAG . ')');
-        }
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(FlagPeer::IDFLAG)) {
@@ -457,7 +453,7 @@ abstract class BaseFlag extends BaseObject implements Persistent
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
                     case '`IdFlag`':
-                        $stmt->bindValue($identifier, $this->idflag, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->idflag, PDO::PARAM_STR);
                         break;
                     case '`Name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
@@ -469,13 +465,6 @@ abstract class BaseFlag extends BaseObject implements Persistent
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
         }
-
-        try {
-            $pk = $con->lastInsertId();
-        } catch (Exception $e) {
-            throw new PropelException('Unable to get autoincrement id.', $e);
-        }
-        $this->setIdflag($pk);
 
         $this->setNew(false);
     }
@@ -758,7 +747,7 @@ abstract class BaseFlag extends BaseObject implements Persistent
 
     /**
      * Returns the primary key for this object (row).
-     * @return int
+     * @return string
      */
     public function getPrimaryKey()
     {
@@ -768,7 +757,7 @@ abstract class BaseFlag extends BaseObject implements Persistent
     /**
      * Generic method to set the primary key (idflag column).
      *
-     * @param  int $key Primary key.
+     * @param  string $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)

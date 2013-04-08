@@ -54,10 +54,10 @@ abstract class BaseReport extends BaseObject implements Persistent
     protected $checktype;
 
     /**
-     * The value for the idsource field.
-     * @var        int
+     * The value for the source field.
+     * @var        string
      */
-    protected $idsource;
+    protected $source;
 
     /**
      * The value for the idservice field.
@@ -66,9 +66,10 @@ abstract class BaseReport extends BaseObject implements Persistent
     protected $idservice;
 
     /**
-     * @var        Source
+     * The value for the hidden field.
+     * @var        boolean
      */
-    protected $aSource;
+    protected $hidden;
 
     /**
      * @var        Service
@@ -201,13 +202,13 @@ abstract class BaseReport extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [idsource] column value.
+     * Get the [source] column value.
      *
-     * @return int
+     * @return string
      */
-    public function getIdsource()
+    public function getSource()
     {
-        return $this->idsource;
+        return $this->source;
     }
 
     /**
@@ -218,6 +219,16 @@ abstract class BaseReport extends BaseObject implements Persistent
     public function getIdservice()
     {
         return $this->idservice;
+    }
+
+    /**
+     * Get the [hidden] column value.
+     *
+     * @return boolean
+     */
+    public function getHidden()
+    {
+        return $this->hidden;
     }
 
     /**
@@ -307,29 +318,25 @@ abstract class BaseReport extends BaseObject implements Persistent
     } // setChecktype()
 
     /**
-     * Set the value of [idsource] column.
+     * Set the value of [source] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return Report The current object (for fluent API support)
      */
-    public function setIdsource($v)
+    public function setSource($v)
     {
         if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
-        if ($this->idsource !== $v) {
-            $this->idsource = $v;
-            $this->modifiedColumns[] = ReportPeer::IDSOURCE;
-        }
-
-        if ($this->aSource !== null && $this->aSource->getIdsource() !== $v) {
-            $this->aSource = null;
+        if ($this->source !== $v) {
+            $this->source = $v;
+            $this->modifiedColumns[] = ReportPeer::SOURCE;
         }
 
 
         return $this;
-    } // setIdsource()
+    } // setSource()
 
     /**
      * Set the value of [idservice] column.
@@ -355,6 +362,35 @@ abstract class BaseReport extends BaseObject implements Persistent
 
         return $this;
     } // setIdservice()
+
+    /**
+     * Sets the value of the [hidden] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Report The current object (for fluent API support)
+     */
+    public function setHidden($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->hidden !== $v) {
+            $this->hidden = $v;
+            $this->modifiedColumns[] = ReportPeer::HIDDEN;
+        }
+
+
+        return $this;
+    } // setHidden()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -392,8 +428,9 @@ abstract class BaseReport extends BaseObject implements Persistent
             $this->timestamp = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->errormessage = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->checktype = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->idsource = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->source = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->idservice = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->hidden = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -402,7 +439,7 @@ abstract class BaseReport extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 6; // 6 = ReportPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = ReportPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Report object", $e);
@@ -425,9 +462,6 @@ abstract class BaseReport extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aSource !== null && $this->idsource !== $this->aSource->getIdsource()) {
-            $this->aSource = null;
-        }
         if ($this->aService !== null && $this->idservice !== $this->aService->getIdservice()) {
             $this->aService = null;
         }
@@ -470,7 +504,6 @@ abstract class BaseReport extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aSource = null;
             $this->aService = null;
             $this->collReportStatuss = null;
 
@@ -595,13 +628,6 @@ abstract class BaseReport extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aSource !== null) {
-                if ($this->aSource->isModified() || $this->aSource->isNew()) {
-                    $affectedRows += $this->aSource->save($con);
-                }
-                $this->setSource($this->aSource);
-            }
-
             if ($this->aService !== null) {
                 if ($this->aService->isModified() || $this->aService->isNew()) {
                     $affectedRows += $this->aService->save($con);
@@ -718,11 +744,14 @@ abstract class BaseReport extends BaseObject implements Persistent
         if ($this->isColumnModified(ReportPeer::CHECKTYPE)) {
             $modifiedColumns[':p' . $index++]  = '`CheckType`';
         }
-        if ($this->isColumnModified(ReportPeer::IDSOURCE)) {
-            $modifiedColumns[':p' . $index++]  = '`IdSource`';
+        if ($this->isColumnModified(ReportPeer::SOURCE)) {
+            $modifiedColumns[':p' . $index++]  = '`Source`';
         }
         if ($this->isColumnModified(ReportPeer::IDSERVICE)) {
             $modifiedColumns[':p' . $index++]  = '`IdService`';
+        }
+        if ($this->isColumnModified(ReportPeer::HIDDEN)) {
+            $modifiedColumns[':p' . $index++]  = '`Hidden`';
         }
 
         $sql = sprintf(
@@ -747,11 +776,14 @@ abstract class BaseReport extends BaseObject implements Persistent
                     case '`CheckType`':
                         $stmt->bindValue($identifier, $this->checktype, PDO::PARAM_STR);
                         break;
-                    case '`IdSource`':
-                        $stmt->bindValue($identifier, $this->idsource, PDO::PARAM_INT);
+                    case '`Source`':
+                        $stmt->bindValue($identifier, $this->source, PDO::PARAM_STR);
                         break;
                     case '`IdService`':
                         $stmt->bindValue($identifier, $this->idservice, PDO::PARAM_INT);
+                        break;
+                    case '`Hidden`':
+                        $stmt->bindValue($identifier, (int) $this->hidden, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -852,12 +884,6 @@ abstract class BaseReport extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aSource !== null) {
-                if (!$this->aSource->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aSource->getValidationFailures());
-                }
-            }
-
             if ($this->aService !== null) {
                 if (!$this->aService->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aService->getValidationFailures());
@@ -934,10 +960,13 @@ abstract class BaseReport extends BaseObject implements Persistent
                 return $this->getChecktype();
                 break;
             case 4:
-                return $this->getIdsource();
+                return $this->getSource();
                 break;
             case 5:
                 return $this->getIdservice();
+                break;
+            case 6:
+                return $this->getHidden();
                 break;
             default:
                 return null;
@@ -972,13 +1001,11 @@ abstract class BaseReport extends BaseObject implements Persistent
             $keys[1] => $this->getTimestamp(),
             $keys[2] => $this->getErrormessage(),
             $keys[3] => $this->getChecktype(),
-            $keys[4] => $this->getIdsource(),
+            $keys[4] => $this->getSource(),
             $keys[5] => $this->getIdservice(),
+            $keys[6] => $this->getHidden(),
         );
         if ($includeForeignObjects) {
-            if (null !== $this->aSource) {
-                $result['Source'] = $this->aSource->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
             if (null !== $this->aService) {
                 $result['Service'] = $this->aService->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -1035,10 +1062,13 @@ abstract class BaseReport extends BaseObject implements Persistent
                 $this->setChecktype($value);
                 break;
             case 4:
-                $this->setIdsource($value);
+                $this->setSource($value);
                 break;
             case 5:
                 $this->setIdservice($value);
+                break;
+            case 6:
+                $this->setHidden($value);
                 break;
         } // switch()
     }
@@ -1068,8 +1098,9 @@ abstract class BaseReport extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setTimestamp($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setErrormessage($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setChecktype($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setIdsource($arr[$keys[4]]);
+        if (array_key_exists($keys[4], $arr)) $this->setSource($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setIdservice($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setHidden($arr[$keys[6]]);
     }
 
     /**
@@ -1085,8 +1116,9 @@ abstract class BaseReport extends BaseObject implements Persistent
         if ($this->isColumnModified(ReportPeer::TIMESTAMP)) $criteria->add(ReportPeer::TIMESTAMP, $this->timestamp);
         if ($this->isColumnModified(ReportPeer::ERRORMESSAGE)) $criteria->add(ReportPeer::ERRORMESSAGE, $this->errormessage);
         if ($this->isColumnModified(ReportPeer::CHECKTYPE)) $criteria->add(ReportPeer::CHECKTYPE, $this->checktype);
-        if ($this->isColumnModified(ReportPeer::IDSOURCE)) $criteria->add(ReportPeer::IDSOURCE, $this->idsource);
+        if ($this->isColumnModified(ReportPeer::SOURCE)) $criteria->add(ReportPeer::SOURCE, $this->source);
         if ($this->isColumnModified(ReportPeer::IDSERVICE)) $criteria->add(ReportPeer::IDSERVICE, $this->idservice);
+        if ($this->isColumnModified(ReportPeer::HIDDEN)) $criteria->add(ReportPeer::HIDDEN, $this->hidden);
 
         return $criteria;
     }
@@ -1153,8 +1185,9 @@ abstract class BaseReport extends BaseObject implements Persistent
         $copyObj->setTimestamp($this->getTimestamp());
         $copyObj->setErrormessage($this->getErrormessage());
         $copyObj->setChecktype($this->getChecktype());
-        $copyObj->setIdsource($this->getIdsource());
+        $copyObj->setSource($this->getSource());
         $copyObj->setIdservice($this->getIdservice());
+        $copyObj->setHidden($this->getHidden());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1223,58 +1256,6 @@ abstract class BaseReport extends BaseObject implements Persistent
         }
 
         return self::$peer;
-    }
-
-    /**
-     * Declares an association between this object and a Source object.
-     *
-     * @param             Source $v
-     * @return Report The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setSource(Source $v = null)
-    {
-        if ($v === null) {
-            $this->setIdsource(NULL);
-        } else {
-            $this->setIdsource($v->getIdsource());
-        }
-
-        $this->aSource = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Source object, it will not be re-added.
-        if ($v !== null) {
-            $v->addReport($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Source object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Source The associated Source object.
-     * @throws PropelException
-     */
-    public function getSource(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aSource === null && ($this->idsource !== null) && $doQuery) {
-            $this->aSource = SourceQuery::create()->findPk($this->idsource, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aSource->addReports($this);
-             */
-        }
-
-        return $this->aSource;
     }
 
     /**
@@ -1564,31 +1545,6 @@ abstract class BaseReport extends BaseObject implements Persistent
         }
 
         return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Report is new, it will return
-     * an empty collection; or if this Report has previously
-     * been saved, it will retrieve related ReportStatuss from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Report.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|ReportStatus[] List of ReportStatus objects
-     */
-    public function getReportStatussJoinFlag($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ReportStatusQuery::create(null, $criteria);
-        $query->joinWith('Flag', $join_behavior);
-
-        return $this->getReportStatuss($query, $con);
     }
 
     /**
@@ -2020,8 +1976,9 @@ abstract class BaseReport extends BaseObject implements Persistent
         $this->timestamp = null;
         $this->errormessage = null;
         $this->checktype = null;
-        $this->idsource = null;
+        $this->source = null;
         $this->idservice = null;
+        $this->hidden = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -2059,9 +2016,6 @@ abstract class BaseReport extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->aSource instanceof Persistent) {
-              $this->aSource->clearAllReferences($deep);
-            }
             if ($this->aService instanceof Persistent) {
               $this->aService->clearAllReferences($deep);
             }
@@ -2081,7 +2035,6 @@ abstract class BaseReport extends BaseObject implements Persistent
             $this->collIncidents->clearIterator();
         }
         $this->collIncidents = null;
-        $this->aSource = null;
         $this->aService = null;
     }
 

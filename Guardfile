@@ -4,6 +4,7 @@
 # bundle exec guard
 # ---------------------------------------------------------------
 
+notification :'terminal-notifier-guard'
 
 ## PHP ##
 guard 'phpunit', :tests_path => 'tests', :all_on_start => false, :all_after_pass => false, :cli => '--colors --verbose' do

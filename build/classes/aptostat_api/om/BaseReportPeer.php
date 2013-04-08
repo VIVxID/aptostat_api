@@ -24,13 +24,13 @@ abstract class BaseReportPeer
     const TM_CLASS = 'ReportTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the IdReport field */
     const IDREPORT = 'Report.IdReport';
@@ -44,11 +44,14 @@ abstract class BaseReportPeer
     /** the column name for the CheckType field */
     const CHECKTYPE = 'Report.CheckType';
 
-    /** the column name for the IdSource field */
-    const IDSOURCE = 'Report.IdSource';
+    /** the column name for the Source field */
+    const SOURCE = 'Report.Source';
 
     /** the column name for the IdService field */
     const IDSERVICE = 'Report.IdService';
+
+    /** the column name for the Hidden field */
+    const HIDDEN = 'Report.Hidden';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -69,12 +72,12 @@ abstract class BaseReportPeer
      * e.g. ReportPeer::$fieldNames[ReportPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idreport', 'Timestamp', 'Errormessage', 'Checktype', 'Idsource', 'Idservice', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idreport', 'timestamp', 'errormessage', 'checktype', 'idsource', 'idservice', ),
-        BasePeer::TYPE_COLNAME => array (ReportPeer::IDREPORT, ReportPeer::TIMESTAMP, ReportPeer::ERRORMESSAGE, ReportPeer::CHECKTYPE, ReportPeer::IDSOURCE, ReportPeer::IDSERVICE, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDREPORT', 'TIMESTAMP', 'ERRORMESSAGE', 'CHECKTYPE', 'IDSOURCE', 'IDSERVICE', ),
-        BasePeer::TYPE_FIELDNAME => array ('IdReport', 'Timestamp', 'ErrorMessage', 'CheckType', 'IdSource', 'IdService', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Idreport', 'Timestamp', 'Errormessage', 'Checktype', 'Source', 'Idservice', 'Hidden', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idreport', 'timestamp', 'errormessage', 'checktype', 'source', 'idservice', 'hidden', ),
+        BasePeer::TYPE_COLNAME => array (ReportPeer::IDREPORT, ReportPeer::TIMESTAMP, ReportPeer::ERRORMESSAGE, ReportPeer::CHECKTYPE, ReportPeer::SOURCE, ReportPeer::IDSERVICE, ReportPeer::HIDDEN, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDREPORT', 'TIMESTAMP', 'ERRORMESSAGE', 'CHECKTYPE', 'SOURCE', 'IDSERVICE', 'HIDDEN', ),
+        BasePeer::TYPE_FIELDNAME => array ('IdReport', 'Timestamp', 'ErrorMessage', 'CheckType', 'Source', 'IdService', 'Hidden', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -84,12 +87,12 @@ abstract class BaseReportPeer
      * e.g. ReportPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idreport' => 0, 'Timestamp' => 1, 'Errormessage' => 2, 'Checktype' => 3, 'Idsource' => 4, 'Idservice' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idreport' => 0, 'timestamp' => 1, 'errormessage' => 2, 'checktype' => 3, 'idsource' => 4, 'idservice' => 5, ),
-        BasePeer::TYPE_COLNAME => array (ReportPeer::IDREPORT => 0, ReportPeer::TIMESTAMP => 1, ReportPeer::ERRORMESSAGE => 2, ReportPeer::CHECKTYPE => 3, ReportPeer::IDSOURCE => 4, ReportPeer::IDSERVICE => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDREPORT' => 0, 'TIMESTAMP' => 1, 'ERRORMESSAGE' => 2, 'CHECKTYPE' => 3, 'IDSOURCE' => 4, 'IDSERVICE' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('IdReport' => 0, 'Timestamp' => 1, 'ErrorMessage' => 2, 'CheckType' => 3, 'IdSource' => 4, 'IdService' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Idreport' => 0, 'Timestamp' => 1, 'Errormessage' => 2, 'Checktype' => 3, 'Source' => 4, 'Idservice' => 5, 'Hidden' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idreport' => 0, 'timestamp' => 1, 'errormessage' => 2, 'checktype' => 3, 'source' => 4, 'idservice' => 5, 'hidden' => 6, ),
+        BasePeer::TYPE_COLNAME => array (ReportPeer::IDREPORT => 0, ReportPeer::TIMESTAMP => 1, ReportPeer::ERRORMESSAGE => 2, ReportPeer::CHECKTYPE => 3, ReportPeer::SOURCE => 4, ReportPeer::IDSERVICE => 5, ReportPeer::HIDDEN => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDREPORT' => 0, 'TIMESTAMP' => 1, 'ERRORMESSAGE' => 2, 'CHECKTYPE' => 3, 'SOURCE' => 4, 'IDSERVICE' => 5, 'HIDDEN' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('IdReport' => 0, 'Timestamp' => 1, 'ErrorMessage' => 2, 'CheckType' => 3, 'Source' => 4, 'IdService' => 5, 'Hidden' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -167,15 +170,17 @@ abstract class BaseReportPeer
             $criteria->addSelectColumn(ReportPeer::TIMESTAMP);
             $criteria->addSelectColumn(ReportPeer::ERRORMESSAGE);
             $criteria->addSelectColumn(ReportPeer::CHECKTYPE);
-            $criteria->addSelectColumn(ReportPeer::IDSOURCE);
+            $criteria->addSelectColumn(ReportPeer::SOURCE);
             $criteria->addSelectColumn(ReportPeer::IDSERVICE);
+            $criteria->addSelectColumn(ReportPeer::HIDDEN);
         } else {
             $criteria->addSelectColumn($alias . '.IdReport');
             $criteria->addSelectColumn($alias . '.Timestamp');
             $criteria->addSelectColumn($alias . '.ErrorMessage');
             $criteria->addSelectColumn($alias . '.CheckType');
-            $criteria->addSelectColumn($alias . '.IdSource');
+            $criteria->addSelectColumn($alias . '.Source');
             $criteria->addSelectColumn($alias . '.IdService');
+            $criteria->addSelectColumn($alias . '.Hidden');
         }
     }
 
@@ -483,57 +488,6 @@ abstract class BaseReportPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related Source table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinSource(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ReportPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            ReportPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-        // Set the correct dbName
-        $criteria->setDbName(ReportPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(ReportPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(ReportPeer::IDSOURCE, SourcePeer::IDSOURCE, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
      * Returns the number of rows matching criteria, joining the related Service table
      *
      * @param      Criteria $criteria
@@ -581,73 +535,6 @@ abstract class BaseReportPeer
         $stmt->closeCursor();
 
         return $count;
-    }
-
-
-    /**
-     * Selects a collection of Report objects pre-filled with their Source objects.
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Report objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinSource(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ReportPeer::DATABASE_NAME);
-        }
-
-        ReportPeer::addSelectColumns($criteria);
-        $startcol = ReportPeer::NUM_HYDRATE_COLUMNS;
-        SourcePeer::addSelectColumns($criteria);
-
-        $criteria->addJoin(ReportPeer::IDSOURCE, SourcePeer::IDSOURCE, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ReportPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ReportPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-
-                $cls = ReportPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                ReportPeer::addInstanceToPool($obj1, $key1);
-            } // if $obj1 already loaded
-
-            $key2 = SourcePeer::getPrimaryKeyHashFromRow($row, $startcol);
-            if ($key2 !== null) {
-                $obj2 = SourcePeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = SourcePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol);
-                    SourcePeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 already loaded
-
-                // Add the $obj1 (Report) to $obj2 (Source)
-                $obj2->addReport($obj1);
-
-            } // if joined row was not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
     }
 
 
@@ -754,8 +641,6 @@ abstract class BaseReportPeer
             $con = Propel::getConnection(ReportPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(ReportPeer::IDSOURCE, SourcePeer::IDSOURCE, $join_behavior);
-
         $criteria->addJoin(ReportPeer::IDSERVICE, ServicePeer::IDSERVICE, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -792,209 +677,11 @@ abstract class BaseReportPeer
         ReportPeer::addSelectColumns($criteria);
         $startcol2 = ReportPeer::NUM_HYDRATE_COLUMNS;
 
-        SourcePeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + SourcePeer::NUM_HYDRATE_COLUMNS;
-
-        ServicePeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + ServicePeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(ReportPeer::IDSOURCE, SourcePeer::IDSOURCE, $join_behavior);
-
-        $criteria->addJoin(ReportPeer::IDSERVICE, ServicePeer::IDSERVICE, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ReportPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ReportPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = ReportPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                ReportPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-            // Add objects for joined Source rows
-
-            $key2 = SourcePeer::getPrimaryKeyHashFromRow($row, $startcol2);
-            if ($key2 !== null) {
-                $obj2 = SourcePeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = SourcePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    SourcePeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 loaded
-
-                // Add the $obj1 (Report) to the collection in $obj2 (Source)
-                $obj2->addReport($obj1);
-            } // if joined row not null
-
-            // Add objects for joined Service rows
-
-            $key3 = ServicePeer::getPrimaryKeyHashFromRow($row, $startcol3);
-            if ($key3 !== null) {
-                $obj3 = ServicePeer::getInstanceFromPool($key3);
-                if (!$obj3) {
-
-                    $cls = ServicePeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    ServicePeer::addInstanceToPool($obj3, $key3);
-                } // if obj3 loaded
-
-                // Add the $obj1 (Report) to the collection in $obj3 (Service)
-                $obj3->addReport($obj1);
-            } // if joined row not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related Source table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptSource(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ReportPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            ReportPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(ReportPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(ReportPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(ReportPeer::IDSERVICE, ServicePeer::IDSERVICE, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related Service table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptService(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ReportPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            ReportPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(ReportPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(ReportPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(ReportPeer::IDSOURCE, SourcePeer::IDSOURCE, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Selects a collection of Report objects pre-filled with all related objects except Source.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Report objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptSource(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ReportPeer::DATABASE_NAME);
-        }
-
-        ReportPeer::addSelectColumns($criteria);
-        $startcol2 = ReportPeer::NUM_HYDRATE_COLUMNS;
-
         ServicePeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + ServicePeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(ReportPeer::IDSERVICE, ServicePeer::IDSERVICE, $join_behavior);
 
-
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
@@ -1012,98 +699,23 @@ abstract class BaseReportPeer
                 ReportPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-                // Add objects for joined Service rows
+            // Add objects for joined Service rows
 
-                $key2 = ServicePeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = ServicePeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
+            $key2 = ServicePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            if ($key2 !== null) {
+                $obj2 = ServicePeer::getInstanceFromPool($key2);
+                if (!$obj2) {
 
-                        $cls = ServicePeer::getOMClass();
+                    $cls = ServicePeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
                     ServicePeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
+                } // if obj2 loaded
 
                 // Add the $obj1 (Report) to the collection in $obj2 (Service)
                 $obj2->addReport($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of Report objects pre-filled with all related objects except Service.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Report objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptService(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ReportPeer::DATABASE_NAME);
-        }
-
-        ReportPeer::addSelectColumns($criteria);
-        $startcol2 = ReportPeer::NUM_HYDRATE_COLUMNS;
-
-        SourcePeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + SourcePeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(ReportPeer::IDSOURCE, SourcePeer::IDSOURCE, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ReportPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ReportPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = ReportPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                ReportPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Source rows
-
-                $key2 = SourcePeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = SourcePeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = SourcePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    SourcePeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (Report) to the collection in $obj2 (Source)
-                $obj2->addReport($obj1);
-
-            } // if joined row is not null
+            } // if joined row not null
 
             $results[] = $obj1;
         }

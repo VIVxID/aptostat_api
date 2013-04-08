@@ -396,7 +396,7 @@ abstract class BaseSourcePeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return (int) $row[$startcol];
+        return (string) $row[$startcol];
     }
 
     /**
@@ -511,10 +511,6 @@ abstract class BaseSourcePeer
             $criteria = clone $values; // rename for clarity
         } else {
             $criteria = $values->buildCriteria(); // build Criteria from Source object
-        }
-
-        if ($criteria->containsKey(SourcePeer::IDSOURCE) && $criteria->keyContainsValue(SourcePeer::IDSOURCE) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.SourcePeer::IDSOURCE.')');
         }
 
 
@@ -705,7 +701,7 @@ abstract class BaseSourcePeer
     /**
      * Retrieve a single object by pkey.
      *
-     * @param      int $pk the primary key.
+     * @param      string $pk the primary key.
      * @param      PropelPDO $con the connection to use
      * @return Source
      */

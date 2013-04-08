@@ -15,24 +15,11 @@ CREATE TABLE `Report`
     `Timestamp` DATETIME NOT NULL,
     `ErrorMessage` VARCHAR(255) NOT NULL,
     `CheckType` VARCHAR(40) NOT NULL,
-    `IdSource` INTEGER NOT NULL,
+    `Source` VARCHAR(255) NOT NULL,
     `IdService` INTEGER NOT NULL,
+    `Hidden` TINYINT(1) NOT NULL,
     PRIMARY KEY (`IdReport`),
-    INDEX `Report_FI_1` (`IdSource`),
-    INDEX `Report_FI_2` (`IdService`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- Source
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `Source`;
-
-CREATE TABLE `Source`
-(
-    `IdSource` INTEGER NOT NULL AUTO_INCREMENT,
-    `Name` VARCHAR(20) NOT NULL,
-    PRIMARY KEY (`IdSource`)
+    INDEX `Report_FI_1` (`IdService`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
@@ -58,6 +45,7 @@ DROP TABLE IF EXISTS `Incident`;
 CREATE TABLE `Incident`
 (
     `IdIncident` INTEGER NOT NULL AUTO_INCREMENT,
+    `Title` VARCHAR(255) NOT NULL,
     `Timestamp` DATETIME NOT NULL,
     PRIMARY KEY (`IdIncident`)
 ) ENGINE=MyISAM;
@@ -72,27 +60,13 @@ CREATE TABLE `Message`
 (
     `IdMessage` INTEGER NOT NULL AUTO_INCREMENT,
     `IdIncident` INTEGER NOT NULL,
-    `IdFlag` INTEGER NOT NULL,
+    `Flag` VARCHAR(255) NOT NULL,
     `Timestamp` DATETIME NOT NULL,
     `Text` VARCHAR(255) NOT NULL,
     `Author` VARCHAR(30) NOT NULL,
-    `Visible` TINYINT(1) NOT NULL,
+    `Hidden` TINYINT(1) NOT NULL,
     PRIMARY KEY (`IdMessage`),
-    INDEX `Message_FI_1` (`IdIncident`),
-    INDEX `Message_FI_2` (`IdFlag`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- Flag
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `Flag`;
-
-CREATE TABLE `Flag`
-(
-    `IdFlag` INTEGER NOT NULL AUTO_INCREMENT,
-    `Name` VARCHAR(20) NOT NULL,
-    PRIMARY KEY (`IdFlag`)
+    INDEX `Message_FI_1` (`IdIncident`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
@@ -105,9 +79,8 @@ CREATE TABLE `ReportStatus`
 (
     `IdReport` INTEGER NOT NULL,
     `Timestamp` DATETIME NOT NULL,
-    `IdFlag` INTEGER NOT NULL,
-    PRIMARY KEY (`IdReport`,`Timestamp`),
-    INDEX `ReportStatus_FI_2` (`IdFlag`)
+    `Flag` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`IdReport`,`Timestamp`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------

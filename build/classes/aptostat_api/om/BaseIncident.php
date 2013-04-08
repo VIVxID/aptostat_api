@@ -36,6 +36,12 @@ abstract class BaseIncident extends BaseObject implements Persistent
     protected $idincident;
 
     /**
+     * The value for the title field.
+     * @var        string
+     */
+    protected $title;
+
+    /**
      * The value for the timestamp field.
      * @var        string
      */
@@ -107,6 +113,16 @@ abstract class BaseIncident extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [title] column value.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
      * Get the [optionally formatted] temporal [timestamp] column value.
      *
      *
@@ -168,6 +184,27 @@ abstract class BaseIncident extends BaseObject implements Persistent
     } // setIdincident()
 
     /**
+     * Set the value of [title] column.
+     *
+     * @param string $v new value
+     * @return Incident The current object (for fluent API support)
+     */
+    public function setTitle($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->title !== $v) {
+            $this->title = $v;
+            $this->modifiedColumns[] = IncidentPeer::TITLE;
+        }
+
+
+        return $this;
+    } // setTitle()
+
+    /**
      * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -223,7 +260,8 @@ abstract class BaseIncident extends BaseObject implements Persistent
         try {
 
             $this->idincident = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->timestamp = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->timestamp = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -232,7 +270,7 @@ abstract class BaseIncident extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 2; // 2 = IncidentPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = IncidentPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Incident object", $e);
@@ -512,6 +550,9 @@ abstract class BaseIncident extends BaseObject implements Persistent
         if ($this->isColumnModified(IncidentPeer::IDINCIDENT)) {
             $modifiedColumns[':p' . $index++]  = '`IdIncident`';
         }
+        if ($this->isColumnModified(IncidentPeer::TITLE)) {
+            $modifiedColumns[':p' . $index++]  = '`Title`';
+        }
         if ($this->isColumnModified(IncidentPeer::TIMESTAMP)) {
             $modifiedColumns[':p' . $index++]  = '`Timestamp`';
         }
@@ -528,6 +569,9 @@ abstract class BaseIncident extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`IdIncident`':
                         $stmt->bindValue($identifier, $this->idincident, PDO::PARAM_INT);
+                        break;
+                    case '`Title`':
+                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
                     case '`Timestamp`':
                         $stmt->bindValue($identifier, $this->timestamp, PDO::PARAM_STR);
@@ -686,6 +730,9 @@ abstract class BaseIncident extends BaseObject implements Persistent
                 return $this->getIdincident();
                 break;
             case 1:
+                return $this->getTitle();
+                break;
+            case 2:
                 return $this->getTimestamp();
                 break;
             default:
@@ -718,7 +765,8 @@ abstract class BaseIncident extends BaseObject implements Persistent
         $keys = IncidentPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getIdincident(),
-            $keys[1] => $this->getTimestamp(),
+            $keys[1] => $this->getTitle(),
+            $keys[2] => $this->getTimestamp(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->collMessages) {
@@ -765,6 +813,9 @@ abstract class BaseIncident extends BaseObject implements Persistent
                 $this->setIdincident($value);
                 break;
             case 1:
+                $this->setTitle($value);
+                break;
+            case 2:
                 $this->setTimestamp($value);
                 break;
         } // switch()
@@ -792,7 +843,8 @@ abstract class BaseIncident extends BaseObject implements Persistent
         $keys = IncidentPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setIdincident($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setTimestamp($arr[$keys[1]]);
+        if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setTimestamp($arr[$keys[2]]);
     }
 
     /**
@@ -805,6 +857,7 @@ abstract class BaseIncident extends BaseObject implements Persistent
         $criteria = new Criteria(IncidentPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(IncidentPeer::IDINCIDENT)) $criteria->add(IncidentPeer::IDINCIDENT, $this->idincident);
+        if ($this->isColumnModified(IncidentPeer::TITLE)) $criteria->add(IncidentPeer::TITLE, $this->title);
         if ($this->isColumnModified(IncidentPeer::TIMESTAMP)) $criteria->add(IncidentPeer::TIMESTAMP, $this->timestamp);
 
         return $criteria;
@@ -869,6 +922,7 @@ abstract class BaseIncident extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setTitle($this->getTitle());
         $copyObj->setTimestamp($this->getTimestamp());
 
         if ($deepCopy && !$this->startCopy) {
@@ -1175,31 +1229,6 @@ abstract class BaseIncident extends BaseObject implements Persistent
         }
 
         return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Incident is new, it will return
-     * an empty collection; or if this Incident has previously
-     * been saved, it will retrieve related Messages from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Incident.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Message[] List of Message objects
-     */
-    public function getMessagesJoinFlag($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = MessageQuery::create(null, $criteria);
-        $query->joinWith('Flag', $join_behavior);
-
-        return $this->getMessages($query, $con);
     }
 
     /**
@@ -1628,6 +1657,7 @@ abstract class BaseIncident extends BaseObject implements Persistent
     public function clear()
     {
         $this->idincident = null;
+        $this->title = null;
         $this->timestamp = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

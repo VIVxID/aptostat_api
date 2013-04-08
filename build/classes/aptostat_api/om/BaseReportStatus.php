@@ -42,20 +42,15 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
     protected $timestamp;
 
     /**
-     * The value for the idflag field.
-     * @var        int
+     * The value for the flag field.
+     * @var        string
      */
-    protected $idflag;
+    protected $flag;
 
     /**
      * @var        Report
      */
     protected $aReport;
-
-    /**
-     * @var        Flag
-     */
-    protected $aFlag;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -128,13 +123,13 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [idflag] column value.
+     * Get the [flag] column value.
      *
-     * @return int
+     * @return string
      */
-    public function getIdflag()
+    public function getFlag()
     {
-        return $this->idflag;
+        return $this->flag;
     }
 
     /**
@@ -186,29 +181,25 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
     } // setTimestamp()
 
     /**
-     * Set the value of [idflag] column.
+     * Set the value of [flag] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return ReportStatus The current object (for fluent API support)
      */
-    public function setIdflag($v)
+    public function setFlag($v)
     {
         if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
-        if ($this->idflag !== $v) {
-            $this->idflag = $v;
-            $this->modifiedColumns[] = ReportStatusPeer::IDFLAG;
-        }
-
-        if ($this->aFlag !== null && $this->aFlag->getIdflag() !== $v) {
-            $this->aFlag = null;
+        if ($this->flag !== $v) {
+            $this->flag = $v;
+            $this->modifiedColumns[] = ReportStatusPeer::FLAG;
         }
 
 
         return $this;
-    } // setIdflag()
+    } // setFlag()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -244,7 +235,7 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
 
             $this->idreport = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->timestamp = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->idflag = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->flag = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -278,9 +269,6 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
 
         if ($this->aReport !== null && $this->idreport !== $this->aReport->getIdreport()) {
             $this->aReport = null;
-        }
-        if ($this->aFlag !== null && $this->idflag !== $this->aFlag->getIdflag()) {
-            $this->aFlag = null;
         }
     } // ensureConsistency
 
@@ -322,7 +310,6 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aReport = null;
-            $this->aFlag = null;
         } // if (deep)
     }
 
@@ -448,13 +435,6 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
                 $this->setReport($this->aReport);
             }
 
-            if ($this->aFlag !== null) {
-                if ($this->aFlag->isModified() || $this->aFlag->isNew()) {
-                    $affectedRows += $this->aFlag->save($con);
-                }
-                $this->setFlag($this->aFlag);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -494,8 +474,8 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
         if ($this->isColumnModified(ReportStatusPeer::TIMESTAMP)) {
             $modifiedColumns[':p' . $index++]  = '`Timestamp`';
         }
-        if ($this->isColumnModified(ReportStatusPeer::IDFLAG)) {
-            $modifiedColumns[':p' . $index++]  = '`IdFlag`';
+        if ($this->isColumnModified(ReportStatusPeer::FLAG)) {
+            $modifiedColumns[':p' . $index++]  = '`Flag`';
         }
 
         $sql = sprintf(
@@ -514,8 +494,8 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
                     case '`Timestamp`':
                         $stmt->bindValue($identifier, $this->timestamp, PDO::PARAM_STR);
                         break;
-                    case '`IdFlag`':
-                        $stmt->bindValue($identifier, $this->idflag, PDO::PARAM_INT);
+                    case '`Flag`':
+                        $stmt->bindValue($identifier, $this->flag, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -615,12 +595,6 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->aFlag !== null) {
-                if (!$this->aFlag->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aFlag->getValidationFailures());
-                }
-            }
-
 
             if (($retval = ReportStatusPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
@@ -669,7 +643,7 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
                 return $this->getTimestamp();
                 break;
             case 2:
-                return $this->getIdflag();
+                return $this->getFlag();
                 break;
             default:
                 return null;
@@ -702,14 +676,11 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getIdreport(),
             $keys[1] => $this->getTimestamp(),
-            $keys[2] => $this->getIdflag(),
+            $keys[2] => $this->getFlag(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aReport) {
                 $result['Report'] = $this->aReport->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aFlag) {
-                $result['Flag'] = $this->aFlag->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -752,7 +723,7 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
                 $this->setTimestamp($value);
                 break;
             case 2:
-                $this->setIdflag($value);
+                $this->setFlag($value);
                 break;
         } // switch()
     }
@@ -780,7 +751,7 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setIdreport($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setTimestamp($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setIdflag($arr[$keys[2]]);
+        if (array_key_exists($keys[2], $arr)) $this->setFlag($arr[$keys[2]]);
     }
 
     /**
@@ -794,7 +765,7 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
 
         if ($this->isColumnModified(ReportStatusPeer::IDREPORT)) $criteria->add(ReportStatusPeer::IDREPORT, $this->idreport);
         if ($this->isColumnModified(ReportStatusPeer::TIMESTAMP)) $criteria->add(ReportStatusPeer::TIMESTAMP, $this->timestamp);
-        if ($this->isColumnModified(ReportStatusPeer::IDFLAG)) $criteria->add(ReportStatusPeer::IDFLAG, $this->idflag);
+        if ($this->isColumnModified(ReportStatusPeer::FLAG)) $criteria->add(ReportStatusPeer::FLAG, $this->flag);
 
         return $criteria;
     }
@@ -867,7 +838,7 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
     {
         $copyObj->setIdreport($this->getIdreport());
         $copyObj->setTimestamp($this->getTimestamp());
-        $copyObj->setIdflag($this->getIdflag());
+        $copyObj->setFlag($this->getFlag());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -978,65 +949,13 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
     }
 
     /**
-     * Declares an association between this object and a Flag object.
-     *
-     * @param             Flag $v
-     * @return ReportStatus The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setFlag(Flag $v = null)
-    {
-        if ($v === null) {
-            $this->setIdflag(NULL);
-        } else {
-            $this->setIdflag($v->getIdflag());
-        }
-
-        $this->aFlag = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Flag object, it will not be re-added.
-        if ($v !== null) {
-            $v->addReportStatus($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Flag object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Flag The associated Flag object.
-     * @throws PropelException
-     */
-    public function getFlag(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aFlag === null && ($this->idflag !== null) && $doQuery) {
-            $this->aFlag = FlagQuery::create()->findPk($this->idflag, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aFlag->addReportStatuss($this);
-             */
-        }
-
-        return $this->aFlag;
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->idreport = null;
         $this->timestamp = null;
-        $this->idflag = null;
+        $this->flag = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1062,15 +981,11 @@ abstract class BaseReportStatus extends BaseObject implements Persistent
             if ($this->aReport instanceof Persistent) {
               $this->aReport->clearAllReferences($deep);
             }
-            if ($this->aFlag instanceof Persistent) {
-              $this->aFlag->clearAllReferences($deep);
-            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         $this->aReport = null;
-        $this->aFlag = null;
     }
 
     /**

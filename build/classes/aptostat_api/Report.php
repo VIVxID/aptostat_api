@@ -15,17 +15,4 @@
  */
 class Report extends BaseReport
 {
-    public function toPrettyArray()
-    {
-        return array(
-            'idReport' => $this->getIdreport(),
-            'timestamp' => $this->getTimestamp(),
-            'errorMessage' => $this->getErrormessage(),
-            'checkType' => $this->getChecktype(),
-            'sourceName' => $this->getSourceName(),
-            'hostName' => $this->getServiceName(),
-            'status' => $this->getFlagName(),
-            'lastUpdate' => $this->getFlagTime()
-        );
-    }
 }

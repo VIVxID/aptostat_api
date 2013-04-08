@@ -38,8 +38,8 @@ abstract class BaseMessagePeer
     /** the column name for the IdIncident field */
     const IDINCIDENT = 'Message.IdIncident';
 
-    /** the column name for the IdFlag field */
-    const IDFLAG = 'Message.IdFlag';
+    /** the column name for the Flag field */
+    const FLAG = 'Message.Flag';
 
     /** the column name for the Timestamp field */
     const TIMESTAMP = 'Message.Timestamp';
@@ -50,8 +50,8 @@ abstract class BaseMessagePeer
     /** the column name for the Author field */
     const AUTHOR = 'Message.Author';
 
-    /** the column name for the Visible field */
-    const VISIBLE = 'Message.Visible';
+    /** the column name for the Hidden field */
+    const HIDDEN = 'Message.Hidden';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -72,11 +72,11 @@ abstract class BaseMessagePeer
      * e.g. MessagePeer::$fieldNames[MessagePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idmessage', 'Idincident', 'Idflag', 'Timestamp', 'Text', 'Author', 'Visible', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idmessage', 'idincident', 'idflag', 'timestamp', 'text', 'author', 'visible', ),
-        BasePeer::TYPE_COLNAME => array (MessagePeer::IDMESSAGE, MessagePeer::IDINCIDENT, MessagePeer::IDFLAG, MessagePeer::TIMESTAMP, MessagePeer::TEXT, MessagePeer::AUTHOR, MessagePeer::VISIBLE, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDMESSAGE', 'IDINCIDENT', 'IDFLAG', 'TIMESTAMP', 'TEXT', 'AUTHOR', 'VISIBLE', ),
-        BasePeer::TYPE_FIELDNAME => array ('IdMessage', 'IdIncident', 'IdFlag', 'Timestamp', 'Text', 'Author', 'Visible', ),
+        BasePeer::TYPE_PHPNAME => array ('Idmessage', 'Idincident', 'Flag', 'Timestamp', 'Text', 'Author', 'Hidden', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idmessage', 'idincident', 'flag', 'timestamp', 'text', 'author', 'hidden', ),
+        BasePeer::TYPE_COLNAME => array (MessagePeer::IDMESSAGE, MessagePeer::IDINCIDENT, MessagePeer::FLAG, MessagePeer::TIMESTAMP, MessagePeer::TEXT, MessagePeer::AUTHOR, MessagePeer::HIDDEN, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDMESSAGE', 'IDINCIDENT', 'FLAG', 'TIMESTAMP', 'TEXT', 'AUTHOR', 'HIDDEN', ),
+        BasePeer::TYPE_FIELDNAME => array ('IdMessage', 'IdIncident', 'Flag', 'Timestamp', 'Text', 'Author', 'Hidden', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -87,11 +87,11 @@ abstract class BaseMessagePeer
      * e.g. MessagePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idmessage' => 0, 'Idincident' => 1, 'Idflag' => 2, 'Timestamp' => 3, 'Text' => 4, 'Author' => 5, 'Visible' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idmessage' => 0, 'idincident' => 1, 'idflag' => 2, 'timestamp' => 3, 'text' => 4, 'author' => 5, 'visible' => 6, ),
-        BasePeer::TYPE_COLNAME => array (MessagePeer::IDMESSAGE => 0, MessagePeer::IDINCIDENT => 1, MessagePeer::IDFLAG => 2, MessagePeer::TIMESTAMP => 3, MessagePeer::TEXT => 4, MessagePeer::AUTHOR => 5, MessagePeer::VISIBLE => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDMESSAGE' => 0, 'IDINCIDENT' => 1, 'IDFLAG' => 2, 'TIMESTAMP' => 3, 'TEXT' => 4, 'AUTHOR' => 5, 'VISIBLE' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('IdMessage' => 0, 'IdIncident' => 1, 'IdFlag' => 2, 'Timestamp' => 3, 'Text' => 4, 'Author' => 5, 'Visible' => 6, ),
+        BasePeer::TYPE_PHPNAME => array ('Idmessage' => 0, 'Idincident' => 1, 'Flag' => 2, 'Timestamp' => 3, 'Text' => 4, 'Author' => 5, 'Hidden' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idmessage' => 0, 'idincident' => 1, 'flag' => 2, 'timestamp' => 3, 'text' => 4, 'author' => 5, 'hidden' => 6, ),
+        BasePeer::TYPE_COLNAME => array (MessagePeer::IDMESSAGE => 0, MessagePeer::IDINCIDENT => 1, MessagePeer::FLAG => 2, MessagePeer::TIMESTAMP => 3, MessagePeer::TEXT => 4, MessagePeer::AUTHOR => 5, MessagePeer::HIDDEN => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDMESSAGE' => 0, 'IDINCIDENT' => 1, 'FLAG' => 2, 'TIMESTAMP' => 3, 'TEXT' => 4, 'AUTHOR' => 5, 'HIDDEN' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('IdMessage' => 0, 'IdIncident' => 1, 'Flag' => 2, 'Timestamp' => 3, 'Text' => 4, 'Author' => 5, 'Hidden' => 6, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -168,19 +168,19 @@ abstract class BaseMessagePeer
         if (null === $alias) {
             $criteria->addSelectColumn(MessagePeer::IDMESSAGE);
             $criteria->addSelectColumn(MessagePeer::IDINCIDENT);
-            $criteria->addSelectColumn(MessagePeer::IDFLAG);
+            $criteria->addSelectColumn(MessagePeer::FLAG);
             $criteria->addSelectColumn(MessagePeer::TIMESTAMP);
             $criteria->addSelectColumn(MessagePeer::TEXT);
             $criteria->addSelectColumn(MessagePeer::AUTHOR);
-            $criteria->addSelectColumn(MessagePeer::VISIBLE);
+            $criteria->addSelectColumn(MessagePeer::HIDDEN);
         } else {
             $criteria->addSelectColumn($alias . '.IdMessage');
             $criteria->addSelectColumn($alias . '.IdIncident');
-            $criteria->addSelectColumn($alias . '.IdFlag');
+            $criteria->addSelectColumn($alias . '.Flag');
             $criteria->addSelectColumn($alias . '.Timestamp');
             $criteria->addSelectColumn($alias . '.Text');
             $criteria->addSelectColumn($alias . '.Author');
-            $criteria->addSelectColumn($alias . '.Visible');
+            $criteria->addSelectColumn($alias . '.Hidden');
         }
     }
 
@@ -536,57 +536,6 @@ abstract class BaseMessagePeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related Flag table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinFlag(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(MessagePeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            MessagePeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-        // Set the correct dbName
-        $criteria->setDbName(MessagePeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(MessagePeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(MessagePeer::IDFLAG, FlagPeer::IDFLAG, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
      * Selects a collection of Message objects pre-filled with their Incident objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -654,73 +603,6 @@ abstract class BaseMessagePeer
 
 
     /**
-     * Selects a collection of Message objects pre-filled with their Flag objects.
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Message objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinFlag(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(MessagePeer::DATABASE_NAME);
-        }
-
-        MessagePeer::addSelectColumns($criteria);
-        $startcol = MessagePeer::NUM_HYDRATE_COLUMNS;
-        FlagPeer::addSelectColumns($criteria);
-
-        $criteria->addJoin(MessagePeer::IDFLAG, FlagPeer::IDFLAG, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = MessagePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = MessagePeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-
-                $cls = MessagePeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                MessagePeer::addInstanceToPool($obj1, $key1);
-            } // if $obj1 already loaded
-
-            $key2 = FlagPeer::getPrimaryKeyHashFromRow($row, $startcol);
-            if ($key2 !== null) {
-                $obj2 = FlagPeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = FlagPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol);
-                    FlagPeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 already loaded
-
-                // Add the $obj1 (Message) to $obj2 (Flag)
-                $obj2->addMessage($obj1);
-
-            } // if joined row was not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
      * Returns the number of rows matching criteria, joining all related tables
      *
      * @param      Criteria $criteria
@@ -757,8 +639,6 @@ abstract class BaseMessagePeer
         }
 
         $criteria->addJoin(MessagePeer::IDINCIDENT, IncidentPeer::IDINCIDENT, $join_behavior);
-
-        $criteria->addJoin(MessagePeer::IDFLAG, FlagPeer::IDFLAG, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -797,12 +677,7 @@ abstract class BaseMessagePeer
         IncidentPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + IncidentPeer::NUM_HYDRATE_COLUMNS;
 
-        FlagPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + FlagPeer::NUM_HYDRATE_COLUMNS;
-
         $criteria->addJoin(MessagePeer::IDINCIDENT, IncidentPeer::IDINCIDENT, $join_behavior);
-
-        $criteria->addJoin(MessagePeer::IDFLAG, FlagPeer::IDFLAG, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -838,274 +713,6 @@ abstract class BaseMessagePeer
                 // Add the $obj1 (Message) to the collection in $obj2 (Incident)
                 $obj2->addMessage($obj1);
             } // if joined row not null
-
-            // Add objects for joined Flag rows
-
-            $key3 = FlagPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-            if ($key3 !== null) {
-                $obj3 = FlagPeer::getInstanceFromPool($key3);
-                if (!$obj3) {
-
-                    $cls = FlagPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    FlagPeer::addInstanceToPool($obj3, $key3);
-                } // if obj3 loaded
-
-                // Add the $obj1 (Message) to the collection in $obj3 (Flag)
-                $obj3->addMessage($obj1);
-            } // if joined row not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related Incident table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptIncident(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(MessagePeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            MessagePeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(MessagePeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(MessagePeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(MessagePeer::IDFLAG, FlagPeer::IDFLAG, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related Flag table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptFlag(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(MessagePeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            MessagePeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(MessagePeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(MessagePeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(MessagePeer::IDINCIDENT, IncidentPeer::IDINCIDENT, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Selects a collection of Message objects pre-filled with all related objects except Incident.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Message objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptIncident(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(MessagePeer::DATABASE_NAME);
-        }
-
-        MessagePeer::addSelectColumns($criteria);
-        $startcol2 = MessagePeer::NUM_HYDRATE_COLUMNS;
-
-        FlagPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + FlagPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(MessagePeer::IDFLAG, FlagPeer::IDFLAG, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = MessagePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = MessagePeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = MessagePeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                MessagePeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Flag rows
-
-                $key2 = FlagPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = FlagPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = FlagPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    FlagPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (Message) to the collection in $obj2 (Flag)
-                $obj2->addMessage($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of Message objects pre-filled with all related objects except Flag.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Message objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptFlag(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(MessagePeer::DATABASE_NAME);
-        }
-
-        MessagePeer::addSelectColumns($criteria);
-        $startcol2 = MessagePeer::NUM_HYDRATE_COLUMNS;
-
-        IncidentPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + IncidentPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(MessagePeer::IDINCIDENT, IncidentPeer::IDINCIDENT, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = MessagePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = MessagePeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = MessagePeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                MessagePeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Incident rows
-
-                $key2 = IncidentPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = IncidentPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = IncidentPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    IncidentPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (Message) to the collection in $obj2 (Incident)
-                $obj2->addMessage($obj1);
-
-            } // if joined row is not null
 
             $results[] = $obj1;
         }

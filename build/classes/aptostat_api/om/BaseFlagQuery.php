@@ -29,7 +29,7 @@
  *
  * @method Flag findOneByName(string $Name) Return the first Flag filtered by the Name column
  *
- * @method array findByIdflag(int $IdFlag) Return Flag objects filtered by the IdFlag column
+ * @method array findByIdflag(string $IdFlag) Return Flag objects filtered by the IdFlag column
  * @method array findByName(string $Name) Return Flag objects filtered by the Name column
  *
  * @package    propel.generator.aptostat_api.om
@@ -137,7 +137,7 @@ abstract class BaseFlagQuery extends ModelCriteria
         $sql = 'SELECT `IdFlag`, `Name` FROM `Flag` WHERE `IdFlag` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -228,37 +228,24 @@ abstract class BaseFlagQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByIdflag(1234); // WHERE IdFlag = 1234
-     * $query->filterByIdflag(array(12, 34)); // WHERE IdFlag IN (12, 34)
-     * $query->filterByIdflag(array('min' => 12)); // WHERE IdFlag >= 12
-     * $query->filterByIdflag(array('max' => 12)); // WHERE IdFlag <= 12
+     * $query->filterByIdflag('fooValue');   // WHERE IdFlag = 'fooValue'
+     * $query->filterByIdflag('%fooValue%'); // WHERE IdFlag LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $idflag The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $idflag The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return FlagQuery The current query, for fluid interface
      */
     public function filterByIdflag($idflag = null, $comparison = null)
     {
-        if (is_array($idflag)) {
-            $useMinMax = false;
-            if (isset($idflag['min'])) {
-                $this->addUsingAlias(FlagPeer::IDFLAG, $idflag['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($idflag['max'])) {
-                $this->addUsingAlias(FlagPeer::IDFLAG, $idflag['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($idflag)) {
                 $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $idflag)) {
+                $idflag = str_replace('*', '%', $idflag);
+                $comparison = Criteria::LIKE;
             }
         }
 

@@ -40,7 +40,7 @@ class ReportStatusTableMap extends TableMap
         // columns
         $this->addForeignPrimaryKey('IdReport', 'Idreport', 'INTEGER' , 'Report', 'IdReport', true, null, null);
         $this->addPrimaryKey('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, null);
-        $this->addForeignKey('IdFlag', 'Idflag', 'INTEGER', 'Flag', 'IdFlag', true, null, null);
+        $this->addColumn('Flag', 'Flag', 'VARCHAR', true, 255, null);
         // validators
     } // initialize()
 
@@ -50,7 +50,6 @@ class ReportStatusTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Report', 'Report', RelationMap::MANY_TO_ONE, array('IdReport' => 'IdReport', ), null, null);
-        $this->addRelation('Flag', 'Flag', RelationMap::MANY_TO_ONE, array('IdFlag' => 'IdFlag', ), null, null);
     } // buildRelations()
 
 } // ReportStatusTableMap

@@ -6,100 +6,169 @@ namespace aptostatApi\Service;
 
 class ReportService
 {
+    /**
+     * @param $limit
+     * @param $offset
+     * @return array
+     * @throws \Exception
+     */
+    public function getList($limit, $offset)
+    {
+        $list = \ReportQuery::create()
+            ->withAllReportFields()
+            ->orderByTimestamp('desc')
+            ->limit($limit)
+            ->offset($offset)
+            ->find();
+
+        if ($list->isEmpty()) {
+            throw new \Exception('We could not find any reports', 404);
+        }
+
+        return $this->formatListResult($list);
+    }
+
+    /**
+     * @param $id
+     * @return array
+     * @throws \Exception
+     */
     public function getReportById($id)
     {
-        // Check if id is a number
         if (!preg_match('/^\d+$/',$id)) {
-            throw new \InvalidArgumentException(sprintf('Id should be a number, %s given', $id), 400);
+           throw new \Exception(sprintf('Id should be a number, %s given', $id), 400);
         }
 
-        // Run queries
-        /** @var $report \Report */
         $report = \ReportQuery::create()
-            ->withNewestReportStatus($id)
+            ->filterByIdreport($id)
+            ->withAllReportFields()
             ->findOne();
 
-        $statusQuery = \ReportStatusQuery::create()
-            ->filterByIdReport($id)
-            ->join('ReportStatus.Flag')
-            ->withColumn('Flag.Name', 'FlagName')
-            ->find();
-
-        // Check if query return any results
         if ($report == null) {
-            throw new Exception\NotFoundException('No report found with id ' . $id);
+            throw new \Exception(sprintf('No report found with id %s', $id), 400);
         }
 
-        $reportAsArray = $report->toPrettyArray();
-
-        // Store status updates history
-        foreach ($statusQuery as $state) {
-            $reportAsArray['updates'][] = array(
-                'status' => $state->getFlagName(),
-                'timestamp' => $state->getTimestamp()
-            );
-        }
-
-        return $reportAsArray;
-    }
-
-    public function getList()
-    {
-        $queryNonInc = \ReportQuery::create()
-            ->notPartOfAnyIncidents()
+        // Fetch history
+        $history = \ReportStatusQuery::create()
+            ->filterByIdReport($id)
+            ->orderByTimestamp()
             ->find();
 
-        $queryInc = \IncidentReportQuery::create()
-            ->partOfAnIncident()
-            ->find();
-
-        return $this->formatResult($queryInc, $queryNonInc);
+        return $this->formatSingleResult($report, $history);
     }
 
-    private function formatResult($queryInc, $queryNonInc)
+    /**
+     * @param $reportId
+     * @param $paramBag
+     * @throws \Exception
+     */
+    public function modify($reportId, $paramBag)
     {
-        if ($queryNonInc == null && $queryInc == null) {
-            return array();
-        }
+        $param = $paramBag->request->all();
 
-        $out = array();
-
-        // Format the result - Reports connected to an incident
-        /** @var $report \Report */
-        foreach ($queryInc as $report) {
-            $out['report']['incidents'][$report->getIdIncident()]['reports'][] = array(
-                'idReport' => $report->getIdReport(),
-                'timestamp' => $report->getTimestamp(),
-                'errorMessage' => $report->getErrorMessage(),
-                'checkType' => $report->getCheckType(),
-                'sourceName' => $report->getSourceName(),
-                'serviceName' => $report->getServiceName(),
-                'flag' => $report->getFlagName()
-            );
-
-            //Format data about messages and add it to the output.
-            $out['report']['incidents'][$report->getIdIncident()]['lastMessage'] = array(
-                'messageText' => $report->getMessageText(),
-                'messageDate' => $report->getMessageDate(),
-                'messageAuthor' => $report->getAuthor(),
-                'status' => $report->getFlagName()
-            );
-        }
-
-        // Format the result - Reports not connected to an incident
-        if ($queryNonInc != null) {
-            foreach ($queryNonInc as $report) {
-                $out['report']['groups'][$report->getServiceName()][] = array(
-                    'idReport' => $report->getIdReport(),
-                    'timestamp' => $report->getTimestamp(),
-                    'errorMessage' => $report->getErrorMessage(),
-                    'checkType' => $report->getCheckType(),
-                    'source' => $report->getSourceName(),
-                    'flag' => $report->getFlagName(),
-                );
+        // Fetch the parameters that are allowed
+        foreach ($param as $key => $value) {
+            if (method_exists($this,'modify' . $key)) {
+                $actions[$key] = $value;
             }
         }
 
-        return $out;
+        if (!isset($actions)) {
+            throw new \Exception('Could not process your request. Check your syntax', 400);
+        }
+
+        foreach ($actions as $action => $value) {
+            $methodName = 'modify' . ucfirst($action);
+            $this->$methodName($reportId, $value); // $this->modifySomething($value)
+        }
+    }
+
+    /**
+     * @param $list
+     * @return array
+     */
+    private function formatListResult($list)
+    {
+        $formattedList = array();
+
+        foreach ($list as $report) {
+            $formattedList['reports'][] = array(
+                'id' => $report->getIdReport(),
+                'createdTimestamp' => $report->getTimestamp(),
+                'lastUpdatedTimestamp' => $report->getFlagTime(),
+                'host' => $report->getServiceName(),
+                'errorMessage' => $report->getErrorMessage(),
+                'checkType' => $report->getCheckType(),
+                'source' => $report->getSource(),
+                'flag' => $report->getFlag(),
+                'hidden' => $report->getHidden(),
+            );
+        }
+
+        return $formattedList;
+    }
+
+    /**
+     * @param $report
+     * @param $history
+     * @return array
+     */
+    private function formatSingleResult($report, $history)
+    {
+        $singleResultAsArray = array(
+            'id' => $report->getIdReport(),
+            'createdTimestamp' => $report->getTimestamp(),
+            'lastUpdatedTimestamp' => $report->getFlagTime(),
+            'host' => $report->getServiceName(),
+            'errorMessage' => $report->getErrorMessage(),
+            'checkType' => $report->getCheckType(),
+            'source' => $report->getSource(),
+            'flag' => $report->getFlag(),
+            'hidden' => $report->getHidden(),
+        );
+
+        foreach ($history as $update) {
+            $singleResultAsArray['statusHistory'][] = array(
+                'status' => $update->getFlag(),
+                'updateTimestamp' => $update->getTimestamp()
+            );
+        }
+
+        return $singleResultAsArray;
+    }
+
+    /**
+     * @param $id
+     * @param $flag
+     * @throws \Exception
+     */
+    private function modifyFlag($id, $flag)
+    {
+        $allowedFlags = \aptostatApi\model\Flag::getFlags();
+
+        if (!in_array(strtoupper($flag), $allowedFlags)) {
+            throw new \Exception(sprintf('The value of the flag is not valid, %s given', $flag), 400);
+        }
+
+        $query = new \ReportStatus();
+
+        $query->setIdreport($id);
+        $query->setFlag(strtoupper($flag));
+        $query->setTimestamp(time());
+
+        $query->save();
+    }
+
+    /**
+     * @param $id
+     * @param $hidden
+     */
+    private function modifyHidden($id, $hidden)
+    {
+        $report = \ReportQuery::create()->findOneByIdreport($id);
+
+        $report->setHidden($hidden);
+
+        $report->save();
     }
 }

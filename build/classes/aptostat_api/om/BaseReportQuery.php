@@ -10,23 +10,21 @@
  * @method ReportQuery orderByTimestamp($order = Criteria::ASC) Order by the Timestamp column
  * @method ReportQuery orderByErrormessage($order = Criteria::ASC) Order by the ErrorMessage column
  * @method ReportQuery orderByChecktype($order = Criteria::ASC) Order by the CheckType column
- * @method ReportQuery orderByIdsource($order = Criteria::ASC) Order by the IdSource column
+ * @method ReportQuery orderBySource($order = Criteria::ASC) Order by the Source column
  * @method ReportQuery orderByIdservice($order = Criteria::ASC) Order by the IdService column
+ * @method ReportQuery orderByHidden($order = Criteria::ASC) Order by the Hidden column
  *
  * @method ReportQuery groupByIdreport() Group by the IdReport column
  * @method ReportQuery groupByTimestamp() Group by the Timestamp column
  * @method ReportQuery groupByErrormessage() Group by the ErrorMessage column
  * @method ReportQuery groupByChecktype() Group by the CheckType column
- * @method ReportQuery groupByIdsource() Group by the IdSource column
+ * @method ReportQuery groupBySource() Group by the Source column
  * @method ReportQuery groupByIdservice() Group by the IdService column
+ * @method ReportQuery groupByHidden() Group by the Hidden column
  *
  * @method ReportQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ReportQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method ReportQuery innerJoin($relation) Adds a INNER JOIN clause to the query
- *
- * @method ReportQuery leftJoinSource($relationAlias = null) Adds a LEFT JOIN clause to the query using the Source relation
- * @method ReportQuery rightJoinSource($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Source relation
- * @method ReportQuery innerJoinSource($relationAlias = null) Adds a INNER JOIN clause to the query using the Source relation
  *
  * @method ReportQuery leftJoinService($relationAlias = null) Adds a LEFT JOIN clause to the query using the Service relation
  * @method ReportQuery rightJoinService($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Service relation
@@ -46,15 +44,17 @@
  * @method Report findOneByTimestamp(string $Timestamp) Return the first Report filtered by the Timestamp column
  * @method Report findOneByErrormessage(string $ErrorMessage) Return the first Report filtered by the ErrorMessage column
  * @method Report findOneByChecktype(string $CheckType) Return the first Report filtered by the CheckType column
- * @method Report findOneByIdsource(int $IdSource) Return the first Report filtered by the IdSource column
+ * @method Report findOneBySource(string $Source) Return the first Report filtered by the Source column
  * @method Report findOneByIdservice(int $IdService) Return the first Report filtered by the IdService column
+ * @method Report findOneByHidden(boolean $Hidden) Return the first Report filtered by the Hidden column
  *
  * @method array findByIdreport(int $IdReport) Return Report objects filtered by the IdReport column
  * @method array findByTimestamp(string $Timestamp) Return Report objects filtered by the Timestamp column
  * @method array findByErrormessage(string $ErrorMessage) Return Report objects filtered by the ErrorMessage column
  * @method array findByChecktype(string $CheckType) Return Report objects filtered by the CheckType column
- * @method array findByIdsource(int $IdSource) Return Report objects filtered by the IdSource column
+ * @method array findBySource(string $Source) Return Report objects filtered by the Source column
  * @method array findByIdservice(int $IdService) Return Report objects filtered by the IdService column
+ * @method array findByHidden(boolean $Hidden) Return Report objects filtered by the Hidden column
  *
  * @package    propel.generator.aptostat_api.om
  */
@@ -158,7 +158,7 @@ abstract class BaseReportQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `IdReport`, `Timestamp`, `ErrorMessage`, `CheckType`, `IdSource`, `IdService` FROM `Report` WHERE `IdReport` = :p0';
+        $sql = 'SELECT `IdReport`, `Timestamp`, `ErrorMessage`, `CheckType`, `Source`, `IdService`, `Hidden` FROM `Report` WHERE `IdReport` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -391,47 +391,32 @@ abstract class BaseReportQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the IdSource column
+     * Filter the query on the Source column
      *
      * Example usage:
      * <code>
-     * $query->filterByIdsource(1234); // WHERE IdSource = 1234
-     * $query->filterByIdsource(array(12, 34)); // WHERE IdSource IN (12, 34)
-     * $query->filterByIdsource(array('min' => 12)); // WHERE IdSource >= 12
-     * $query->filterByIdsource(array('max' => 12)); // WHERE IdSource <= 12
+     * $query->filterBySource('fooValue');   // WHERE Source = 'fooValue'
+     * $query->filterBySource('%fooValue%'); // WHERE Source LIKE '%fooValue%'
      * </code>
      *
-     * @see       filterBySource()
-     *
-     * @param     mixed $idsource The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $source The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ReportQuery The current query, for fluid interface
      */
-    public function filterByIdsource($idsource = null, $comparison = null)
+    public function filterBySource($source = null, $comparison = null)
     {
-        if (is_array($idsource)) {
-            $useMinMax = false;
-            if (isset($idsource['min'])) {
-                $this->addUsingAlias(ReportPeer::IDSOURCE, $idsource['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($idsource['max'])) {
-                $this->addUsingAlias(ReportPeer::IDSOURCE, $idsource['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($source)) {
                 $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $source)) {
+                $source = str_replace('*', '%', $source);
+                $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(ReportPeer::IDSOURCE, $idsource, $comparison);
+        return $this->addUsingAlias(ReportPeer::SOURCE, $source, $comparison);
     }
 
     /**
@@ -479,79 +464,30 @@ abstract class BaseReportQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Source object
+     * Filter the query on the Hidden column
      *
-     * @param   Source|PropelObjectCollection $source The related object(s) to use as filter
+     * Example usage:
+     * <code>
+     * $query->filterByHidden(true); // WHERE Hidden = true
+     * $query->filterByHidden('yes'); // WHERE Hidden = true
+     * </code>
+     *
+     * @param     boolean|string $hidden The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 ReportQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterBySource($source, $comparison = null)
-    {
-        if ($source instanceof Source) {
-            return $this
-                ->addUsingAlias(ReportPeer::IDSOURCE, $source->getIdsource(), $comparison);
-        } elseif ($source instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(ReportPeer::IDSOURCE, $source->toKeyValue('PrimaryKey', 'Idsource'), $comparison);
-        } else {
-            throw new PropelException('filterBySource() only accepts arguments of type Source or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Source relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return ReportQuery The current query, for fluid interface
      */
-    public function joinSource($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function filterByHidden($hidden = null, $comparison = null)
     {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Source');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
+        if (is_string($hidden)) {
+            $hidden = in_array(strtolower($hidden), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Source');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Source relation Source object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   SourceQuery A secondary query class using the current class as primary query
-     */
-    public function useSourceQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinSource($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Source', 'SourceQuery');
+        return $this->addUsingAlias(ReportPeer::HIDDEN, $hidden, $comparison);
     }
 
     /**

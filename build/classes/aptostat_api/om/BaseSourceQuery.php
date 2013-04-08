@@ -25,7 +25,7 @@
  *
  * @method Source findOneByName(string $Name) Return the first Source filtered by the Name column
  *
- * @method array findByIdsource(int $IdSource) Return Source objects filtered by the IdSource column
+ * @method array findByIdsource(string $IdSource) Return Source objects filtered by the IdSource column
  * @method array findByName(string $Name) Return Source objects filtered by the Name column
  *
  * @package    propel.generator.aptostat_api.om
@@ -133,7 +133,7 @@ abstract class BaseSourceQuery extends ModelCriteria
         $sql = 'SELECT `IdSource`, `Name` FROM `Source` WHERE `IdSource` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -224,37 +224,24 @@ abstract class BaseSourceQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByIdsource(1234); // WHERE IdSource = 1234
-     * $query->filterByIdsource(array(12, 34)); // WHERE IdSource IN (12, 34)
-     * $query->filterByIdsource(array('min' => 12)); // WHERE IdSource >= 12
-     * $query->filterByIdsource(array('max' => 12)); // WHERE IdSource <= 12
+     * $query->filterByIdsource('fooValue');   // WHERE IdSource = 'fooValue'
+     * $query->filterByIdsource('%fooValue%'); // WHERE IdSource LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $idsource The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $idsource The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return SourceQuery The current query, for fluid interface
      */
     public function filterByIdsource($idsource = null, $comparison = null)
     {
-        if (is_array($idsource)) {
-            $useMinMax = false;
-            if (isset($idsource['min'])) {
-                $this->addUsingAlias(SourcePeer::IDSOURCE, $idsource['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($idsource['max'])) {
-                $this->addUsingAlias(SourcePeer::IDSOURCE, $idsource['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($idsource)) {
                 $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $idsource)) {
+                $idsource = str_replace('*', '%', $idsource);
+                $comparison = Criteria::LIKE;
             }
         }
 

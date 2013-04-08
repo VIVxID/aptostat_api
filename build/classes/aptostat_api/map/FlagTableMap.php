@@ -36,9 +36,9 @@ class FlagTableMap extends TableMap
         $this->setPhpName('Flag');
         $this->setClassname('Flag');
         $this->setPackage('aptostat_api');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('IdFlag', 'Idflag', 'INTEGER', true, null, null);
+        $this->addPrimaryKey('IdFlag', 'Idflag', 'VARCHAR', true, 20, null);
         $this->addColumn('Name', 'Name', 'VARCHAR', true, 20, null);
         // validators
     } // initialize()

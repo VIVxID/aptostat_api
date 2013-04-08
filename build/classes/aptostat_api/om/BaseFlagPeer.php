@@ -396,7 +396,7 @@ abstract class BaseFlagPeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return (int) $row[$startcol];
+        return (string) $row[$startcol];
     }
 
     /**
@@ -511,10 +511,6 @@ abstract class BaseFlagPeer
             $criteria = clone $values; // rename for clarity
         } else {
             $criteria = $values->buildCriteria(); // build Criteria from Flag object
-        }
-
-        if ($criteria->containsKey(FlagPeer::IDFLAG) && $criteria->keyContainsValue(FlagPeer::IDFLAG) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.FlagPeer::IDFLAG.')');
         }
 
 
@@ -705,7 +701,7 @@ abstract class BaseFlagPeer
     /**
      * Retrieve a single object by pkey.
      *
-     * @param      int $pk the primary key.
+     * @param      string $pk the primary key.
      * @param      PropelPDO $con the connection to use
      * @return Flag
      */

@@ -39,6 +39,7 @@ class IncidentTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('IdIncident', 'Idincident', 'INTEGER', true, null, null);
+        $this->addColumn('Title', 'Title', 'VARCHAR', true, 255, null);
         $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, null);
         // validators
     } // initialize()

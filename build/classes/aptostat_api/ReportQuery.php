@@ -15,64 +15,29 @@
  */
 class ReportQuery extends BaseReportQuery
 {
-    public function notPartOfAnyIncidents()
-    {
-        return $this
-            ->withStandardFields()
-            ->withLatestStatusReport()
-            ->filterOutWithIncidentReports()
-            ->join('Report.ReportStatus');
-    }
-
-    /**
-     * @param $id
-     * @return ReportQuery
-     */
-    public function withNewestReportStatus($id)
-    {
-        return $this
-            ->filterByIdReport($id)
-            ->withStandardFields()
-            ->withLatestStatusReport()
-            ->join('Report.ReportStatus')
-            ->withColumn('ReportStatus.Timestamp', 'FlagTime');
-    }
-
     /**
      * @return ReportQuery
      */
-    public function withStandardFields()
+    public function withAllReportFields()
     {
         return $this
             ->join('Report.Service')
             ->withColumn('Service.Name', 'ServiceName')
-            ->join('Report.Source')
-            ->withColumn('Source.Name', 'SourceName')
-            ->join('ReportStatus.Flag')
-            ->withColumn('Flag.Name', 'FlagName');
+            ->join('Report.ReportStatus')
+            ->withColumn('ReportStatus.Flag', 'Flag')
+            ->withColumn('ReportStatus.Timestamp', 'FlagTime')
+            ->withLatestFlag();
     }
 
     /**
      * @return ReportQuery
      */
-    public function withLatestStatusReport()
+    public function withLatestFlag()
     {
         return $this->where(
             'ReportStatus.Timestamp IN (SELECT MAX(Timestamp)
             FROM ReportStatus
             WHERE Report.IdReport = ReportStatus.IdReport)'
-        );
-    }
-
-    /**
-     * @return ReportQuery
-     */
-    public function filterOutWithIncidentReports()
-    {
-        return $this->where(
-            'Report.IdReport NOT IN (select i.IdReport
-            FROM IncidentReport as i, Report as r
-            WHERE r.IdReport = i.IdReport)'
         );
     }
 }
