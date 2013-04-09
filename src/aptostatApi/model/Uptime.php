@@ -5,6 +5,8 @@ namespace aptostatApi\model;
 class Uptime
 {
     private $feed = array();
+
+    //Hostnames and their corresponding Pingdom ID's
     private $hosts = array(
             "Atika Backoffice" => 615766,
             "DrVideo Encoding" => 615772,
@@ -31,7 +33,8 @@ class Uptime
         $out = $m->get("uptime");
 
         if ($out === false) {
-        
+
+            //Gets uptime history for the last week for every service.
             foreach ($this->hosts as $hostName => $hostID) {
 
                 $out[$hostName] = array();
