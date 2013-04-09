@@ -31,7 +31,9 @@ class Uptime
         if (!$m->get("uptime")) {
         
             foreach ($this->hosts as $hostName => $hostID) {
-        
+
+                $out[$hostName] = array();
+
                 $options = array(
                     CURLOPT_URL => "https://api.pingdom.com/api/2.0/summary.outage/$hostID",
                     CURLOPT_CUSTOMREQUEST => "GET",
