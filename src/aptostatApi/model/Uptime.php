@@ -19,16 +19,16 @@ class Uptime
     {
         return $this->query();
     }
-    
+
     public function query()
-    {   
+    {
         $login = file('/var/apto/ping', FILE_IGNORE_NEW_LINES);
         $curl = curl_init();
         $out = array();
         $m = new Memcached();
         $m->addServer("localhost",11211);
     
-        if (!$m->get("uptime") {
+        if (!$m->get("uptime")) {
         
             foreach ($this->hosts as $hostName => $hostID) {
         
@@ -49,7 +49,7 @@ class Uptime
                 
                     if ($check["status"] != "up") {
              
-                        $out[$hostName][$check["timefrom"] = $check["status"];
+                        $out[$hostName][$check["timefrom"]] = $check["status"];
                     
                     }
                 }
