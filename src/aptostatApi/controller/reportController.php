@@ -6,7 +6,7 @@ set_include_path(__DIR__ . '/../../../build/classes' . PATH_SEPARATOR . get_incl
 
 // Load classes
 use Symfony\Component\HttpFoundation\Request;
-use aptostatApi\Service\ResponseService;
+use aptostatApi\Service\ErrorService;
 
 // GET: /report - Return a list of reports
 $app->get('/api/report', function(Request $param) use ($app) {
@@ -18,7 +18,7 @@ $app->get('/api/report', function(Request $param) use ($app) {
         $reportList = $reportService->getList($limit, $offset);
         return $app->json($reportList);
     } catch (Exception $e) {
-        return $app->json(ResponseService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }
 });
 
@@ -30,7 +30,7 @@ $app->get('/api/report/{reportId}', function($reportId) use ($app) {
         $report = $reportService->getReportById($reportId);
         return $app->json(array('report' => $report));
     } catch (Exception $e) {
-        return $app->json(ResponseService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }
 });
 
@@ -40,8 +40,8 @@ $app->put('/api/report/{reportId}', function(Request $param, $reportId) use ($ap
 
     try {
         $reportService->modify($reportId, $param);
-        return $app->json(ResponseService::successResponse('The modification was successful'));
+        return $app->json(array('message' => 'The modification was successful'));
     } catch (Exception $e) {
-        return $app->json(ResponseService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }
 });
