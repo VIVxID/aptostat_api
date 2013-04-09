@@ -28,13 +28,14 @@ class Incident
                 ->orderByTimestamp('desc')
                 ->limit(1)
             ->endUse()
+            ->withColumn('Message.Author', 'LastMessageAuthor')
             ->withColumn('Message.Text', 'LastMessageText')
             ->withColumn('Message.Timestamp', 'LastMessageDate')
             ->join('Message.Flag')
             ->withColumn('Flag.Name', 'LastFlag')
             ->findOne();
 
-        // Fetch the all reports connected this spesific incident
+        // Fetch the all reports connected this specific incident
         $queryReports = \IncidentReportQuery::create()
             ->filterByIdIncident($id)
             ->join('IncidentReport.Report')
@@ -66,6 +67,7 @@ class Incident
         // Store information
         $this->idIncident = $query->getIdIncident();
         $this->timestamp = $query->getTimestamp();
+        $this->lastMessageAuthor = $query->getLastMessageAuthor();
         $this->lastMessage = $query->getLastMessageText();
         $this->lastMessageDate = $query->getLastMessageDate();
         $this->lastFlag = $query->getLastFlag();
@@ -117,6 +119,7 @@ class Incident
             'idIncident' => $this->idIncident,
             'timestamp' => $this->timestamp,
             'lastMessage' => $this->lastMessage,
+            'lastMessageAuthor' => $this->lastMessageAuthor,
             'lastMessageDate' => $this->lastMessageDate,
             'lastFlag' => $this->lastFlag
             );

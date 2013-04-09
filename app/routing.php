@@ -20,6 +20,9 @@ include '../src/aptostatApi/controller/incidentController.php';
 // Include liveController
 include '../src/aptostatApi/controller/liveController.php';
 
+// Include uptimeController
+include '../src/aptostatApi/controller/uptimeController.php';
+
 // Api
 $app->match('/api/', function() use ($app) {
 	$out = array('statusDesc' => 'Read documentation for proper use of the API');
