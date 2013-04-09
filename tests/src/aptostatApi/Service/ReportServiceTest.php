@@ -19,6 +19,6 @@ class ReportServiceTest extends PHPUnit_Framework_TestCase {
      */
     public function testGetReportByIdShouldThrowInvalidArgumentExceptionIfNoIdIsProvided()
     {
-        $this->reportService->getReportById('');
+        $this->reportService->getReportByIncidentId('');
     }
 }

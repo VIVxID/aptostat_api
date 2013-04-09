@@ -37,11 +37,11 @@ $app->get('/api/incident/{incidentId}', function($incidentId) use ($app) {
 
 // GET: api/incident/{incidentId}/report - Return a list of all connected reports to this specific incident
 $app->get('/api/incident/{incidentId}/report', function($incidentId) use ($app) {
-    $incidentService = new aptostatApi\Service\IncidentService();
+    $reportService = new aptostatApi\Service\ReportService();
 
     try {
-        $incident = $incidentService->getReportsByIncidentId($incidentId);
-        return $app->json($incident);
+        $reportList = $reportService->getReportByIncidentId($incidentId);
+        return $app->json($reportList);
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }

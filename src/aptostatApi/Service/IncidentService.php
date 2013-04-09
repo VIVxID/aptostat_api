@@ -56,16 +56,6 @@ class IncidentService
         return $this->formatSingleResult($report, $history);
     }
 
-    /**
-     * @param $id
-     * @return array
-     */
-    public function getReportsByIncidentId($id)
-    {
-        $reportService = new ReportService();
-        return $reportService->getListByIncidentId($id);
-    }
-
     public function modify($id, $paramBag)
     {
 
