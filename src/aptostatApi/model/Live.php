@@ -14,22 +14,34 @@ class Live
     public function query()
     {   
         $out = null;
-        // Set cURL options
-        $login = file('/var/apto/ping', FILE_IGNORE_NEW_LINES);
-        $curl = curl_init();
+        $m = new Memcached();
+        $m->addServer("localhost",11211);
+    
+        if (!$m->get("live") {
         
-        $options = array(
-            CURLOPT_URL => "https://api.pingdom.com/api/2.0/checks",
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_USERPWD => $login[0].":".$login[1],
-            CURLOPT_HTTPHEADER => array("App-Key: ".$login[2]),
-            CURLOPT_RETURNTRANSFER => true
-            );
+            $login = file('/var/apto/ping', FILE_IGNORE_NEW_LINES);
+            $curl = curl_init();
+        
+            $options = array(
+                CURLOPT_URL => "https://api.pingdom.com/api/2.0/checks",
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_USERPWD => $login[0].":".$login[1],
+                CURLOPT_HTTPHEADER => array("App-Key: ".$login[2]),
+                CURLOPT_RETURNTRANSFER => true
+                );
             
-        // Execute 
-        curl_setopt_array($curl,$options);
-        $response = json_decode(curl_exec($curl),true);
-        $checkList = $response["checks"];
+            // Execute 
+            curl_setopt_array($curl,$options);
+            $response = json_decode(curl_exec($curl),true);
+            $checkList = $response["checks"];
+            $m->set("live", $response["checks"], 60);
+            
+        
+        } else {
+        
+            $checkList = $m->get("live");
+        
+        }
         
         // Format the information
         foreach ($checkList as $check) {
