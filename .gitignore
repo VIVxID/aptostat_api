@@ -11,3 +11,5 @@ app/bootstrap*
 vendor
 misc
 data
+
+src/aptostatApi/model/Incident.php

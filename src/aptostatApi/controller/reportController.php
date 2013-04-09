@@ -9,10 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use aptostatApi\Service\ErrorService;
 
 // GET: /report - Return a list of reports
-$app->get('/api/report', function(Request $param) use ($app) {
+$app->get('/api/report', function(Request $paramBag) use ($app) {
     $reportService = new aptostatApi\Service\ReportService();
-    $limit = $param->query->get('limit');
-    $offset = $param->query->get('offset');
+    $limit = $paramBag->query->get('limit');
+    $offset = $paramBag->query->get('offset');
 
     try {
         $reportList = $reportService->getList($limit, $offset);
@@ -28,18 +28,18 @@ $app->get('/api/report/{reportId}', function($reportId) use ($app) {
 
     try {
         $report = $reportService->getReportById($reportId);
-        return $app->json(array('report' => $report));
+        return $app->json($report);
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }
 });
 
 // PUT: /report/{reportId} - Modify report
-$app->put('/api/report/{reportId}', function(Request $param, $reportId) use ($app) {
+$app->put('/api/report/{reportId}', function(Request $paramBag, $reportId) use ($app) {
     $reportService = new aptostatApi\Service\ReportService();
 
     try {
-        $reportService->modify($reportId, $param);
+        $reportService->modify($reportId, $paramBag);
         return $app->json(array('message' => 'The modification was successful'));
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());

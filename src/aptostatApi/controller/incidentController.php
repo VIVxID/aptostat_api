@@ -7,38 +7,43 @@ set_include_path(__DIR__ . '/../../../build/classes' . PATH_SEPARATOR . get_incl
 
 // Load classes
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use aptostatApi\Service\ErrorService;
 
 // GET: api/incident - Return a list of incidents
-// Nothing working yet
+$app->get('/api/incident', function(Request $paramBag) use ($app) {
+    $incidentService = new aptostatApi\Service\IncidentService();
+    $limit = $paramBag->query->get('limit');
+    $offset = $paramBag->query->get('offset');
+
+    try {
+        $incidentList = $incidentService->getList($limit, $offset);
+        return $app->json($incidentList);
+    } catch (Exception $e) {
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+    }
+});
 
 // GET: api/incident/{incidentId} - Return a spesific incident
 $app->get('/api/incident/{incidentId}', function($incidentId) use ($app) {
-    $incident = new aptostatApi\model\Incident;
-    $status = $incident->query($incidentId);
+    $incidentService = new aptostatApi\Service\IncidentService();
 
-    switch ($status) {
-        case 200:
-            return $app->json($incident->get(), 200);
-            break;
-        case 400:
-            return $app->json(array(
-                'errorCode' => 400,
-                'errorDesc' => 'Id requested is not a number'
-                ), 400);
-            break;
-        case 404:
-            return $app->json(array(
-                'errorCode' => 404,
-                'errorDesc' => 'Incident with that ID not found'
-                ), 404);
-            break;
-        default:
-            return $app->json(array(
-                'errorCode' => 500,
-                'errorDesc' => 'Internal server error'
-                ), 500);
-            break;
+    try {
+        $incident = $incidentService->getIncidentById($incidentId);
+        return $app->json($incident);
+    } catch (Exception $e) {
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+    }
+});
+
+// GET: api/incident/{incidentId}/report - Return a list of all connected reports to this specific incident
+$app->get('/api/incident/{incidentId}/report', function($incidentId) use ($app) {
+    $incidentService = new aptostatApi\Service\IncidentService();
+
+    try {
+        $incident = $incidentService->getReportsConnectedToThisIncidentById($incidentId);
+        return $app->json($incident);
+    } catch (Exception $e) {
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }
 });
 

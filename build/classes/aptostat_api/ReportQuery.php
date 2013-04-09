@@ -23,9 +23,6 @@ class ReportQuery extends BaseReportQuery
         return $this
             ->join('Report.Service')
             ->withColumn('Service.Name', 'ServiceName')
-            ->join('Report.ReportStatus')
-            ->withColumn('ReportStatus.Flag', 'Flag')
-            ->withColumn('ReportStatus.Timestamp', 'FlagTime')
             ->withLatestFlag();
     }
 
@@ -34,10 +31,22 @@ class ReportQuery extends BaseReportQuery
      */
     public function withLatestFlag()
     {
-        return $this->where(
+        return $this
+            ->join('Report.ReportStatus')
+            ->withColumn('ReportStatus.Flag', 'Flag')
+            ->withColumn('ReportStatus.Timestamp', 'FlagTime')
+            ->where(
             'ReportStatus.Timestamp IN (SELECT MAX(Timestamp)
             FROM ReportStatus
             WHERE Report.IdReport = ReportStatus.IdReport)'
         );
+    }
+
+    public function filterByReportsThatIsConnectedToAnIncident($id)
+    {
+        return $this
+            ->useIncidentReportQuery()
+                ->filterByIdincident($id)
+            ->endUse();
     }
 }

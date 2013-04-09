@@ -3,6 +3,7 @@
 
 namespace aptostatApi\Service;
 
+
 class ErrorService
 {
     /**
@@ -14,7 +15,7 @@ class ErrorService
         $formattedErrorMsg = array();
 
         $formattedErrorMsg['error']['statusCode'] = $e->getCode();
-        $formattedErrorMsg['error']['statusDesc'] = \Symfony\Component\HttpFoundation\Response::$statusTexts[$statusCode];
+        $formattedErrorMsg['error']['statusDesc'] = \Symfony\Component\HttpFoundation\Response::$statusTexts[$e->getCode()];
         $formattedErrorMsg['error']['errorMessage'] = $e->getMessage();
 
         return $formattedErrorMsg;

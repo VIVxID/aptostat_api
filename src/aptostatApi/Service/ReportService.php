@@ -33,6 +33,26 @@ class ReportService
      * @return array
      * @throws \Exception
      */
+    public function getListByIncidentId($id)
+    {
+        $list = \ReportQuery::create()
+            ->filterByReportsThatIsConnectedToAnIncident($id)
+            ->withAllReportFields()
+            ->orderByTimestamp('desc')
+            ->find();
+
+        if ($list->isEmpty()) {
+            throw new \Exception(sprintf('We could not find any reports connected to incident with id %s', $id), 404);
+        }
+
+        return $this->formatListResult($list);
+    }
+
+    /**
+     * @param $id
+     * @return array
+     * @throws \Exception
+     */
     public function getReportById($id)
     {
         if (!preg_match('/^\d+$/',$id)) {
@@ -115,7 +135,7 @@ class ReportService
      */
     private function formatSingleResult($report, $history)
     {
-        $singleResultAsArray = array(
+        $singleResultAsArray['reports'] = array(
             'id' => $report->getIdReport(),
             'createdTimestamp' => $report->getTimestamp(),
             'lastUpdatedTimestamp' => $report->getFlagTime(),
@@ -128,7 +148,7 @@ class ReportService
         );
 
         foreach ($history as $update) {
-            $singleResultAsArray['statusHistory'][] = array(
+            $singleResultAsArray['reports']['statusHistory'][] = array(
                 'status' => $update->getFlag(),
                 'updateTimestamp' => $update->getTimestamp()
             );
