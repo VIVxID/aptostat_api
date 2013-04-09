@@ -7,7 +7,7 @@
     <ignored path="aptostat_api.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365498525425" ignored="false" />
-    <file path="/Uptime.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365501695853" ignored="false" />
+    <file path="/Uptime.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365503098133" ignored="false" />
     <file path="$PROJECT_DIR$/../aptostat_gui/history_matrix.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365501352031" ignored="false" />
     <file path="/history_matrix.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365501219879" ignored="false" />
     <file path="$PROJECT_DIR$/../aptostat_gui/admin_front.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365501186341" ignored="false" />
@@ -39,7 +39,7 @@
       <file leaf-file-name="Uptime.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Uptime.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="63" column="34" selection-start="1948" selection-end="1948" vertical-scroll-proportion="0.9280677">
+            <state line="32" column="13" selection-start="797" selection-end="797" vertical-scroll-proportion="0.112834975">
               <folding />
             </state>
           </provider>
@@ -48,7 +48,7 @@
       <file leaf-file-name="Live.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Live.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="22" selection-start="277" selection-end="277" vertical-scroll-proportion="-11.115385">
+            <state line="17" column="22" selection-start="277" selection-end="277" vertical-scroll-proportion="12.423077">
               <folding />
             </state>
           </provider>
@@ -308,14 +308,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Live.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="22" selection-start="277" selection-end="277" vertical-scroll-proportion="-11.115385">
+        <state line="17" column="22" selection-start="277" selection-end="277" vertical-scroll-proportion="12.423077">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Uptime.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="34" selection-start="1948" selection-end="1948" vertical-scroll-proportion="0.9280677">
+        <state line="32" column="13" selection-start="797" selection-end="797" vertical-scroll-proportion="0.112834975">
           <folding />
         </state>
       </provider>

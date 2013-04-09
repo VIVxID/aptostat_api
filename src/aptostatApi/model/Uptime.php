@@ -27,8 +27,10 @@ class Uptime
         $out = array();
         $m = new \Memcached();
         $m->addServer("localhost",11211);
-    
-        if ($m->get("uptime") === false) {
+
+        $out = $m->get("uptime");
+
+        if ($out === false) {
         
             foreach ($this->hosts as $hostName => $hostID) {
 
@@ -59,10 +61,6 @@ class Uptime
             
             $m->set("uptime", $out, 60);
             
-        } else {
-        
-            $out = $m->get("uptime");
-        
         }
         
         if (empty($out)) {
