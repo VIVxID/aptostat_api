@@ -14,8 +14,8 @@ class Live
     public function query()
     {   
         $out = null;
-        $m = new Memcached();
-        $m->connect("localhost",11211);
+        $m = new \Memcached();
+        $m->addServer("localhost",11211);
     
         if ($m->get("live") === false) {
         

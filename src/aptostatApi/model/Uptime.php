@@ -26,7 +26,7 @@ class Uptime
         $curl = curl_init();
         $out = array();
         $m = new \Memcached();
-        $m->connect("localhost",11211);
+        $m->addServer("localhost",11211);
     
         if ($m->get("uptime") === false) {
         
