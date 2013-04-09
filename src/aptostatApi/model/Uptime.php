@@ -59,7 +59,7 @@ class Uptime
                 }
             }
             
-            $m->set("uptime", $out, 60);
+            $m->set("uptime", $out, 43200);
             
         }
         

@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9458f73c-1257-457d-b44a-1fc0c6c28beb" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/aptostatApi/model/Uptime.php" afterPath="$PROJECT_DIR$/src/aptostatApi/model/Uptime.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="aptostat_api.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -16,7 +17,7 @@
     <file path="$PROJECT_DIR$/../aptostat_gui/customer_front.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365499676200" ignored="false" />
     <file path="$PROJECT_DIR$/../aptostat_gui/edit_incident.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365499746969" ignored="false" />
     <file path="/admin_front.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365501169528" ignored="false" />
-    <file path="/Live.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365501684805" ignored="false" />
+    <file path="/Live.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365503409992" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +40,7 @@
       <file leaf-file-name="Uptime.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Uptime.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="13" selection-start="797" selection-end="797" vertical-scroll-proportion="0.112834975">
+            <state line="56" column="20" selection-start="1784" selection-end="1784" vertical-scroll-proportion="0.54442877">
               <folding />
             </state>
           </provider>
@@ -48,7 +49,7 @@
       <file leaf-file-name="Live.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Live.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="22" selection-start="277" selection-end="277" vertical-scroll-proportion="12.423077">
+            <state line="36" column="51" selection-start="1048" selection-end="1048" vertical-scroll-proportion="-22.23077">
               <folding />
             </state>
           </provider>
@@ -308,14 +309,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Live.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="22" selection-start="277" selection-end="277" vertical-scroll-proportion="12.423077">
+        <state line="36" column="51" selection-start="1048" selection-end="1048" vertical-scroll-proportion="-22.23077">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Uptime.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="13" selection-start="797" selection-end="797" vertical-scroll-proportion="0.112834975">
+        <state line="56" column="20" selection-start="1784" selection-end="1784" vertical-scroll-proportion="0.54442877">
           <folding />
         </state>
       </provider>
