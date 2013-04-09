@@ -61,7 +61,7 @@ class Uptime
             
         } else {
         
-            $out = $m->get("live");
+            $out = $m->get("uptime");
         
         }
         
