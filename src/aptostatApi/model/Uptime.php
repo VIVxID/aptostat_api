@@ -25,7 +25,7 @@ class Uptime
         $login = file('/var/apto/ping', FILE_IGNORE_NEW_LINES);
         $curl = curl_init();
         $out = array();
-        $m = new Memcached();
+        $m = new \Memcached();
         $m->addServer("localhost",11211);
     
         if (!$m->get("uptime")) {
