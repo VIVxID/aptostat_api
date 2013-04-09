@@ -15,9 +15,9 @@ class Live
     {   
         $out = null;
         $m = new Memcached();
-        $m->addServer("localhost",11211);
+        $m->connect("localhost",11211);
     
-        if (!$m->get("live") {
+        if ($m->get("live") === false) {
         
             $login = file('/var/apto/ping', FILE_IGNORE_NEW_LINES);
             $curl = curl_init();

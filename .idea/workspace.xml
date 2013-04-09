@@ -2,15 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9458f73c-1257-457d-b44a-1fc0c6c28beb" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/aptostatApi/model/Live.php" afterPath="$PROJECT_DIR$/src/aptostatApi/model/Live.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/aptostatApi/model/Uptime.php" afterPath="$PROJECT_DIR$/src/aptostatApi/model/Uptime.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="aptostat_api.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365498525425" ignored="false" />
-    <file path="/Uptime.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365498577687" ignored="false" />
-    <file path="$PROJECT_DIR$/../aptostat_gui/history_matrix.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365498752551" ignored="false" />
-    <file path="/history_matrix.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365498747017" ignored="false" />
+    <file path="/Uptime.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365501521082" ignored="false" />
+    <file path="$PROJECT_DIR$/../aptostat_gui/history_matrix.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365501352031" ignored="false" />
+    <file path="/history_matrix.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365501219879" ignored="false" />
+    <file path="$PROJECT_DIR$/../aptostat_gui/admin_front.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365501186341" ignored="false" />
+    <file path="$PROJECT_DIR$/../aptostat_gui/group_reports.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365499566883" ignored="false" />
+    <file path="$PROJECT_DIR$/../aptostat_gui/list_incidents.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365499746969" ignored="false" />
+    <file path="$PROJECT_DIR$/../aptostat_gui/customer_front.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365499676200" ignored="false" />
+    <file path="$PROJECT_DIR$/../aptostat_gui/edit_incident.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365499746969" ignored="false" />
+    <file path="/admin_front.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365501169528" ignored="false" />
+    <file path="/Live.php" changelist="9458f73c-1257-457d-b44a-1fc0c6c28beb" time="1365501509209" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +40,16 @@
       <file leaf-file-name="Uptime.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Uptime.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="54" column="20" selection-start="1757" selection-end="1757" vertical-scroll-proportion="0.55148095">
+            <state line="27" column="30" selection-start="705" selection-end="705" vertical-scroll-proportion="0.1438646">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Live.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Live.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="39" selection-start="293" selection-end="293" vertical-scroll-proportion="-11.115385">
               <folding />
             </state>
           </provider>
@@ -57,6 +73,7 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
+        <option value="$PROJECT_DIR$/src/aptostatApi/model/Live.php" />
         <option value="$PROJECT_DIR$/src/aptostatApi/model/Uptime.php" />
       </list>
     </option>
@@ -292,14 +309,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Live.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="17" column="39" selection-start="293" selection-end="293" vertical-scroll-proportion="-11.115385">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Uptime.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="20" selection-start="1757" selection-end="1757" vertical-scroll-proportion="0.55148095">
+        <state line="27" column="30" selection-start="705" selection-end="705" vertical-scroll-proportion="0.1438646">
           <folding />
         </state>
       </provider>
