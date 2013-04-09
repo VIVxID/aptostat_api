@@ -11,11 +11,9 @@ use aptostatApi\Service\ErrorService;
 // GET: /report - Return a list of reports
 $app->get('/api/report', function(Request $paramBag) use ($app) {
     $reportService = new aptostatApi\Service\ReportService();
-    $limit = $paramBag->query->get('limit');
-    $offset = $paramBag->query->get('offset');
 
     try {
-        $reportList = $reportService->getList($limit, $offset);
+        $reportList = $reportService->getList($paramBag);
         return $app->json($reportList);
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());
@@ -27,7 +25,7 @@ $app->get('/api/report/{reportId}', function($reportId) use ($app) {
     $reportService = new aptostatApi\Service\ReportService();
 
     try {
-        $report = $reportService->getReportById($reportId);
+        $report = $reportService->getReportByIncidentId($reportId);
         return $app->json($report);
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());

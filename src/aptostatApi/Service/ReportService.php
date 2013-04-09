@@ -12,11 +12,16 @@ class ReportService
      * @return array
      * @throws \Exception
      */
-    public function getList($limit, $offset)
+    public function getList($paramBag)
     {
+        $limit = $paramBag->query->get('limit');
+        $offset = $paramBag->query->get('offset');
+        $showHidden = $paramBag->query->get('showHidden');
+
         $list = \ReportQuery::create()
             ->withAllReportFields()
             ->orderByTimestamp('desc')
+            ->showHidden($showHidden)
             ->limit($limit)
             ->offset($offset)
             ->find();
@@ -53,7 +58,7 @@ class ReportService
      * @return array
      * @throws \Exception
      */
-    public function getReportById($id)
+    public function getReportByIncidentId($id)
     {
         if (!preg_match('/^\d+$/',$id)) {
            throw new \Exception(sprintf('Id should be a number, %s given', $id), 400);

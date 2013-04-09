@@ -42,6 +42,16 @@ class ReportQuery extends BaseReportQuery
         );
     }
 
+    public function showHidden($showHidden)
+    {
+        if ($showHidden == 1) {
+            return $this;
+        } else {
+            return $this
+                ->filterByHidden(0);
+        }
+    }
+
     public function filterByReportsThatIsConnectedToAnIncident($id)
     {
         return $this
