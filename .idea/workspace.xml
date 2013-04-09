@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="40ab5578-5ecd-4349-b626-5b6a165bbae5" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/aptostatApi/Service/IncidentService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/aptostatApi/Service/ErrorService.php" afterPath="$PROJECT_DIR$/src/aptostatApi/Service/ErrorService.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/aptostat_api/IncidentQuery.php" afterPath="$PROJECT_DIR$/build/classes/aptostat_api/IncidentQuery.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/aptostat_api/ReportQuery.php" afterPath="$PROJECT_DIR$/build/classes/aptostat_api/ReportQuery.php" />
@@ -20,7 +21,7 @@
     <file path="/IncidentService.php" changelist="40ab5578-5ecd-4349-b626-5b6a165bbae5" time="1365507431381" ignored="false" />
     <file path="/ReportService.php" changelist="40ab5578-5ecd-4349-b626-5b6a165bbae5" time="1365506761022" ignored="false" />
     <file path="/IncidentQuery.php" changelist="40ab5578-5ecd-4349-b626-5b6a165bbae5" time="1365504177687" ignored="false" />
-    <file path="/incidentController.php" changelist="40ab5578-5ecd-4349-b626-5b6a165bbae5" time="1365506853428" ignored="false" />
+    <file path="/incidentController.php" changelist="40ab5578-5ecd-4349-b626-5b6a165bbae5" time="1365507785003" ignored="false" />
     <file path="/a.dummy" changelist="40ab5578-5ecd-4349-b626-5b6a165bbae5" time="1365502085009" ignored="false" />
     <file path="/ReportQuery.php" changelist="40ab5578-5ecd-4349-b626-5b6a165bbae5" time="1365507339440" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -51,10 +52,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="incidentController.php" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="incidentController.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/aptostatApi/controller/incidentController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="88" selection-start="1616" selection-end="1666" vertical-scroll-proportion="-3.7142856">
+            <state line="50" column="54" selection-start="1906" selection-end="1906" vertical-scroll-proportion="0.46036586">
               <folding>
                 <element signature="e#278#323#0" expanded="true" />
               </folding>
@@ -71,10 +72,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IncidentService.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="IncidentService.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/aptostatApi/Service/IncidentService.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="64" column="45" selection-start="1493" selection-end="1493" vertical-scroll-proportion="0.7488987">
+            <state line="54" column="0" selection-start="1255" selection-end="1255" vertical-scroll-proportion="-15.0">
               <folding />
             </state>
           </provider>
@@ -129,10 +130,10 @@
         <option value="$PROJECT_DIR$/src/aptostatApi/Service/ErrorService.php" />
         <option value="$PROJECT_DIR$/build/classes/aptostat_api/IncidentQuery.php" />
         <option value="$PROJECT_DIR$/src/aptostatApi/controller/reportController.php" />
-        <option value="$PROJECT_DIR$/src/aptostatApi/controller/incidentController.php" />
         <option value="$PROJECT_DIR$/build/classes/aptostat_api/ReportQuery.php" />
         <option value="$PROJECT_DIR$/src/aptostatApi/Service/ReportService.php" />
         <option value="$PROJECT_DIR$/src/aptostatApi/Service/IncidentService.php" />
+        <option value="$PROJECT_DIR$/src/aptostatApi/controller/incidentController.php" />
       </list>
     </option>
   </component>
@@ -494,22 +495,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Incident.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="19" selection-start="326" selection-end="326" vertical-scroll-proportion="-10.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aptostatApi/controller/incidentController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="88" selection-start="1616" selection-end="1666" vertical-scroll-proportion="-3.7142856">
-          <folding>
-            <element signature="e#278#323#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build/classes/aptostat_api/IncidentQuery.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="30" column="61" selection-start="899" selection-end="899" vertical-scroll-proportion="-18.75">
@@ -540,8 +525,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/aptostatApi/Service/IncidentService.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="45" selection-start="1493" selection-end="1493" vertical-scroll-proportion="0.7488987">
+        <state line="54" column="0" selection-start="1255" selection-end="1255" vertical-scroll-proportion="-15.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/aptostatApi/model/Incident.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="19" selection-start="326" selection-end="326" vertical-scroll-proportion="-10.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/aptostatApi/controller/incidentController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="54" selection-start="1906" selection-end="1906" vertical-scroll-proportion="0.46036586">
+          <folding>
+            <element signature="e#278#323#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -60,7 +60,7 @@ class IncidentService
      * @param $id
      * @return array
      */
-    public function getReportsConnectedToThisIncidentById($id)
+    public function getReportsByIncidentId($id)
     {
         $reportService = new ReportService();
         return $reportService->getListByIncidentId($id);

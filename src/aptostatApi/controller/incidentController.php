@@ -40,7 +40,7 @@ $app->get('/api/incident/{incidentId}/report', function($incidentId) use ($app) 
     $incidentService = new aptostatApi\Service\IncidentService();
 
     try {
-        $incident = $incidentService->getReportsConnectedToThisIncidentById($incidentId);
+        $incident = $incidentService->getReportsByIncidentId($incidentId);
         return $app->json($incident);
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());
