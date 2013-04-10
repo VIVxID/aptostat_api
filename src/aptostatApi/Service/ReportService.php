@@ -58,7 +58,7 @@ class ReportService
      * @return array
      * @throws \Exception
      */
-    public function getReportByIncidentId($id)
+    public function getReportById($id)
     {
         if (!preg_match('/^\d+$/',$id)) {
            throw new \Exception(sprintf('Id should be a number, %s given', $id), 400);

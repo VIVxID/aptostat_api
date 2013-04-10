@@ -21,7 +21,7 @@ $app->get('/api/report/{reportId}', function($reportId) use ($app) {
     $reportService = new aptostatApi\Service\ReportService();
 
     try {
-        $report = $reportService->getReportByIncidentId($reportId);
+        $report = $reportService->getReportById($reportId);
         return $app->json($report);
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());
