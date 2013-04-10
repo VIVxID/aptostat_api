@@ -3,7 +3,6 @@
 
 namespace aptostatApi\Service;
 
-
 class IncidentService
 {
     /**
@@ -24,7 +23,10 @@ class IncidentService
             throw new \Exception('We could not find any incidents', 404);
         }
 
-        return $this->formatListResult($list);
+        // Fetch reports for listing out which ID's the incident is coupled with
+        $reports = \IncidentReportQuery::create()->find();
+
+        return $this->formatListResult($list, $reports);
     }
 
     /**
@@ -44,7 +46,7 @@ class IncidentService
             ->findOne();
 
         if ($report == null) {
-            throw new \Exception(sprintf('No incident found with id %s', $id), 400);
+            throw new \Exception(sprintf('No incident found with id %s', $id), 404);
         }
 
         // Fetch history
@@ -53,7 +55,36 @@ class IncidentService
             ->orderByTimestamp()
             ->find();
 
-        return $this->formatSingleResult($report, $history);
+        // Fetch reports for listing out which ID's the incident is coupled with
+        $reports = \IncidentReportQuery::create()->find();
+
+        return $this->formatSingleResult($report, $history, $reports);
+    }
+
+    public function create($paramBag)
+    {
+        $param = $this->extractParameters($paramBag);
+
+        $connection = \Propel::getConnection(\IncidentPeer::DATABASE_NAME);
+        $connection->beginTransaction();
+
+        try {
+            $incident = new \Incident();
+            $incident->setIncidentParameters($param);
+            $incident->save();
+
+            $message = new \Message();
+            $message->setMessageParameters($incident->getPrimaryKey(), $param);
+            $message->save();
+
+            $this->connectReportsWithIncident($incident->getPrimaryKey(), $param['reports']);
+
+            $connection->commit();
+            return $this->getIncidentById($incident->getPrimaryKey());
+        } catch (\Exception $e){
+            $connection->rollBack();
+            throw new \Exception('Could not process your request. Check your syntax', 400);
+        }
     }
 
     public function modify($id, $paramBag)
@@ -61,11 +92,13 @@ class IncidentService
 
     }
 
+
     /**
      * @param $list
+     * @param $reports
      * @return array
      */
-    private function formatListResult($list)
+    private function formatListResult($list, $reports)
     {
         $formattedList = array();
 
@@ -79,6 +112,7 @@ class IncidentService
                 'lastestMessageText' => $incident->getLatestMessageText(),
                 'lastestStatus' => $incident->getLatestMessageFlag(),
                 'hidden' => (boolean) $incident->getHidden(),
+                'connectedReports' => $this->getConnectedReportsId($incident->getIdIncident(), $reports),
             );
         }
 
@@ -88,9 +122,10 @@ class IncidentService
     /**
      * @param $incident
      * @param $history
-     * @return array
+     * @param $reports
+     * @return mixed
      */
-    private function formatSingleResult($incident, $history)
+    private function formatSingleResult($incident, $history, $reports)
     {
         $singleResultAsArray['incidents'] = array(
             'id' => $incident->getIdIncident(),
@@ -101,6 +136,7 @@ class IncidentService
             'lastestMessageText' => $incident->getLatestMessageText(),
             'lastestStatus' => $incident->getLatestMessageFlag(),
             'hidden' => (boolean) $incident->getHidden(),
+            'connectedReports' => $this->getConnectedReportsId($incident->getIdIncident(), $reports),
         );
 
         foreach ($history as $update) {
@@ -112,5 +148,54 @@ class IncidentService
         }
 
         return $singleResultAsArray;
+    }
+
+    private function getConnectedReportsId($incidentId, $reports)
+    {
+        $connectedReportsAsArray = array();
+
+        foreach ($reports as $report) {
+            if ($incidentId == $report->getIdIncident()) {
+                $connectedReportsAsArray[] = $report->getIdReport();
+            }
+        }
+
+        return $connectedReportsAsArray;
+    }
+
+    private function extractParameters($paramBag)
+    {
+        $param['title'] = $paramBag->request->get('title');
+        $param['author'] = $paramBag->request->get('author');
+        $param['flag'] = $paramBag->request->get('flag');
+        $param['text'] = $paramBag->request->get('messageText');
+        $param['reports'] = $paramBag->request->get('reports');
+        $param['hidden'] = $paramBag->request->get('hidden');
+
+        if ($param['hidden'] == null) {
+            $param['hidden'] = false;
+        }
+
+        $allowedFlags = \aptostatApi\model\Flag::getFlags();
+        if (!in_array(strtoupper($param['flag']), $allowedFlags)) {
+            throw new \Exception(sprintf('The value of the flag is not valid, %s given', $param['flag']), 400);
+        }
+
+        return $param;
+    }
+
+    private function connectReportsWithIncident($incidentId, $reports)
+    {
+        if (is_array($reports)) {
+            foreach ($reports as $report) {
+                $incidentReport = new \IncidentReport;
+                $incidentReport->setIncidentReportParameters($incidentId, $report);
+                $incidentReport->save();
+            }
+        } else {
+            $incidentReport = new \IncidentReport;
+            $incidentReport->setIncidentReportParameters($incidentId, $reports);
+            $incidentReport->save();
+        }
     }
 }

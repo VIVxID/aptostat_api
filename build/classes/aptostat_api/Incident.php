@@ -15,4 +15,9 @@
  */
 class Incident extends BaseIncident
 {
+    public function setIncidentParameters($param)
+    {
+        $this->setTitle($param['title']);
+        $this->setTimestamp(time());
+    }
 }

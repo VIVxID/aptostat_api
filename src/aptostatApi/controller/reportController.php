@@ -9,8 +9,7 @@ $app->get('/api/report', function(Request $paramBag) use ($app) {
     $reportService = new aptostatApi\Service\ReportService();
 
     try {
-        $reportList = $reportService->getList($paramBag);
-        return $app->json($reportList);
+        return $app->json($reportService->getList($paramBag));
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }
@@ -21,8 +20,7 @@ $app->get('/api/report/{reportId}', function($reportId) use ($app) {
     $reportService = new aptostatApi\Service\ReportService();
 
     try {
-        $report = $reportService->getReportById($reportId);
-        return $app->json($report);
+        return $app->json($reportService->getReportById($reportId));
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }
@@ -33,7 +31,7 @@ $app->put('/api/report/{reportId}', function(Request $paramBag, $reportId) use (
     $reportService = new aptostatApi\Service\ReportService();
 
     try {
-        $reportService->modify($reportId, $paramBag);
+        $reportService->modifyById($reportId, $paramBag);
         return $app->json(array('message' => 'The modification was successful'));
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());

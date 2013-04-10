@@ -8,7 +8,7 @@
         <column name="CheckType" type="varchar" size="40" required="true" />
         <column name="Source" type="varchar" size="255" required="true" />
         <column name="IdService" type="integer" required="true" />
-        <column name="Hidden" type="boolean" required="true" />
+        <column name="Hidden" type="boolean" defaultValue="false" required="true" />
         <foreign-key foreignTable="Service" phpName="Service" refPhpName="Report">
             <reference local="IdService" foreign="IdService" />
         </foreign-key>
@@ -35,7 +35,7 @@
         <column name="Timestamp" type="timestamp" required="true" />
         <column name="Text" type="varchar" size="255" required="true" />
         <column name="Author" type="varchar" size="30" required="true" />
-        <column name="Hidden" type="boolean" required="true" />
+        <column name="Hidden" type="boolean" defaultValue="false" required="true" />
         <foreign-key foreignTable="Incident" phpName="Incident" refPhpName="Message">
             <reference local="IdIncident" foreign="IdIncident" />
         </foreign-key>

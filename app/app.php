@@ -28,6 +28,9 @@ $app = new Silex\Application($config);
 Propel::init(__DIR__ . '/../build/conf/aptostat_api-conf.php');
 set_include_path(__DIR__ . '/../build/classes' . PATH_SEPARATOR . get_include_path());
 
+// Register ValidatorService
+$app->register(new Silex\Provider\ValidatorServiceProvider());
+
 // Set tmp monolog
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
     'monolog.name' => 'aptostat',

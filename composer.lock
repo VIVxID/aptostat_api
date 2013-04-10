@@ -1,5 +1,5 @@
 {
-    "hash": "74e5a07e8daed4b1785c6c3cd8a43db6",
+    "hash": "28fb7c14f1cbb1701d5a806e35ba12c4",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -160,52 +160,6 @@
                 "dependency injection"
             ],
             "time": "2013-03-08 08:21:40"
-        },
-        {
-            "name": "propel/propel-service-provider",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/propelorm/PropelServiceProvider.git",
-                "reference": "b670cc039243c09bb2ebc7f094d33dabb216c664"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/propelorm/PropelServiceProvider/zipball/b670cc039243c09bb2ebc7f094d33dabb216c664",
-                "reference": "b670cc039243c09bb2ebc7f094d33dabb216c664",
-                "shasum": ""
-            },
-            "require": {
-                "propel/propel1": "1.6.*",
-                "silex/silex": "1.0.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Propel\\Silex": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "William Durand",
-                    "email": "william.durand1@gmail.com",
-                    "homepage": "http://www.willdurand.fr"
-                },
-                {
-                    "name": "Cristiano Cinotti",
-                    "email": "cristianocinotti@gmail.com"
-                }
-            ],
-            "description": "Propel integrationfor Silex.",
-            "keywords": [
-                "propel",
-                "silex"
-            ],
-            "time": "2013-02-11 22:01:49"
         },
         {
             "name": "propel/propel1",
@@ -642,6 +596,122 @@
             "description": "Symfony Routing Component",
             "homepage": "http://symfony.com",
             "time": "2013-03-23 12:03:22"
+        },
+        {
+            "name": "symfony/translation",
+            "version": "v2.2.1",
+            "target-dir": "Symfony/Component/Translation",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Translation.git",
+                "reference": "v2.2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Translation/zipball/v2.2.1",
+                "reference": "v2.2.1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/config": ">=2.0,<2.3-dev",
+                "symfony/yaml": ">=2.2,<3.0"
+            },
+            "suggest": {
+                "symfony/config": "2.2.*",
+                "symfony/yaml": "2.2.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Translation\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Translation Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-04-01 08:06:05"
+        },
+        {
+            "name": "symfony/validator",
+            "version": "v2.2.1",
+            "target-dir": "Symfony/Component/Validator",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Validator.git",
+                "reference": "v2.2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Validator/zipball/v2.2.1",
+                "reference": "v2.2.1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/translation": ">=2.0,<3.0"
+            },
+            "require-dev": {
+                "symfony/config": ">=2.2,<2.3-dev",
+                "symfony/http-foundation": ">=2.1,<3.0",
+                "symfony/locale": ">=2.0,<3.0",
+                "symfony/yaml": ">=2.0,<3.0"
+            },
+            "suggest": {
+                "doctrine/common": "~2.2",
+                "symfony/config": "2.2.*",
+                "symfony/http-foundation": "2.2.*",
+                "symfony/locale": "2.2.*",
+                "symfony/yaml": "2.2.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Validator\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Validator Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-04-01 08:06:05"
         }
     ],
     "packages-dev": [
@@ -1252,8 +1322,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "silex/silex": 20,
-        "propel/propel-service-provider": 20
+        "silex/silex": 20
     },
     "platform": [
 

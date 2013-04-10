@@ -7,8 +7,7 @@ namespace aptostatApi\Service;
 class ReportService
 {
     /**
-     * @param $limit
-     * @param $offset
+     * @param $paramBag
      * @return array
      * @throws \Exception
      */
@@ -70,7 +69,7 @@ class ReportService
             ->findOne();
 
         if ($report == null) {
-            throw new \Exception(sprintf('No report found with id %s', $id), 400);
+            throw new \Exception(sprintf('No report found with id %s', $id), 404);
         }
 
         // Fetch history
@@ -87,13 +86,13 @@ class ReportService
      * @param $paramBag
      * @throws \Exception
      */
-    public function modify($reportId, $paramBag)
+    public function modifyById($reportId, $paramBag)
     {
         $param = $paramBag->request->all();
 
         // Fetch the parameters that are allowed
         foreach ($param as $key => $value) {
-            if (method_exists($this,'modify' . $key)) {
+            if (method_exists($this, 'modify' . ucfirst($key) . 'ById')) {
                 $actions[$key] = $value;
             }
         }
@@ -103,8 +102,8 @@ class ReportService
         }
 
         foreach ($actions as $action => $value) {
-            $methodName = 'modify' . ucfirst($action);
-            $this->$methodName($reportId, $value); // $this->modifySomething($value)
+            $methodName = 'modify' . ucfirst($action) . 'ById';
+            $this->$methodName($reportId, $value); // $this->modifySomethingById($value)
         }
     }
 
@@ -167,7 +166,7 @@ class ReportService
      * @param $flag
      * @throws \Exception
      */
-    private function modifyFlag($id, $flag)
+    private function modifyFlagById($id, $flag)
     {
         $allowedFlags = \aptostatApi\model\Flag::getFlags();
 
@@ -188,7 +187,7 @@ class ReportService
      * @param $id
      * @param $hidden
      */
-    private function modifyHidden($id, $hidden)
+    private function modifyHiddenById($id, $hidden)
     {
         $report = \ReportQuery::create()->findOneByIdreport($id);
 

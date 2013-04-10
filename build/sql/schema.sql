@@ -17,7 +17,7 @@ CREATE TABLE `Report`
     `CheckType` VARCHAR(40) NOT NULL,
     `Source` VARCHAR(255) NOT NULL,
     `IdService` INTEGER NOT NULL,
-    `Hidden` TINYINT(1) NOT NULL,
+    `Hidden` TINYINT(1) DEFAULT 0 NOT NULL,
     PRIMARY KEY (`IdReport`),
     INDEX `Report_FI_1` (`IdService`)
 ) ENGINE=MyISAM;
@@ -64,7 +64,7 @@ CREATE TABLE `Message`
     `Timestamp` DATETIME NOT NULL,
     `Text` VARCHAR(255) NOT NULL,
     `Author` VARCHAR(30) NOT NULL,
-    `Hidden` TINYINT(1) NOT NULL,
+    `Hidden` TINYINT(1) DEFAULT 0 NOT NULL,
     PRIMARY KEY (`IdMessage`),
     INDEX `Message_FI_1` (`IdIncident`)
 ) ENGINE=MyISAM;

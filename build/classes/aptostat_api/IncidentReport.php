@@ -15,4 +15,9 @@
  */
 class IncidentReport extends BaseIncidentReport
 {
+    public function setIncidentReportParameters($incidentId, $reportId)
+    {
+        $this->setIdincident($incidentId);
+        $this->setIdreport($reportId);
+    }
 }

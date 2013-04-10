@@ -44,7 +44,7 @@ class ReportTableMap extends TableMap
         $this->addColumn('CheckType', 'Checktype', 'VARCHAR', true, 40, null);
         $this->addColumn('Source', 'Source', 'VARCHAR', true, 255, null);
         $this->addForeignKey('IdService', 'Idservice', 'INTEGER', 'Service', 'IdService', true, null, null);
-        $this->addColumn('Hidden', 'Hidden', 'BOOLEAN', true, 1, null);
+        $this->addColumn('Hidden', 'Hidden', 'BOOLEAN', true, 1, false);
         // validators
     } // initialize()
 

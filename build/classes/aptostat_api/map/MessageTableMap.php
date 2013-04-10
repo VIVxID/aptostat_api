@@ -44,7 +44,7 @@ class MessageTableMap extends TableMap
         $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, null);
         $this->addColumn('Text', 'Text', 'VARCHAR', true, 255, null);
         $this->addColumn('Author', 'Author', 'VARCHAR', true, 30, null);
-        $this->addColumn('Hidden', 'Hidden', 'BOOLEAN', true, 1, null);
+        $this->addColumn('Hidden', 'Hidden', 'BOOLEAN', true, 1, false);
         // validators
     } // initialize()
 

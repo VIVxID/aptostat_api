@@ -43,34 +43,14 @@ $app->get('/api/incident/{incidentId}/report', function($incidentId) use ($app) 
 });
 
 // POST: api/incident - Create a new incident
-$app->post('/api/incident', function(Request $request) use ($app) {
-        $incident = new aptostatApi\model\Incident;
+$app->post('/api/incident', function(Request $paramBag) use ($app) {
+    $incidentService = new aptostatApi\Service\IncidentService();
 
-        $author = $request->request->get('author');
-        $message = $request->request->get('message');
-        $flag = $request->request->get('flag');
-        $reports = $request->request->get('reports');
-        $visibility = $request->request->get('visibility');
-
-        $out = $incident->create($author, $message, $flag, $reports, $visibility);
-
-        if (!is_array($out)) {
-            switch ($out) {
-                case 400:
-                    return $app->json(array(
-                        'errorCode' => 400,
-                        'errorDesc' => 'Your request is not complete, or something is wrong'
-                        ), 400);
-                    break;
-                default:
-                    return $app->json(array(
-                        'errorCode' => 500,
-                        'errorDesc' => 'Internal server error'
-                        ), 500);
-                    break;
-            }
-        }
-        return $app->json($out, 200);
+    try {
+        return $app->json($incidentService->create($paramBag));
+    } catch (Exception $e) {
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+    }
 });
 
 // PUT: api/incident/{incidentId} - Modify incident

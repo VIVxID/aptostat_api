@@ -67,6 +67,7 @@ abstract class BaseMessage extends BaseObject implements Persistent
 
     /**
      * The value for the hidden field.
+     * Note: this column has a database default value of: false
      * @var        boolean
      */
     protected $hidden;
@@ -95,6 +96,27 @@ abstract class BaseMessage extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->hidden = false;
+    }
+
+    /**
+     * Initializes internal state of BaseMessage object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
 
     /**
      * Get the [idmessage] column value.
@@ -367,6 +389,10 @@ abstract class BaseMessage extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->hidden !== false) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -1192,6 +1218,7 @@ abstract class BaseMessage extends BaseObject implements Persistent
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

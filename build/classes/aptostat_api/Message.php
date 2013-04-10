@@ -15,4 +15,17 @@
  */
 class Message extends BaseMessage
 {
+    /**
+     * @param $incidentId
+     * @param $param
+     */
+    public function setMessageParameters($incidentId, $param)
+    {
+        $this->setIdincident($incidentId);
+        $this->setAuthor($param['author']);
+        $this->setFlag($param['flag']);
+        $this->setText($param['text']);
+        $this->setHidden($param['hidden']);
+        $this->setTimestamp(time());
+    }
 }
