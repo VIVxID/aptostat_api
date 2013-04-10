@@ -1,15 +1,18 @@
+# Log files
 app/log
-log/*
+*.log
+
+# Local propel files
 build.properties
 build/conf/aptostat_api-conf.php
-vendor/
-*.log
 runtime-conf.xml
-# Bootstrap
-app/bootstrap*
 
+# Composer
 vendor
-misc
-data
 
+# Personal files
 src/aptostatApi/model/Incident.php
+
+# PhpStorm
+.idea/workspace.xml
+.idea/tasks.xml
