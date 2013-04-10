@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="40ab5578-5ecd-4349-b626-5b6a165bbae5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/aptostatApi/Service/IncidentService.php" afterPath="$PROJECT_DIR$/src/aptostatApi/Service/IncidentService.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/aptostat_api/ReportQuery.php" afterPath="$PROJECT_DIR$/build/classes/aptostat_api/ReportQuery.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/aptostatApi/Service/ReportService.php" afterPath="$PROJECT_DIR$/src/aptostatApi/Service/ReportService.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/src/aptostatApi/Service/ReportServiceTest.php" afterPath="$PROJECT_DIR$/tests/src/aptostatApi/Service/ReportServiceTest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/aptostatApi/controller/incidentController.php" afterPath="$PROJECT_DIR$/src/aptostatApi/controller/incidentController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/aptostatApi/controller/reportController.php" afterPath="$PROJECT_DIR$/src/aptostatApi/controller/reportController.php" />
-    </list>
+    <list default="true" id="40ab5578-5ecd-4349-b626-5b6a165bbae5" name="Default" comment="" />
     <ignored path="aptostat_api.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="40ab5578-5ecd-4349-b626-5b6a165bbae5" time="1365495995839" ignored="false" />
@@ -86,19 +79,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IncidentQuery.php" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="IncidentQuery.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/build/classes/aptostat_api/IncidentQuery.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="45" selection-start="400" selection-end="400" vertical-scroll-proportion="-9.0">
+            <state line="33" column="20" selection-start="1035" selection-end="1035" vertical-scroll-proportion="0.71365637">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ReportQuery.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ReportQuery.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build/classes/aptostat_api/ReportQuery.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="31" selection-start="633" selection-end="633" vertical-scroll-proportion="0.5506608">
+            <state line="15" column="41" selection-start="353" selection-end="395" vertical-scroll-proportion="-9.375">
               <folding />
             </state>
           </provider>
@@ -271,6 +264,7 @@
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="Errors" />
+    <property name="FullScreen" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
     <property name="GoToClass.includeJavaFiles" value="false" />
@@ -521,13 +515,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/classes/aptostat_api/IncidentQuery.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="45" selection-start="400" selection-end="400" vertical-scroll-proportion="-9.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/aptostatApi/Service/ReportService.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="25" column="12" selection-start="566" selection-end="566" vertical-scroll-proportion="-15.625">
@@ -537,7 +524,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build/classes/aptostat_api/ReportQuery.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="31" selection-start="633" selection-end="633" vertical-scroll-proportion="0.5506608">
+        <state line="15" column="41" selection-start="353" selection-end="395" vertical-scroll-proportion="-9.375">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/classes/aptostat_api/IncidentQuery.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="20" selection-start="1035" selection-end="1035" vertical-scroll-proportion="0.71365637">
           <folding />
         </state>
       </provider>
