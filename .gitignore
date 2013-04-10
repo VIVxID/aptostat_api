@@ -1,9 +1,6 @@
 log/*
-build.properties
-build/
 vendor/
 *.log
-runtime-conf.xml
 # Bootstrap
 app/bootstrap*
 
@@ -13,7 +10,3 @@ vendor/*
 */cache/*
 web/uploads/*
 web/bundles/*
-
-# Configuration files
-app/config/parameters.ini
-app/config/parameters.yml
