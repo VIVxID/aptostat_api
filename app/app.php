@@ -24,6 +24,10 @@ if (file_exists(__DIR__ . '/config.php')) {
 // Initialize Application
 $app = new Silex\Application($config);
 
+// Initiate propel
+Propel::init(__DIR__ . '/../build/conf/aptostat_api-conf.php');
+set_include_path(__DIR__ . '/../build/classes' . PATH_SEPARATOR . get_include_path());
+
 // Set tmp monolog
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
     'monolog.name' => 'aptostat',

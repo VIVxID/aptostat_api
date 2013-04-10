@@ -1,10 +1,5 @@
 <?php
 
-// Initiate propel
-//require_once '/var/www/vendor/propel/propel1/runtime/lib/Propel.php';
-Propel::init(__DIR__ . '/../../../build/conf/aptostat_api-conf.php');
-set_include_path(__DIR__ . '/../../../build/classes' . PATH_SEPARATOR . get_include_path());
-
 // Load classes
 use Symfony\Component\HttpFoundation\Request;
 use aptostatApi\Service\ErrorService;
