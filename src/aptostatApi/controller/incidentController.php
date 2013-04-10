@@ -7,11 +7,9 @@ use aptostatApi\Service\ErrorService;
 // GET: api/incident - Return a list of incidents
 $app->get('/api/incident', function(Request $paramBag) use ($app) {
     $incidentService = new aptostatApi\Service\IncidentService();
-    $limit = $paramBag->query->get('limit');
-    $offset = $paramBag->query->get('offset');
 
     try {
-        $incidentList = $incidentService->getList($limit, $offset);
+        $incidentList = $incidentService->getList($paramBag);
         return $app->json($incidentList);
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());

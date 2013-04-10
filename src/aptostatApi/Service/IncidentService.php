@@ -6,13 +6,15 @@ namespace aptostatApi\Service;
 class IncidentService
 {
     /**
-     * @param $limit
-     * @param $offset
+     * @param $paramBag
      * @return array
      * @throws \Exception
      */
-    public function getList($limit, $offset)
+    public function getList($paramBag)
     {
+        $limit = $paramBag->query->get('limit');
+        $offset = $paramBag->query->get('offset');
+
         $list = \IncidentQuery::create()
             ->withAllIncidentFields()
             ->limit($limit)
@@ -63,7 +65,7 @@ class IncidentService
 
     public function create($paramBag)
     {
-        $param = $this->extractParameters($paramBag);
+        $param = $this->extractCreateIncidentParameters($paramBag);
 
         $connection = \Propel::getConnection(\IncidentPeer::DATABASE_NAME);
         $connection->beginTransaction();
@@ -163,7 +165,7 @@ class IncidentService
         return $connectedReportsAsArray;
     }
 
-    private function extractParameters($paramBag)
+    private function extractCreateIncidentParameters($paramBag)
     {
         $param['title'] = $paramBag->request->get('title');
         $param['author'] = $paramBag->request->get('author');
