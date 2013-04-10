@@ -1,7 +1,6 @@
 <?php
 
 // Initiate propel
-require_once __DIR__ . '/../../../vendor/propel/propel1/runtime/lib/Propel.php';
 Propel::init(__DIR__ . "/../../../build/conf/aptostat-conf.php");
 set_include_path(__DIR__ . "/../../../build/classes" . PATH_SEPARATOR . get_include_path());
 
