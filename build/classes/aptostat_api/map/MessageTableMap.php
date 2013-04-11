@@ -46,6 +46,7 @@ class MessageTableMap extends TableMap
         $this->addColumn('Author', 'Author', 'VARCHAR', true, 30, null);
         $this->addColumn('Hidden', 'Hidden', 'BOOLEAN', true, 1, false);
         // validators
+        $this->addValidator('Flag', 'validValues', 'propel.validator.ValidValuesValidator', 'WARNING|CRITICAL|INTERNAL|IGNORED|RESPONDING|RESOLVED', 'Invalid flag given, please give a valid flag');
     } // initialize()
 
     /**

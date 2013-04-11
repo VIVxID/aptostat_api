@@ -31,8 +31,7 @@ $app->put('/api/report/{reportId}', function(Request $paramBag, $reportId) use (
     $reportService = new aptostatApi\Service\ReportService();
 
     try {
-        $reportService->modifyById($reportId, $paramBag);
-        return $app->json(array('message' => 'The modification was successful'));
+        return $app->json($reportService->modifyById($reportId, $paramBag));
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }

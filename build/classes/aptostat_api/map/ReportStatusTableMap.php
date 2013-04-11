@@ -42,6 +42,7 @@ class ReportStatusTableMap extends TableMap
         $this->addPrimaryKey('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, null);
         $this->addColumn('Flag', 'Flag', 'VARCHAR', true, 255, null);
         // validators
+        $this->addValidator('Flag', 'validValues', 'propel.validator.ValidValuesValidator', 'WARNING|CRITICAL|INTERNAL|IGNORED|RESPONDING|RESOLVED', 'Invalid flag given, please give a valid flag');
     } // initialize()
 
     /**

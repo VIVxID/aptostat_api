@@ -88,6 +88,7 @@ class ReportService
     /**
      * @param $reportId
      * @param $paramBag
+     * @return array
      * @throws \Exception
      */
     public function modifyById($reportId, $paramBag)
@@ -118,6 +119,8 @@ class ReportService
             $methodName = 'modify' . ucfirst($action) . 'ById';
             $this->$methodName($reportId, $value); // $this->modifySomethingById($value)
         }
+
+        return array('message' => 'The modification was successful');
     }
 
     /**

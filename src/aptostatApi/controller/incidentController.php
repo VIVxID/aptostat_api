@@ -52,109 +52,12 @@ $app->post('/api/incident', function(Request $paramBag) use ($app) {
 });
 
 // PUT: api/incident/{incidentId} - Modify incident
-$app->put('/api/incident/{incidentId}', function(Request $request, $incidentId) use ($app) {
-    $incident = new aptostatApi\model\Incident;
-    $out = null;
+$app->put('/api/incident/{incidentId}', function(Request $paramBag, $incidentId) use ($app) {
+    $incidentService = new aptostatApi\Service\IncidentService();
 
-    // Add or remove reports
-    if ($request->request->get('reports')) {
-        $reports = $request->request->get('reports');
-        $mode = $request->request->get('mode');
-
-        if ($mode == 'add') {
-            $rOut = $incident->addReport($incidentId, $reports);
-
-            switch ($rOut) {
-                case 400:
-                    return $app->json(array(
-                        'errorCode' => 400,
-                        'errorDesc' => 'Your request is not complete, or something is wrong'
-                        ), 400);
-                    break;
-                case 404:
-                    return $app->json(array(
-                        'errorCode' => 404,
-                        'errorDesc' => 'Incident with that ID not found '
-                                       . 'or the reports you are trying to add do not exist'
-                        ), 404);
-                    break;
-                case 409:
-                    return $app->json(array(
-                        'errorCode' => 409,
-                        'errorDesc' => 'You tried to add a report that is already connected '
-                        ), 409);
-                    break;
-            }
-        } elseif ($mode == 'remove' or $mode == 'delete') {
-            $rOut = $incident->removeReport($incidentId, $reports);
-
-            switch ($rOut) {
-                case 400:
-                    return $app->json(array(
-                        'errorCode' => 400,
-                        'errorDesc' => 'Your request is not complete, or something is wrong'
-                        ), 400);
-                    break;
-                case 404:
-                    return $app->json(array(
-                        'errorCode' => 404,
-                        'errorDesc' => 'Some or all of your requested deletes does not exist'
-                        ), 404);
-                    break;
-            }
-        }
-
-
+    try {
+        return $app->json($incidentService->modifyById($incidentId, $paramBag));
+    } catch (Exception $e) {
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }
-
-    // Add a new message and status to the incident
-    if ($request->request->get('message')) {
-        $message = $request->request->get('message');
-        $author = $request->request->get('author');
-        $flag = $request->request->get('flag');
-        $visibility = $request->request->get('visibility');
-
-        $mOut = $incident->addMessage($incidentId, $author, $message, $flag, $visibility);
-
-        if (!is_array($mOut)) {
-            switch ($mOut) {
-                case 400:
-                    return $app->json(array(
-                        'errorCode' => 400,
-                        'errorDesc' => 'Check your request, something is wrong'
-                        ), 400);
-                    break;
-                case 404:
-                    return $app->json(array(
-                        'errorCode' => 404,
-                        'errorDesc' => 'Incident with that ID not found'
-                        ), 404);
-                    break;
-                default:
-                    return $app->json(array(
-                       'errorCode' => 500,
-                       'errorDesc' => 'Internal server error'
-                       ), 500);
-                    break;
-            }
-        }
-    }
-
-    // Build reponse message
-    if (isset($rOut)) {
-        $out['reports'] = $rOut;
-    }
-    if (isset($mOut)) {
-        $out['messages'] = $mOut;
-    }
-
-    // Return out if some of these operations succeeded, else return 400
-    if (is_null($out)) {
-        return $app->json(array(
-            'errorCode' => 400,
-            'errorDesc' => 'Something went wrong. Please check your request'
-            ), 400);
-    }
-
-    return $app->json($out, 200);
 });

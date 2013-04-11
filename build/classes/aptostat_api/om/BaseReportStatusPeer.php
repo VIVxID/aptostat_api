@@ -952,6 +952,9 @@ abstract class BaseReportStatusPeer
             }
         } else {
 
+        if ($obj->isNew() || $obj->isColumnModified(ReportStatusPeer::FLAG))
+            $columns[ReportStatusPeer::FLAG] = $obj->getFlag();
+
         }
 
         return BasePeer::doValidate(ReportStatusPeer::DATABASE_NAME, ReportStatusPeer::TABLE_NAME, $columns);

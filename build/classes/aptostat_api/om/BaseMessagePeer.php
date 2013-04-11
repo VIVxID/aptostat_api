@@ -960,6 +960,9 @@ abstract class BaseMessagePeer
             }
         } else {
 
+        if ($obj->isNew() || $obj->isColumnModified(MessagePeer::FLAG))
+            $columns[MessagePeer::FLAG] = $obj->getFlag();
+
         }
 
         return BasePeer::doValidate(MessagePeer::DATABASE_NAME, MessagePeer::TABLE_NAME, $columns);

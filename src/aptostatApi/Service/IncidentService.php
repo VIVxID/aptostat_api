@@ -63,6 +63,11 @@ class IncidentService
         return $this->formatSingleResult($report, $history, $reports);
     }
 
+    /**
+     * @param $paramBag
+     * @return array
+     * @throws \Exception
+     */
     public function create($paramBag)
     {
         $param = $this->extractCreateIncidentParameters($paramBag);
@@ -89,11 +94,45 @@ class IncidentService
         }
     }
 
-    public function modify($id, $paramBag)
+    public function modifyById($incidentId, $paramBag)
     {
+        if (!preg_match('/^\d+$/',$incidentId)) {
+            throw new \Exception(sprintf('Id should be a number, %s given', $incidentId), 400);
+        }
 
+        $incident = \IncidentQuery::create()->findByIdincident($incidentId);
+        if ($incident->isEmpty()) {
+            throw new \Exception(sprintf('Incident with id %s does not exist', $incidentId), 404);
+        }
+
+        $param = $paramBag->request->all();
+
+        if (!isset($param['action'])) {
+            throw new \Exception('No action has been set. Consult the documentation', 400);
+        }
+
+        $action = $param['action'];
+
+        if ($action == 'addReports') {
+            $reports = $this->extractModifyReportsParam($param);
+            $this->addReportsToIncident($incidentId, $reports);
+            return array('message' => 'The reports was successfully added');
+        }
+
+        if ($action == 'removeReports') {
+            $reports = $this->extractModifyReportsParam($param);
+            $this->removeReportsFromIncident($incidentId, $reports);
+            return array('message' => 'The reports was successfully removed');
+        }
+
+        if ($action == 'addMessage') {
+            $messageParam = $this->extractAddMessageParam($param);
+            $this->addMessageToIncident($incidentId, $messageParam);
+            return array('message' => 'A new message was successfully added');
+        }
+
+        throw new \Exception(sprintf('No valid action has been passed, %s given',$param['action']), 400);
     }
-
 
     /**
      * @param $list
@@ -113,7 +152,7 @@ class IncidentService
                 'lastestMessageTimestamp' => $incident->getLatestMessageTimestamp(),
                 'lastestMessageText' => $incident->getLatestMessageText(),
                 'lastestStatus' => $incident->getLatestMessageFlag(),
-                'hidden' => (boolean) $incident->getHidden(),
+                'currentHidden' => (boolean) $incident->getHidden(),
                 'connectedReports' => $this->getConnectedReportsId($incident->getIdIncident(), $reports),
             );
         }
@@ -137,15 +176,18 @@ class IncidentService
             'lastestMessageTimestamp' => $incident->getLatestMessageTimestamp(),
             'lastestMessageText' => $incident->getLatestMessageText(),
             'lastestStatus' => $incident->getLatestMessageFlag(),
-            'hidden' => (boolean) $incident->getHidden(),
+            'currentHidden' => (boolean) $incident->getHidden(),
             'connectedReports' => $this->getConnectedReportsId($incident->getIdIncident(), $reports),
         );
 
         foreach ($history as $update) {
-            $singleResultAsArray['incidents']['statusHistory'][] = array(
+            $singleResultAsArray['incidents']['messageHistory'][] = array(
                 'id' => $update->getIdMessage(),
-                'status' => $update->getFlag(),
-                'updateTimestamp' => $update->getTimestamp()
+                'messageAuthor' => $update->getAuthor(),
+                'messageTimestamp' => $update->getTimestamp(),
+                'messageText' =>$update->getText(),
+                'messageStatus' => $update->getFlag(),
+                'hidden' =>$update->getHidden(),
             );
         }
 
@@ -199,5 +241,145 @@ class IncidentService
             $incidentReport->setIncidentReportParameters($incidentId, $reports);
             $incidentReport->save();
         }
+    }
+
+    private function extractModifyReportsParam($param)
+    {
+        if (!isset($param['reports'])) {
+            throw new \Exception('No reports has been included. Consult the documentation', 400);
+        }
+
+        if (!$this->reportsExists($param['reports'])) {
+            throw new \Exception('Some or all of the included reports do not exist.', 404);
+        }
+
+        return $param['reports'];
+    }
+
+    private function extractAddMessageParam($param)
+    {
+        if (!isset($param['author'])) {
+            throw new \Exception('No author has been passed', 400);
+        }
+
+        if (isset($param['flag'])) {
+            $allowedFlags = \aptostatApi\model\Flag::getFlags();
+            if (!in_array(strtoupper($param['flag']), $allowedFlags)) {
+                throw new \Exception('Invalid flag has been passed. Check it', 400);
+            }
+        } else {
+            throw new \Exception('No flag has been passed', 400);
+        }
+
+        if (!isset($param['messageText'])) {
+            throw new \Exception('No messageText has been passed', 400);
+        }
+
+        if (!isset($param['hidden'])) {
+            $param['hidden'] = false;
+        }
+
+        return array(
+            'author' => $param['author'],
+            'flag' => $param['flag'],
+            'messageText' => $param['messageText'],
+            'hidden' => $param['hidden'],
+        );
+    }
+
+    /**
+     * @param $reports
+     * @return bool
+     */
+    private function reportsExists($reports)
+    {
+        if (is_array($reports)) {
+            foreach ($reports as $report) {
+                $reportQuery = \ReportQuery::create()->findByIdreport($report);
+
+                if ($reportQuery->isEmpty()) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            $reportQuery = \ReportQuery::create()->findByIdreport($reports);
+
+            if ($reportQuery->isEmpty()) {
+                return false;
+            }
+            return true;
+        }
+    }
+
+    private function addReportsToIncident($incidentId, $reports)
+    {
+        $connection = \Propel::getConnection(\IncidentReportPeer::DATABASE_NAME);
+        $connection->beginTransaction();
+
+        try {
+            if (is_array($reports)) {
+                foreach ($reports as $report) {
+                    $reportIncident = new \IncidentReport();
+                    $reportIncident->setIdincident($incidentId);
+                    $reportIncident->setIdreport($report);
+                    $reportIncident->save();
+                }
+            } else {
+                $reportIncident = new \IncidentReport();
+                $reportIncident->setIdincident($incidentId);
+                $reportIncident->setIdreport($reports);
+                $reportIncident->save();
+            }
+
+            $connection->commit();
+        } catch (\Exception $e){
+            $connection->rollBack();
+            throw new \Exception('You tried to add a report that already has been added', 409);
+        }
+    }
+
+    private function removeReportsFromIncident($incidentId, $reports)
+    {
+        $connection = \Propel::getConnection(\IncidentReportPeer::DATABASE_NAME);
+        $connection->beginTransaction();
+        try {
+            if (is_array($reports)) {
+                foreach ($reports as $report) {
+                    $reportIncident = \IncidentReportQuery::create()
+                        ->filterByIdIncident($incidentId)
+                        ->filterByIdreport($report)
+                        ->findOne();
+
+                    $reportIncident->delete();
+                }
+            } else {
+                $reportIncident = \IncidentReportQuery::create()
+                    ->filterByIdincident($incidentId)
+                    ->filterByIdreport($reports)
+                    ->findOne();
+
+                $reportIncident->delete();
+            }
+
+            $connection->commit();
+        } catch (\Exception $e){
+            $connection->rollBack();
+            throw new \Exception('You tried to remove reports from an incident that does not exist in the incident', 409);
+        }
+    }
+
+    private function addMessageToIncident($incidentId, $messageParam)
+    {
+        $message = new \Message();
+
+        $message->setIdincident($incidentId);
+        $message->setAuthor($messageParam['author']);
+        $message->setFlag($messageParam['flag']);
+        $message->setTimestamp(time());
+        $message->setText($messageParam['messageText']);
+        $message->setHidden($messageParam['hidden']);
+
+        $message->save();
     }
 }
