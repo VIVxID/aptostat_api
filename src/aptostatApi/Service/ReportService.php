@@ -39,6 +39,10 @@ class ReportService
      */
     public function getListByIncidentId($id)
     {
+        if (!preg_match('/^\d+$/',$id)) {
+            throw new \Exception(sprintf('Id should be a number, %s given', $id), 400);
+        }
+
         $list = \ReportQuery::create()
             ->filterByReportsThatIsConnectedToAnIncident($id)
             ->withAllReportFields()
@@ -88,6 +92,15 @@ class ReportService
      */
     public function modifyById($reportId, $paramBag)
     {
+        if (!preg_match('/^\d+$/',$reportId)) {
+            throw new \Exception(sprintf('Id should be a number, %s given', $reportId), 400);
+        }
+
+        $report = \ReportQuery::create()->findByIdreport($reportId);
+        if ($report->isEmpty()) {
+            throw new \Exception(sprintf('Report with id %s does not exist', $reportId), 404);
+        }
+
         $param = $paramBag->request->all();
 
         // Fetch the parameters that are allowed
