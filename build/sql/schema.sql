@@ -19,8 +19,11 @@ CREATE TABLE `Report`
     `IdService` INTEGER NOT NULL,
     `Hidden` TINYINT(1) DEFAULT 0 NOT NULL,
     PRIMARY KEY (`IdReport`),
-    INDEX `Report_FI_1` (`IdService`)
-) ENGINE=MyISAM;
+    INDEX `Report_FI_1` (`IdService`),
+    CONSTRAINT `Report_FK_1`
+        FOREIGN KEY (`IdService`)
+        REFERENCES `Service` (`IdService`)
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- Service
@@ -34,7 +37,7 @@ CREATE TABLE `Service`
     `Name` VARCHAR(50) NOT NULL,
     PRIMARY KEY (`IdService`),
     UNIQUE INDEX `Service_U_1` (`Name`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- Incident
@@ -48,7 +51,7 @@ CREATE TABLE `Incident`
     `Title` VARCHAR(255) NOT NULL,
     `Timestamp` DATETIME NOT NULL,
     PRIMARY KEY (`IdIncident`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- Message
@@ -66,8 +69,11 @@ CREATE TABLE `Message`
     `Author` VARCHAR(30) NOT NULL,
     `Hidden` TINYINT(1) DEFAULT 0 NOT NULL,
     PRIMARY KEY (`IdMessage`),
-    INDEX `Message_FI_1` (`IdIncident`)
-) ENGINE=MyISAM;
+    INDEX `Message_FI_1` (`IdIncident`),
+    CONSTRAINT `Message_FK_1`
+        FOREIGN KEY (`IdIncident`)
+        REFERENCES `Incident` (`IdIncident`)
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- ReportStatus
@@ -80,8 +86,11 @@ CREATE TABLE `ReportStatus`
     `IdReport` INTEGER NOT NULL,
     `Timestamp` DATETIME NOT NULL,
     `Flag` VARCHAR(255) NOT NULL,
-    PRIMARY KEY (`IdReport`,`Timestamp`)
-) ENGINE=MyISAM;
+    PRIMARY KEY (`IdReport`,`Timestamp`),
+    CONSTRAINT `ReportStatus_FK_1`
+        FOREIGN KEY (`IdReport`)
+        REFERENCES `Report` (`IdReport`)
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- IncidentReport
@@ -94,8 +103,16 @@ CREATE TABLE `IncidentReport`
     `IdIncident` INTEGER NOT NULL,
     `IdReport` INTEGER NOT NULL,
     PRIMARY KEY (`IdIncident`,`IdReport`),
-    INDEX `IncidentReport_FI_1` (`IdReport`)
-) ENGINE=MyISAM;
+    INDEX `IncidentReport_FI_1` (`IdReport`),
+    CONSTRAINT `IncidentReport_FK_1`
+        FOREIGN KEY (`IdReport`)
+        REFERENCES `Report` (`IdReport`)
+        ON DELETE CASCADE,
+    CONSTRAINT `IncidentReport_FK_2`
+        FOREIGN KEY (`IdIncident`)
+        REFERENCES `Incident` (`IdIncident`)
+        ON DELETE CASCADE
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

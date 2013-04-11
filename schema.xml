@@ -2,6 +2,10 @@
 
 <database name="Aptostat" defaultIdMethod="native">
     <table name="Report" phpName="Report">
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+            <parameter name="Charset" value="utf8"/>
+          </vendor>
         <column name="IdReport" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="Timestamp" type="timestamp" required="true" />
         <column name="ErrorMessage" type="varchar" size="255" required="true" />
@@ -15,6 +19,10 @@
     </table>
     
     <table name="Service" phpName="Service">
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+            <parameter name="Charset" value="utf8"/>
+          </vendor>
         <column name="IdService" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="Name" type="varchar" size="50" required="true" />
 	<unique>
@@ -23,12 +31,20 @@
     </table>
     
     <table name="Incident" phpName="Incident">
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+            <parameter name="Charset" value="utf8"/>
+          </vendor>
         <column name="IdIncident" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 	<column name="Title" type="varchar" size="255" required="true" />
         <column name="Timestamp" type="timestamp" required="true" />
     </table>
     
     <table name="Message" phpName="Message">
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+            <parameter name="Charset" value="utf8"/>
+          </vendor>
         <column name="IdMessage" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="IdIncident" type="integer" required="true" />
         <column name="Flag" type="varchar" size="255" required="true" />
@@ -48,6 +64,10 @@
     </table>
     
     <table name="ReportStatus" phpName="ReportStatus">
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+            <parameter name="Charset" value="utf8"/>
+          </vendor>
 	    <column name="IdReport" type="integer" required="true" primaryKey="true" />
     	<column name="Timestamp" type="timestamp" required="true" primaryKey="true" />
         <column name="Flag" type="varchar" size="255" required="true" />
@@ -63,6 +83,10 @@
     </table>
     
     <table name="IncidentReport" phpName="IncidentReport" isCrossRef="true">
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+            <parameter name="Charset" value="utf8"/>
+          </vendor>
         <column name="IdIncident" type="integer" required="true" primaryKey="true" />
         <column name="IdReport" type="integer" required="true" primaryKey="true" />
         <foreign-key foreignTable="Report" phpName="Report" refPhpName="IncidentReport" onDelete="cascade">
