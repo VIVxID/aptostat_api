@@ -94,6 +94,12 @@ class IncidentService
         }
     }
 
+    /**
+     * @param $incidentId
+     * @param $paramBag
+     * @return array
+     * @throws \Exception
+     */
     public function modifyById($incidentId, $paramBag)
     {
         if (!preg_match('/^\d+$/',$incidentId)) {
@@ -256,6 +262,11 @@ class IncidentService
         return $param['reports'];
     }
 
+    /**
+     * @param $param
+     * @return array
+     * @throws \Exception
+     */
     private function extractAddMessageParam($param)
     {
         if (!isset($param['author'])) {
@@ -312,6 +323,11 @@ class IncidentService
         }
     }
 
+    /**
+     * @param $incidentId
+     * @param $reports
+     * @throws \Exception
+     */
     private function addReportsToIncident($incidentId, $reports)
     {
         $connection = \Propel::getConnection(\IncidentReportPeer::DATABASE_NAME);
@@ -339,6 +355,11 @@ class IncidentService
         }
     }
 
+    /**
+     * @param $incidentId
+     * @param $reports
+     * @throws \Exception
+     */
     private function removeReportsFromIncident($incidentId, $reports)
     {
         $connection = \Propel::getConnection(\IncidentReportPeer::DATABASE_NAME);
