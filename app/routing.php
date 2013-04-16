@@ -16,6 +16,7 @@ include  __DIR__ . '/../src/AptostatApi/controller/incidentController.php';
 $app->match('/api', function() use ($app) {
         $out = array('statusDesc' => 'Read documentation for proper use of the API');
         return $app->json($out, 200);
+});
 
 // Include liveController
 include '../src/aptostatApi/controller/liveController.php';
@@ -32,8 +33,6 @@ $app->match('/api/', function() use ($app) {
 
 // End user front-end
 $app->match('/', function() use ($app) {
-
     $out = array('statusDesc' => 'Read documentation for proper use of the API');
     return $app->json($out, 200);
-
 });
