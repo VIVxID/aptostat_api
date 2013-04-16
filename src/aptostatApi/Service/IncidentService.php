@@ -159,7 +159,7 @@ class IncidentService
                 'lastMessageTimestamp' => $incident->getLatestMessageTimestamp(),
                 'lastMessageText' => $incident->getLatestMessageText(),
                 'lastStatus' => $incident->getLatestMessageFlag(),
-                'currentHidden' => (boolean) $incident->getHidden(),
+                'hidden' => (boolean) $incident->getHidden(),
                 'connectedReports' => $this->getConnectedReportsId($incident->getIdIncident(), $reports),
             );
         }
