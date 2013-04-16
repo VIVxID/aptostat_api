@@ -1,4 +1,5 @@
 <?php
+
 // Load classes
 use Symfony\Component\HttpFoundation\Request;
 use aptostatApi\Service\ErrorService;
@@ -15,7 +16,7 @@ $app->get('/api/incident', function(Request $paramBag) use ($app) {
     }
 });
 
-// GET: api/incident/{incidentId} - Return a spesific incident
+// GET: api/incident/{incidentId} - Return a specific incident
 $app->get('/api/incident/{incidentId}', function($incidentId) use ($app) {
     $incidentService = new aptostatApi\Service\IncidentService();
 
@@ -61,3 +62,24 @@ $app->put('/api/incident/{incidentId}', function(Request $paramBag, $incidentId)
     }
 });
 
+// POST: api/incident/{incidentId}/message - Create new message
+$app->post('api/incident/{incidentId}/message', function(Request $paramBag, $incidentId) use ($app) {
+    $messageService = new aptostatApi\Service\MessageService();
+
+    try {
+        return $app->json($messageService->addMessage($incidentId, $paramBag));
+    } catch (Exception $e) {
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+    }
+});
+
+// PUT: api/incident/{incidentId}/message/{messageId} - Modify existing message
+$app->put('api/incident/{incidentId}/message/{messageId}', function(Request $paramBag, $messageId) use ($app) {
+    $messageService = new aptostatApi\Service\MessageService();
+
+    try {
+        return $app->json($messageService->editMessageById($messageId, $paramBag));
+    } catch (Exception $e) {
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+    }
+});

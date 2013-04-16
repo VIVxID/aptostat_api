@@ -111,33 +111,22 @@ class IncidentService
             throw new \Exception(sprintf('Incident with id %s does not exist', $incidentId), 404);
         }
 
-        $param = $paramBag->request->all();
+        $success = false;
 
-        if (!isset($param['action'])) {
-            throw new \Exception('No action has been set. Consult the documentation', 400);
+        if ($this->modifyReports($incidentId, $paramBag)) {
+            $success = true;
         }
 
-        $action = $param['action'];
-
-        if ($action == 'addReports') {
-            $reports = $this->extractModifyReportsParam($param);
-            $this->addReportsToIncident($incidentId, $reports);
-            return array('message' => 'The reports was successfully added');
+        if ($this->modifyTitle($incidentId, $paramBag)) {
+            $success = true;
         }
 
-        if ($action == 'removeReports') {
-            $reports = $this->extractModifyReportsParam($param);
-            $this->removeReportsFromIncident($incidentId, $reports);
-            return array('message' => 'The reports was successfully removed');
+        if ($success) {
+            return array('message' => 'The modification was successful');
+        } else {
+            throw new \Exception('No modification was done, check your syntax', 400);
         }
 
-        if ($action == 'addMessage') {
-            $messageParam = $this->extractAddMessageParam($param);
-            $this->addMessageToIncident($incidentId, $messageParam);
-            return array('message' => 'A new message was successfully added');
-        }
-
-        throw new \Exception(sprintf('No valid action has been passed, %s given',$param['action']), 400);
     }
 
     /**
@@ -251,53 +240,17 @@ class IncidentService
         }
     }
 
-    private function extractModifyReportsParam($param)
+    private function extractModifyReportsParam($reports)
     {
-        if (!isset($param['reports'])) {
+        if (!isset($reports)) {
             throw new \Exception('No reports has been included. Consult the documentation', 400);
         }
 
-        if (!$this->reportsExists($param['reports'])) {
+        if (!$this->reportsExists($reports)) {
             throw new \Exception('Some or all of the included reports do not exist.', 404);
         }
 
-        return $param['reports'];
-    }
-
-    /**
-     * @param $param
-     * @return array
-     * @throws \Exception
-     */
-    private function extractAddMessageParam($param)
-    {
-        if (!isset($param['author'])) {
-            throw new \Exception('No author has been passed', 400);
-        }
-
-        if (isset($param['flag'])) {
-            $allowedFlags = \aptostatApi\model\Flag::getFlags();
-            if (!in_array(strtoupper($param['flag']), $allowedFlags)) {
-                throw new \Exception('Invalid flag has been passed. Check it', 400);
-            }
-        } else {
-            throw new \Exception('No flag has been passed', 400);
-        }
-
-        if (!isset($param['messageText'])) {
-            throw new \Exception('No messageText has been passed', 400);
-        }
-
-        if (!isset($param['hidden'])) {
-            $param['hidden'] = false;
-        }
-
-        return array(
-            'author' => $param['author'],
-            'flag' => $param['flag'],
-            'messageText' => $param['messageText'],
-            'hidden' => $param['hidden'],
-        );
+        return $reports;
     }
 
     /**
@@ -392,17 +345,41 @@ class IncidentService
         }
     }
 
-    private function addMessageToIncident($incidentId, $messageParam)
+    private function modifyReports($incidentId, $paramBag)
     {
-        $message = new \Message();
+        if (is_null($paramBag->request->get('reportAction'))) {
+            return false;
+        }
 
-        $message->setIdincident($incidentId);
-        $message->setAuthor($messageParam['author']);
-        $message->setFlag($messageParam['flag']);
-        $message->setTimestamp(time());
-        $message->setText($messageParam['messageText']);
-        $message->setHidden($messageParam['hidden']);
+        $reportAction = $paramBag->request->get('reportAction');
 
-        $message->save();
+        if ($reportAction == 'addReports') {
+            $reports = $this->extractModifyReportsParam($paramBag->request->get('reports'));
+            $this->addReportsToIncident($incidentId, $reports);
+            return true;
+        }
+
+        if ($reportAction == 'removeReports') {
+            $reports = $this->extractModifyReportsParam($paramBag->request->get('reports'));
+            $this->removeReportsFromIncident($incidentId, $reports);
+            return true;
+        }
+
+        throw new \Exception(sprintf('No valid reportAction has been passed, %s given',$reportAction), 400);
+    }
+
+    private function modifyTitle($incidentId, $paramBag)
+    {
+        if (is_null($paramBag->request->get('title'))) {
+            return false;
+        }
+
+        $title = $paramBag->request->get('title');
+
+        $incident = \IncidentQuery::create()->findOneByIdincident($incidentId);
+        $incident->setTitle($title);
+        $incident->save();
+
+        return true;
     }
 }
