@@ -36,12 +36,3 @@ $app->match('/', function() use ($app) {
     $out = array('statusDesc' => 'Read documentation for proper use of the API');
     return $app->json($out, 200);
 });
-
-// Debug
-$app->match('/test', function() use ($app) {
-    $reports = \ReportQuery::create()
-        ->filterBySource('PINGDOM')
-        ->find();
-
-    print_r($reports);
-});
