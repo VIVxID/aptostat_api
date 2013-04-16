@@ -118,7 +118,7 @@ Example:
     "title": "A descriptive title of the problem",
     "author": "Jacob",
     "messageText": "A message which will be the main body of the incident. Write reasons and estimated time for fix",
-    "flag": WARNING,
+    "flag": "WARNING",
     "hidden": false,
     "reports": [1,2,3]
 }
