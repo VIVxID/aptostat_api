@@ -240,17 +240,17 @@ class IncidentService
         }
     }
 
-    private function extractModifyReportsParam($param)
+    private function extractModifyReportsParam($reports)
     {
-        if (!isset($param['reports'])) {
+        if (!isset($reports)) {
             throw new \Exception('No reports has been included. Consult the documentation', 400);
         }
 
-        if (!$this->reportsExists($param['reports'])) {
+        if (!$this->reportsExists($reports)) {
             throw new \Exception('Some or all of the included reports do not exist.', 404);
         }
 
-        return $param['reports'];
+        return $reports;
     }
 
     /**
@@ -354,13 +354,13 @@ class IncidentService
         $reportAction = $paramBag->request->get('reportAction');
 
         if ($reportAction == 'addReports') {
-            $reports = $this->extractModifyReportsParam($reportAction);
+            $reports = $this->extractModifyReportsParam($paramBag->request->get('reports'));
             $this->addReportsToIncident($incidentId, $reports);
             return true;
         }
 
         if ($reportAction == 'removeReports') {
-            $reports = $this->extractModifyReportsParam($reportAction);
+            $reports = $this->extractModifyReportsParam($paramBag->request->get('reports'));
             $this->removeReportsFromIncident($incidentId, $reports);
             return true;
         }
