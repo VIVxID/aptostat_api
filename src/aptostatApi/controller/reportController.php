@@ -1,95 +1,38 @@
 <?php
 
-// Initiate propel
-Propel::init(__DIR__ . "/../../../build/conf/aptostat-conf.php");
-set_include_path(__DIR__ . "/../../../build/classes" . PATH_SEPARATOR . get_include_path());
-
-// Load classesn
+// Load classes
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use aptostatApi\Service\ErrorService;
 
-// GET: api/report - Return a list of reports
-$app->get('/api/report', function() use ($app) {
-    $report = new aptostatApi\model\Report;
-    $status = $report->queryList();
+// GET: /report - Return a list of reports
+$app->get('/api/report', function(Request $paramBag) use ($app) {
+    $reportService = new aptostatApi\Service\ReportService();
 
-    switch ($status) {
-        case 200:
-            return $app->json($report->getList(), 200);
-            break;
-        case 404:
-            return $app->json(array(
-                'errorCode' => 404,
-                'errorDesc' => 'No reports found'
-                ), 404);
-            break;
-        default:
-            return $app->json(array(
-                'errorCode' => 500,
-                'errorDesc' => 'Internal server error'
-                ), 500);
-            break;
+    try {
+        return $app->json($reportService->getList($paramBag));
+    } catch (Exception $e) {
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }
 });
 
-// GET: api/report/{id} - Return a spesific report
+// GET: api/report/{id} - Return a specific report
 $app->get('/api/report/{reportId}', function($reportId) use ($app) {
-    $report = new aptostatApi\model\Report;
-    $status = $report->query($reportId);
+    $reportService = new aptostatApi\Service\ReportService();
 
-    switch ($status) {
-        case 200:
-            return $app->json($report->get(), 200);
-            break;
-        case 400:
-            return $app->json(array(
-                'errorCode' => 400,
-                'errorDesc' => 'Id requested is not a number'
-                ), 400);
-            break;
-        case 404:
-            return $app->json(array(
-                'errorCode' => 404,
-                'errorDesc' => 'Report with that ID not found'
-                ), 404);
-            break;
-        default:
-            return $app->json(array(
-                'errorCode' => 500,
-                'errorDesc' => 'Internal server error'
-                ), 500);
-            break;
+    try {
+        return $app->json($reportService->getReportById($reportId));
+    } catch (Exception $e) {
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }
 });
 
-// PUT: api/report/{reportId} - Modify report
-$app->put('/api/report/{reportId}', function(Request $request, $reportId) use ($app) {
-    $report = new aptostatApi\model\Report;
-    $flag = $request->request->get('flag');
+// PUT: /report/{reportId} - Modify report
+$app->put('/api/report/{reportId}', function(Request $paramBag, $reportId) use ($app) {
+    $reportService = new aptostatApi\Service\ReportService();
 
-    switch ($report->modifyFlag($reportId, $flag)) {
-        case 200:
-            return $app->json(array(
-                'message' => 'Report ' . $reportId . ' has been successfully modified'
-                ), 200);
-            break;
-        case 400:
-            return $app->json(array(
-                'errorCode' => 400,
-                'errorDesc' => 'The id is not a number'
-                ), 400);
-            break;
-        case 404:
-            return $app->json(array(
-                'errorCode' => 404,
-                'errorDesc' => 'Report with that ID not found'
-                ), 404);
-            break;
-        default:
-            return $app->json(array(
-               'errorCode' => 500,
-               'errorDesc' => 'Internal server error'
-               ), 500);
-            break;
+    try {
+        return $app->json($reportService->modifyById($reportId, $paramBag));
+    } catch (Exception $e) {
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }
 });
