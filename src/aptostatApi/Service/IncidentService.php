@@ -153,11 +153,11 @@ class IncidentService
             $formattedList['incidents'][] = array(
                 'id' => $incident->getIdIncident(),
                 'createdTimestamp' => $incident->getTimestamp(),
-                'lastestMessageId' => $incident->getLatestMessageId(),
-                'lastestMessageAuthor' => $incident->getLatestMessageAuthor(),
-                'lastestMessageTimestamp' => $incident->getLatestMessageTimestamp(),
-                'lastestMessageText' => $incident->getLatestMessageText(),
-                'lastestStatus' => $incident->getLatestMessageFlag(),
+                'lastMessageId' => $incident->getLatestMessageId(),
+                'lastMessageAuthor' => $incident->getLatestMessageAuthor(),
+                'lastMessageTimestamp' => $incident->getLatestMessageTimestamp(),
+                'lastMessageText' => $incident->getLatestMessageText(),
+                'lastStatus' => $incident->getLatestMessageFlag(),
                 'currentHidden' => (boolean) $incident->getHidden(),
                 'connectedReports' => $this->getConnectedReportsId($incident->getIdIncident(), $reports),
             );
@@ -177,11 +177,11 @@ class IncidentService
         $singleResultAsArray['incidents'] = array(
             'id' => $incident->getIdIncident(),
             'createdTimestamp' => $incident->getTimestamp(),
-            'lastestMessageId' => $incident->getLatestMessageId(),
-            'lastestMessageAuthor' => $incident->getLatestMessageAuthor(),
-            'lastestMessageTimestamp' => $incident->getLatestMessageTimestamp(),
-            'lastestMessageText' => $incident->getLatestMessageText(),
-            'lastestStatus' => $incident->getLatestMessageFlag(),
+            'lastMessageId' => $incident->getLatestMessageId(),
+            'lastMessageAuthor' => $incident->getLatestMessageAuthor(),
+            'lastMessageTimestamp' => $incident->getLatestMessageTimestamp(),
+            'lastMessageText' => $incident->getLatestMessageText(),
+            'lastStatus' => $incident->getLatestMessageFlag(),
             'currentHidden' => (boolean) $incident->getHidden(),
             'connectedReports' => $this->getConnectedReportsId($incident->getIdIncident(), $reports),
         );
