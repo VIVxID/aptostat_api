@@ -2,26 +2,27 @@
 
 <database name="Aptostat" defaultIdMethod="native">
     <table name="Report" phpName="Report">
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+            <parameter name="Charset" value="utf8"/>
+          </vendor>
         <column name="IdReport" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="Timestamp" type="timestamp" required="true" />
         <column name="ErrorMessage" type="varchar" size="255" required="true" />
         <column name="CheckType" type="varchar" size="40" required="true" />
-        <column name="IdSource" type="integer" required="true" />
+        <column name="Source" type="varchar" size="255" required="true" />
         <column name="IdService" type="integer" required="true" />
-        <foreign-key foreignTable="Source" phpName="Source" refPhpName="Report">
-            <reference local="IdSource" foreign="IdSource" />
-        </foreign-key>
+        <column name="Hidden" type="boolean" defaultValue="false" required="true" />
         <foreign-key foreignTable="Service" phpName="Service" refPhpName="Report">
             <reference local="IdService" foreign="IdService" />
         </foreign-key>
     </table>
     
-    <table name="Source" phpName="Source">
-        <column name="IdSource" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="Name" type="varchar" size="20" required="true" />
-    </table>
-    
     <table name="Service" phpName="Service">
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+            <parameter name="Charset" value="utf8"/>
+          </vendor>
         <column name="IdService" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="Name" type="varchar" size="50" required="true" />
 	<unique>
@@ -30,45 +31,62 @@
     </table>
     
     <table name="Incident" phpName="Incident">
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+            <parameter name="Charset" value="utf8"/>
+          </vendor>
         <column name="IdIncident" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 	<column name="Title" type="varchar" size="255" required="true" />
         <column name="Timestamp" type="timestamp" required="true" />
     </table>
     
     <table name="Message" phpName="Message">
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+            <parameter name="Charset" value="utf8"/>
+          </vendor>
         <column name="IdMessage" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="IdIncident" type="integer" required="true" />
-        <column name="IdFlag" type="integer" required="true" />
+        <column name="Flag" type="varchar" size="255" required="true" />
+        <validator column="Flag">
+          <rule
+            name="validValues"
+            value="WARNING|CRITICAL|INTERNAL|IGNORED|RESPONDING|RESOLVED"
+            message="Invalid flag given, please give a valid flag" />
+        </validator>
         <column name="Timestamp" type="timestamp" required="true" />
         <column name="Text" type="varchar" size="255" required="true" />
         <column name="Author" type="varchar" size="30" required="true" />
-        <column name="Visible" type="boolean" required="true" />
+        <column name="Hidden" type="boolean" defaultValue="false" required="true" />
         <foreign-key foreignTable="Incident" phpName="Incident" refPhpName="Message">
             <reference local="IdIncident" foreign="IdIncident" />
         </foreign-key>
-        <foreign-key foreignTable="Flag" phpName="Flag" refPhpName="Message">
-            <reference local="IdFlag" foreign="IdFlag" />
-        </foreign-key>
-    </table>
-    
-    <table name="Flag" phpName="Flag">
-        <column name="IdFlag" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="Name" type="varchar" size="20" required="true" />
     </table>
     
     <table name="ReportStatus" phpName="ReportStatus">
-	<column name="IdReport" type="integer" required="true" primaryKey="true" />
-	<column name="Timestamp" type="timestamp" required="true" primaryKey="true" />
-        <column name="IdFlag" type="integer" required="true" />
-	<foreign-key foreignTable="Report" phpName="Report" refPhpName="ReportStatus">
-	    <reference local="IdReport" foreign="IdReport" />
-	</foreign-key>
-        <foreign-key foreignTable="Flag" phpName="Flag" refPhpName="ReportStatus">
-            <reference local="IdFlag" foreign="IdFlag" />
-        </foreign-key>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+            <parameter name="Charset" value="utf8"/>
+          </vendor>
+	    <column name="IdReport" type="integer" required="true" primaryKey="true" />
+    	<column name="Timestamp" type="timestamp" required="true" primaryKey="true" />
+        <column name="Flag" type="varchar" size="255" required="true" />
+        <validator column="Flag">
+          <rule
+            name="validValues"
+            value="WARNING|CRITICAL|INTERNAL|IGNORED|RESPONDING|RESOLVED"
+            message="Invalid flag given, please give a valid flag" />
+        </validator>
+    	<foreign-key foreignTable="Report" phpName="Report" refPhpName="ReportStatus">
+    	    <reference local="IdReport" foreign="IdReport" />
+    	</foreign-key>
     </table>
     
     <table name="IncidentReport" phpName="IncidentReport" isCrossRef="true">
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+            <parameter name="Charset" value="utf8"/>
+          </vendor>
         <column name="IdIncident" type="integer" required="true" primaryKey="true" />
         <column name="IdReport" type="integer" required="true" primaryKey="true" />
         <foreign-key foreignTable="Report" phpName="Report" refPhpName="IncidentReport" onDelete="cascade">

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <propel>
+    <datasources default="Aptostat">
+      <datasource id="Aptostat">
+        <adapter>mysql</adapter>
+        <connection>
+          <dsn>mysql:host=localhost;dbname=aptostat_api</dsn>
+          <user>aptostat</user>
+          <password>aptostat</password>
+        </connection>
+      </datasource>
+    </datasources>
+  </propel>
+</config>

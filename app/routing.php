@@ -1,7 +1,6 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 // Fetch http package and
 $app->before(function (Request $request) {
@@ -11,11 +10,12 @@ $app->before(function (Request $request) {
     }
 });
 
-// Include reportController
-include '../src/aptostatApi/controller/reportController.php';
+include __DIR__ . '/../src/aptostatApi/controller/reportController.php';
+include  __DIR__ . '/../src/AptostatApi/controller/incidentController.php';
 
-// Include incidentController
-include '../src/aptostatApi/controller/incidentController.php';
+$app->match('/api', function() use ($app) {
+        $out = array('statusDesc' => 'Read documentation for proper use of the API');
+        return $app->json($out, 200);
 
 // Include liveController
 include '../src/aptostatApi/controller/liveController.php';
@@ -27,10 +27,13 @@ include '../src/aptostatApi/controller/uptimeController.php';
 $app->match('/api/', function() use ($app) {
 	$out = array('statusDesc' => 'Read documentation for proper use of the API');
 	return $app->json($out, 200);
+
 });
 
 // End user front-end
 $app->match('/', function() use ($app) {
+
     $out = array('statusDesc' => 'Read documentation for proper use of the API');
-	return $app->json($out, 200);
+    return $app->json($out, 200);
+
 });

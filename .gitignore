@@ -1,10 +1,19 @@
-log/*
-vendor/
+# Log files
+app/log
 *.log
-# Bootstrap
-app/bootstrap*
 
-# Symfony directories
-vendor/*
-*/logs/*
-*/cache/*
+# Local propel files
+build.properties
+build/conf/aptostat_api-conf.php
+runtime-conf.xml
+
+# Composer
+vendor
+
+# PhpStorm
+.idea/workspace.xml
+.idea/tasks.xml
+
+# Propel
+build.properties
+runtime-conf.xml

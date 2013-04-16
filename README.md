@@ -1,6 +1,6 @@
 # Aptostat_api
-The API-part of Aptostat. 
-It handles API-requests and fetches data from the database.
+
+The API-part of Aptostat. It handles API-requests and fetches data from the database.
 
 ## Environment (Requirements)
 Apart from what is specified in composer.json:
