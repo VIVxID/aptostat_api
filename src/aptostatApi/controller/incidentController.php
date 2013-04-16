@@ -1,5 +1,4 @@
 <?php
-
 // Load classes
 use Symfony\Component\HttpFoundation\Request;
 use aptostatApi\Service\ErrorService;
@@ -61,3 +60,4 @@ $app->put('/api/incident/{incidentId}', function(Request $paramBag, $incidentId)
         return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }
 });
+

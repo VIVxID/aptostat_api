@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 use Symfony\Component\HttpKernel\Debug\ErrorHandler;
 ErrorHandler::register(); // Convert errors to exceptions
 
-// This is the default config.
+// Set up default config
 $config = array(
     'debug' => true,
     'timer.start' => $startTime,

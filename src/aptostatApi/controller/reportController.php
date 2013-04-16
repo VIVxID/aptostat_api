@@ -15,7 +15,7 @@ $app->get('/api/report', function(Request $paramBag) use ($app) {
     }
 });
 
-// GET: /report/{id} - Return a specific report
+// GET: api/report/{id} - Return a specific report
 $app->get('/api/report/{reportId}', function($reportId) use ($app) {
     $reportService = new aptostatApi\Service\ReportService();
 

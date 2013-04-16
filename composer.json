@@ -19,4 +19,5 @@
         "fzaninotto/faker": "~1.1"
     },
     "minimum-stability": "stable"
+
 }

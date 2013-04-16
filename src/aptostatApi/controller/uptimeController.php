@@ -1,7 +1,7 @@
 <?php
 
-$app->get('/api/live',function () use ($app) {
-        $livefeed = new aptostatApi\model\Live;
+$app->get('/api/uptime',function () use ($app) {
+        $livefeed = new aptostatApi\model\Uptime;
         $status = $livefeed->query();
 
         switch ($status) {

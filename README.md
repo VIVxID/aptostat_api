@@ -1,4 +1,5 @@
 # Aptostat_api
+
 The API-part of Aptostat. It handles API-requests and fetches data from the database.
 
 ## Environment (Requirements)
@@ -38,7 +39,7 @@ Create log dir and make it writable:
     $ sudo chmod +a "_www allow delete,write,append,file_inherit,directory_inherit" app/log
     $ sudo chmod +a "`whoami` allow delete,write,append,file_inherit,directory_inherit" app/log
 
-- You need Pingdom access crededtials for the Api for Live information:
+- You need Pingdom access crededtials for the Api for Live information, as well as uptime stat:
     - Username
     - Password
     - API-token

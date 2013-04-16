@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
     "hash": "28fb7c14f1cbb1701d5a806e35ba12c4",
+=======
+    "hash": "12ab97be0e2eb2b0f76eef1aa795f7eb",
+>>>>>>> master
     "packages": [
         {
             "name": "monolog/monolog",
@@ -89,7 +93,7 @@
                     "classes/phing/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "include-path": [
                 "classes"
             ],
@@ -195,7 +199,7 @@
                     "generator/lib"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "include-path": [
                 "runtime/lib",
                 "generator/lib"
@@ -343,17 +347,30 @@
         },
         {
             "name": "symfony/event-dispatcher",
+<<<<<<< HEAD
             "version": "v2.1.9",
+=======
+            "version": "v2.1.8",
+>>>>>>> master
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
+<<<<<<< HEAD
                 "reference": "v2.1.9"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/v2.1.9",
                 "reference": "v2.1.9",
+=======
+                "reference": "v2.1.8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/v2.1.8",
+                "reference": "v2.1.8",
+>>>>>>> master
                 "shasum": ""
             },
             "require": {
@@ -435,17 +452,30 @@
         },
         {
             "name": "symfony/http-kernel",
+<<<<<<< HEAD
             "version": "v2.1.9",
+=======
+            "version": "v2.1.8",
+>>>>>>> master
             "target-dir": "Symfony/Component/HttpKernel",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
+<<<<<<< HEAD
                 "reference": "v2.1.9"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/v2.1.9",
                 "reference": "v2.1.9",
+=======
+                "reference": "v2.1.8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/v2.1.8",
+                "reference": "v2.1.8",
+>>>>>>> master
                 "shasum": ""
             },
             "require": {
@@ -493,6 +523,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
+<<<<<<< HEAD
             "time": "2013-03-26 10:44:36"
         },
         {
@@ -538,6 +569,9 @@
             "description": "Symfony Monolog Bridge",
             "homepage": "http://symfony.com",
             "time": "2012-12-06 10:00:55"
+=======
+            "time": "2013-02-23 21:28:36"
+>>>>>>> master
         },
         {
             "name": "symfony/routing",
