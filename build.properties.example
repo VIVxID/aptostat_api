@@ -2,8 +2,8 @@
 propel.database = mysql
 
 # Project name
-propel.project = aptostat_api
+propel.project = aptostat
 
-propel.database.url = mysql:host=localhost;dbname=aptostat_api
+propel.database.url = mysql:host=localhost;dbname=aptostat
 propel.database.user = aptostat
 propel.database.password = aptostat
