@@ -152,6 +152,7 @@ class IncidentService
         foreach ($list as $incident) {
             $formattedList['incidents'][] = array(
                 'id' => $incident->getIdIncident(),
+                'title' => $incident->getTitle(),
                 'createdTimestamp' => $incident->getTimestamp(),
                 'lastMessageId' => $incident->getLatestMessageId(),
                 'lastMessageAuthor' => $incident->getLatestMessageAuthor(),
@@ -176,13 +177,14 @@ class IncidentService
     {
         $singleResultAsArray['incidents'] = array(
             'id' => $incident->getIdIncident(),
+            'title' => $incident->getTitle(),
             'createdTimestamp' => $incident->getTimestamp(),
             'lastMessageId' => $incident->getLatestMessageId(),
             'lastMessageAuthor' => $incident->getLatestMessageAuthor(),
             'lastMessageTimestamp' => $incident->getLatestMessageTimestamp(),
             'lastMessageText' => $incident->getLatestMessageText(),
             'lastStatus' => $incident->getLatestMessageFlag(),
-            'currentHidden' => (boolean) $incident->getHidden(),
+            'hidden' => (boolean) $incident->getHidden(),
             'connectedReports' => $this->getConnectedReportsId($incident->getIdIncident(), $reports),
         );
 
