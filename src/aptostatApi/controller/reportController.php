@@ -1,7 +1,5 @@
 <?php
 
-// Load classes
-use Symfony\Component\HttpFoundation\Request;
 use aptostatApi\Service\ErrorService;
 
 // GET: /report - Return a list of reports
