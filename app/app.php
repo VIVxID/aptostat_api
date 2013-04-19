@@ -12,7 +12,6 @@ $config = array(
     'monolog.name' => 'aptostat',
     'monolog.level' => \Monolog\Logger::DEBUG,
     'monolog.logfile' => __DIR__.'/log/dev.log',
-    'monolog.logstashfile' => __DIR__ . '/log/logstash.log',
 );
 
 // Apply custom config if available
