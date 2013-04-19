@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
 use aptostatApi\Service\ErrorService;
 
 // GET: api/incident - Return a list of incidents
