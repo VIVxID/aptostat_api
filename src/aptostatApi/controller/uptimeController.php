@@ -1,19 +1,13 @@
 <?php
 
 $app->get('/api/uptime',function () use ($app) {
-        $livefeed = new aptostatApi\model\Uptime;
-        $status = $livefeed->query();
+    $liveService = new aptostatApi\Service\UptimeService();
 
-        switch ($status) {
-            case '200':
-                return $app->json($livefeed->get(), 200);
-                break;
-            default:
-                return $app->json(array(
-                   'errorCode' => 500,
-                   'errorDesc' => 'Internal server error'
-                   ), 500);
-            break;
-        }
+    try {
+        $uptimeData = $liveService->getUptimeData();
+        return $app->json($uptimeData, 200);
+    } catch (Exception $e) {
+        return $app->json(\aptostatApi\Service\ErrorService::errorResponse($e), $e->getCode());
+    }
 });
 
