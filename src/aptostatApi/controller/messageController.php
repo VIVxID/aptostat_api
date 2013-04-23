@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
 use aptostatApi\Service\ErrorService;
 
 // GET: /message - Return a list of reports
