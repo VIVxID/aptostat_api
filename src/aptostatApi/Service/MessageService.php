@@ -5,6 +5,26 @@ namespace aptostatApi\Service;
 
 class MessageService
 {
+    public function getList($paramBag)
+    {
+        $limit = $paramBag->query->get('limit');
+        $offset = $paramBag->query->get('offset');
+        $showHidden = $paramBag->query->get('showHidden');
+
+        $list = \MessageQuery::create()
+            ->orderByTimestamp('desc')
+            ->showHidden($showHidden)
+            ->limit($limit)
+            ->offset($offset)
+            ->find();
+
+        if ($list->isEmpty()) {
+            throw new \Exception('We could not find any messages', 404);
+        }
+
+        return $this->formatListResult($list);
+    }
+
     public function addMessage($incidentId, $paramBag)
     {
         if (!preg_match('/^\d+$/',$incidentId)) {
@@ -97,5 +117,24 @@ class MessageService
         $message->setHidden($messageParam['hidden']);
 
         $message->save();
+    }
+
+    private function formatListResult($list)
+    {
+        $formattedList = array();
+
+        foreach ($list as $message) {
+            $formattedList['message'][] = array(
+                'id' => $message->getIdMessage,
+                'connectedToIncident' => $message->getIdIncident(),
+                'flag' => $message->getFlag(),
+                'timestamp' => $message->getFlagTime(),
+                'author' => $message->getAuthor(),
+                'messageText' => $message->getText(),
+                'hidden' => $message->getHidden(),
+            );
+        }
+
+        return $formattedList;
     }
 }

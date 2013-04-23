@@ -12,6 +12,7 @@ $app->before(function (Request $request) {
 
 include __DIR__ . '/../src/aptostatApi/controller/reportController.php';
 include  __DIR__ . '/../src/aptostatApi/controller/incidentController.php';
+include  __DIR__ . '/../src/aptostatApi/controller/messageController.php';
 include __DIR__ . '/../src/aptostatApi/controller/liveController.php';
 include __DIR__ . '/../src/aptostatApi/controller/uptimeController.php';
 

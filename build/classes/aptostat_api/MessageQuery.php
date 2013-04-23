@@ -15,4 +15,13 @@
  */
 class MessageQuery extends BaseMessageQuery
 {
+    public function showHidden($showHidden)
+    {
+        if ($showHidden == 1) {
+            return $this;
+        } else {
+            return $this
+                ->filterByHidden(0);
+        }
+    }
 }
