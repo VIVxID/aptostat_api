@@ -89,11 +89,11 @@ Gives you a list over reports.
             - default: null
             - Offset the request (optional)
 
-### Get a specific incident by id
+####Get a specific incident by id
     GET: http://url/api/incident/{id}
 Gives you a specific incident and more detailed information
 
-### Create a new incident
+#### Create a new incident
     POST: http://url/api/incident
 Create a new incident. Parameters sent in the http body in JSON format.
 
@@ -124,7 +124,7 @@ Example:
 }
 ```
 
-### Modify a specific incident
+#### Modify a specific incident
     PUT: http://your.url/api/incident/{id}
 Modify an incident. Parameters sent in the http body in JSON format.
 
@@ -159,7 +159,8 @@ Example - Change the title of an incident:
 }
 ```
 
-### Add a new message to an incident
+### Message
+#### Add a new message to an incident
     POST: http://your.url/api/incident/{id}/message
 Add a new message to an incident. Parameters sent in the http body in JSON format.
 
@@ -184,8 +185,8 @@ Example:
 }
 ```
 
-### Modify an existing message
-    PUT: http://your.url/api/incident/{incidentId}/message/{messageId}
+#### Modify an existing message
+    PUT: http://your.url/api/message/{messageId}
 Modify an existing message. Parameters sent in the http body in JSON format.
 
 - Parameters
