@@ -169,7 +169,7 @@ Example - Change the title of an incident:
 
 ### Message
 #### List messages
-    GET: http://your.url/api/report
+    GET: http://your.url/api/message
 Gives you a list over messages.
 
 - Parameters:
