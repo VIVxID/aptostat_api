@@ -14,7 +14,7 @@ $app->get('/api/message', function(Request $paramBag) use ($app) {
     }
 });
 
-// PUT: api/incident/message/{messageId} - Modify existing message
+// PUT: api/message/{messageId} - Modify existing message
 $app->put('api/incident/message/{messageId}', function(Request $paramBag, $messageId) use ($app) {
     $messageService = new aptostatApi\Service\MessageService();
 
