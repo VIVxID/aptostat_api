@@ -121,14 +121,12 @@ class MessageService
 
     private function formatListResult($list)
     {
-        $formattedList = array();
-
         foreach ($list as $message) {
             $formattedList['message'][] = array(
-                'id' => $message->getIdMessage,
+                'id' => $message->getIdMessage(),
                 'connectedToIncident' => $message->getIdIncident(),
                 'flag' => $message->getFlag(),
-                'timestamp' => $message->getFlagTime(),
+                'timestamp' => $message->getTimestamp(),
                 'author' => $message->getAuthor(),
                 'messageText' => $message->getText(),
                 'hidden' => $message->getHidden(),
