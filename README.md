@@ -89,9 +89,17 @@ Gives you a list over reports.
             - default: null
             - Offset the request (optional)
 
-####Get a specific incident by id
+#### Get a specific incident by id
     GET: http://url/api/incident/{id}
 Gives you a specific incident and more detailed information
+
+#### List all reports connected to a specific incident
+    GET: http://your.url/api/incident/{incidentId}/report
+Gives you a list over reports connected to a specific incident.
+
+#### List messages connected to a specific incident
+    GET: http://your.url/api/incident/{incidentId}/message
+Gives you a list over messages connected to a specific incident.
 
 #### Create a new incident
     POST: http://url/api/incident
@@ -160,6 +168,25 @@ Example - Change the title of an incident:
 ```
 
 ### Message
+#### List messages
+    GET: http://your.url/api/report
+Gives you a list over messages.
+
+- Parameters:
+    - showHidden (0 or 1)
+        - default: 0
+        - Show hidden reports (optional)
+    - limit (int)
+        - default: null
+        - Limit the number of reports in the request (optional)
+    - offset (int)
+            - default: null
+            - Offset the request (optional)
+
+####Get a specific message by id
+    GET: http://url/api/message/{id}
+Gives you a specific message
+
 #### Add a new message to an incident
     POST: http://your.url/api/incident/{id}/message
 Add a new message to an incident. Parameters sent in the http body in JSON format.
