@@ -64,8 +64,8 @@ class MessageService
      */
     private function extractParam($param)
     {
-        if (!isset($param['author'])) {
-            throw new \Exception('No author has been passed', 400);
+        if (isset($param['author'])) {
+            $filteredParamBag['author'] = $param['author'];
         }
 
         if (isset($param['flag'])) {
@@ -73,24 +73,22 @@ class MessageService
             if (!in_array(strtoupper($param['flag']), $allowedFlags)) {
                 throw new \Exception('Invalid flag has been passed. Check it', 400);
             }
-        } else {
-            throw new \Exception('No flag has been passed', 400);
+            $filteredParamBag['flag'] = $param['flag'];
         }
 
-        if (!isset($param['messageText'])) {
-            throw new \Exception('No messageText has been passed', 400);
+        if (isset($param['messageText'])) {
+            $filteredParamBag['messageText'] = $param['messageText'];
         }
 
-        if (!isset($param['hidden'])) {
-            $param['hidden'] = false;
+        if (isset($param['hidden'])) {
+            $filteredParamBag['hidden'] = $param['hidden'];
         }
 
-        return array(
-            'author' => $param['author'],
-            'flag' => $param['flag'],
-            'messageText' => $param['messageText'],
-            'hidden' => $param['hidden'],
-        );
+        if (!isset($filteredParamBag)) {
+            throw new \Exception('No valid parameters has been passed', 400);
+        }
+
+        return $filteredParamBag;
     }
 
     private function saveNewMessageToDb($incidentId, $messageParam)
@@ -111,10 +109,21 @@ class MessageService
     {
         $message = \MessageQuery::create()->findOneByIdmessage($messageId);
 
-        $message->setAuthor($messageParam['author']);
-        $message->setFlag($messageParam['flag']);
-        $message->setText($messageParam['messageText']);
-        $message->setHidden($messageParam['hidden']);
+        if (array_key_exists('author', $messageParam)) {
+            $message->setAuthor($messageParam['author']);
+        }
+
+        if (array_key_exists('flag', $messageParam)) {
+            $message->setFlag($messageParam['flag']);
+        }
+
+        if (array_key_exists('messageText', $messageParam)) {
+            $message->setText($messageParam['messageText']);
+        }
+
+        if (array_key_exists('hidden', $messageParam)) {
+            $message->setHidden($messageParam['hidden']);
+        }
 
         $message->save();
     }
