@@ -14,6 +14,17 @@ $app->get('/api/message', function(Request $paramBag) use ($app) {
     }
 });
 
+// GET: api/message/{id} - Return a specific message
+$app->get('/api/message/{id}', function($id) use ($app) {
+    $messageService = new aptostatApi\Service\MessageService();
+
+    try {
+        return $app->json($messageService->getMessageById($id));
+    } catch (Exception $e) {
+        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+    }
+});
+
 // PUT: api/message/{messageId} - Modify existing message
 $app->put('api/message/{messageId}', function(Request $paramBag, $messageId) use ($app) {
     $messageService = new aptostatApi\Service\MessageService();

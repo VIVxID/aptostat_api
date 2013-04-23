@@ -25,6 +25,23 @@ class MessageService
         return $this->formatListResult($list);
     }
 
+    public function getMessageById($id)
+    {
+        if (!preg_match('/^\d+$/',$id)) {
+            throw new \Exception(sprintf('Id should be a number, %s given', $id), 400);
+        }
+
+        $message = \MessageQuery::create()
+            ->filterByIdmessage($id)
+            ->findOne();
+
+        if ($message == null) {
+            throw new \Exception(sprintf('No message found with id %s', $id), 404);
+        }
+
+        return $this->formatSingleResult($message);
+    }
+
     public function addMessage($incidentId, $paramBag)
     {
         if (!preg_match('/^\d+$/',$incidentId)) {
@@ -143,5 +160,20 @@ class MessageService
         }
 
         return $formattedList;
+    }
+
+    private function formatSingleResult($message)
+    {
+        $formattedMessage['message'][] = array(
+            'id' => $message->getIdMessage(),
+            'connectedToIncident' => $message->getIdIncident(),
+            'flag' => $message->getFlag(),
+            'timestamp' => $message->getTimestamp(),
+            'author' => $message->getAuthor(),
+            'messageText' => $message->getText(),
+            'hidden' => $message->getHidden(),
+        );
+
+        return $formattedMessage;
     }
 }
