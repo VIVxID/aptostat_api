@@ -26,7 +26,9 @@ class IncidentService
         }
 
         // Fetch reports for listing out which ID's the incident is coupled with
-        $reports = \IncidentReportQuery::create()->find();
+        $reports = \IncidentReportQuery::create()
+            ->withReportLastStatus()
+            ->find();
 
         return $this->formatListResult($list, $reports);
     }
