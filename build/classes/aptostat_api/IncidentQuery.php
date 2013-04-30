@@ -34,7 +34,7 @@ class IncidentQuery extends BaseIncidentQuery
             ->where(
                 'Message.Timestamp IN (SELECT MAX(Timestamp)
                 FROM Message
-                WHERE Incident.IdIncident = Message.IdIncident)'
+                WHERE Incident.IdIncident = Message.IdIncident AND (Message.Flag != "INTERNAL" AND Message.Flag != "IGNORED"))'
             );
     }
 }
