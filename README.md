@@ -238,5 +238,9 @@ Example:
 ```
 
 ### Get live status on the services
+    GET: http://your.url/api/live
+Get live status on the services
 
 ### Get 7-days history on the status for the services
+    GET: http://your.url/api/uptime
+Get uptime statistics the last 7 days
