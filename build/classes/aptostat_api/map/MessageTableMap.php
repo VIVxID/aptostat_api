@@ -42,7 +42,7 @@ class MessageTableMap extends TableMap
         $this->addForeignKey('IdIncident', 'Idincident', 'INTEGER', 'Incident', 'IdIncident', true, null, null);
         $this->addColumn('Flag', 'Flag', 'VARCHAR', true, 255, null);
         $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, null);
-        $this->addColumn('Text', 'Text', 'VARCHAR', true, 255, null);
+        $this->addColumn('Text', 'Text', 'CLOB', true, null, null);
         $this->addColumn('Author', 'Author', 'VARCHAR', true, 30, null);
         $this->addColumn('Hidden', 'Hidden', 'BOOLEAN', true, 1, false);
         // validators

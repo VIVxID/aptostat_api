@@ -55,7 +55,7 @@
             message="Invalid flag given, please give a valid flag" />
         </validator>
         <column name="Timestamp" type="timestamp" required="true" />
-        <column name="Text" type="varchar" size="255" required="true" />
+        <column name="Text" type="clob" required="true" />
         <column name="Author" type="varchar" size="30" required="true" />
         <column name="Hidden" type="boolean" defaultValue="false" required="true" />
         <foreign-key foreignTable="Incident" phpName="Incident" refPhpName="Message">

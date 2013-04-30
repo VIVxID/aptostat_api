@@ -65,7 +65,7 @@ CREATE TABLE `Message`
     `IdIncident` INTEGER NOT NULL,
     `Flag` VARCHAR(255) NOT NULL,
     `Timestamp` DATETIME NOT NULL,
-    `Text` VARCHAR(255) NOT NULL,
+    `Text` LONGTEXT NOT NULL,
     `Author` VARCHAR(30) NOT NULL,
     `Hidden` TINYINT(1) DEFAULT 0 NOT NULL,
     PRIMARY KEY (`IdMessage`),

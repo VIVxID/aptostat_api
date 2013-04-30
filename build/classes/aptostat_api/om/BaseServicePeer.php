@@ -12,7 +12,7 @@ abstract class BaseServicePeer
 {
 
     /** the default database name for this class */
-    const DATABASE_NAME = 'Aptostat';
+    const DATABASE_NAME = 'aptostat';
 
     /** the table name for this class */
     const TABLE_NAME = 'Service';
