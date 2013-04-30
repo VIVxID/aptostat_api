@@ -1,6 +1,5 @@
 <?php
 
-// Load classes
 use Symfony\Component\HttpFoundation\Request;
 use aptostatApi\Service\ErrorService;
 
@@ -68,17 +67,6 @@ $app->post('api/incident/{incidentId}/message', function(Request $paramBag, $inc
 
     try {
         return $app->json($messageService->addMessage($incidentId, $paramBag));
-    } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
-    }
-});
-
-// PUT: api/incident/{incidentId}/message/{messageId} - Modify existing message
-$app->put('api/incident/{incidentId}/message/{messageId}', function(Request $paramBag, $messageId) use ($app) {
-    $messageService = new aptostatApi\Service\MessageService();
-
-    try {
-        return $app->json($messageService->editMessageById($messageId, $paramBag));
     } catch (Exception $e) {
         return $app->json(ErrorService::errorResponse($e), $e->getCode());
     }

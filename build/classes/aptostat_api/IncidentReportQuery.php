@@ -15,4 +15,12 @@
  */
 class IncidentReportQuery extends BaseIncidentReportQuery
 {
+    public function withReportLastStatus()
+    {
+        return $this
+            ->joinWith('IncidentReport.Report')
+            ->joinWith('Report.ReportStatus')
+            ->where('ReportStatus.Timestamp IN (SELECT MAX(Timestamp) FROM ReportStatus WHERE Report.IdReport = ReportStatus.IdReport)')
+            ->withColumn('ReportStatus.Flag', 'LastReportFlag');
+    }
 }

@@ -1,19 +1,13 @@
 <?php
 
 $app->get('/api/live',function () use ($app) {
-        $livefeed = new aptostatApi\model\Live;
-        $status = $livefeed->query();
+    $liveService = new aptostatApi\Service\LiveService();
 
-        switch ($status) {
-            case '200':
-                return $app->json($livefeed->get(), 200);
-                break;
-            default:
-                return $app->json(array(
-                   'errorCode' => 500,
-                   'errorDesc' => 'Internal server error'
-                   ), 500);
-            break;
-        }
+    try {
+        $realTimeData = $liveService->getRealTimeData();
+        return $app->json($realTimeData, 200);
+    } catch (Exception $e) {
+        return $app->json(\aptostatApi\Service\ErrorService::errorResponse($e), $e->getCode());
+    }
 });
 

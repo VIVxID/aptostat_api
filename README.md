@@ -89,11 +89,19 @@ Gives you a list over reports.
             - default: null
             - Offset the request (optional)
 
-### Get a specific incident by id
+#### Get a specific incident by id
     GET: http://url/api/incident/{id}
 Gives you a specific incident and more detailed information
 
-### Create a new incident
+#### List all reports connected to a specific incident
+    GET: http://your.url/api/incident/{incidentId}/report
+Gives you a list over reports connected to a specific incident.
+
+#### List messages connected to a specific incident
+    GET: http://your.url/api/incident/{incidentId}/message
+Gives you a list over messages connected to a specific incident.
+
+#### Create a new incident
     POST: http://url/api/incident
 Create a new incident. Parameters sent in the http body in JSON format.
 
@@ -124,7 +132,7 @@ Example:
 }
 ```
 
-### Modify a specific incident
+#### Modify a specific incident
     PUT: http://your.url/api/incident/{id}
 Modify an incident. Parameters sent in the http body in JSON format.
 
@@ -159,7 +167,27 @@ Example - Change the title of an incident:
 }
 ```
 
-### Add a new message to an incident
+### Message
+#### List messages
+    GET: http://your.url/api/message
+Gives you a list over messages.
+
+- Parameters:
+    - showHidden (0 or 1)
+        - default: 0
+        - Show hidden reports (optional)
+    - limit (int)
+        - default: null
+        - Limit the number of reports in the request (optional)
+    - offset (int)
+            - default: null
+            - Offset the request (optional)
+
+####Get a specific message by id
+    GET: http://url/api/message/{id}
+Gives you a specific message
+
+#### Add a new message to an incident
     POST: http://your.url/api/incident/{id}/message
 Add a new message to an incident. Parameters sent in the http body in JSON format.
 
@@ -184,8 +212,8 @@ Example:
 }
 ```
 
-### Modify an existing message
-    PUT: http://your.url/api/incident/{incidentId}/message/{messageId}
+#### Modify an existing message
+    PUT: http://your.url/api/message/{messageId}
 Modify an existing message. Parameters sent in the http body in JSON format.
 
 - Parameters
@@ -210,5 +238,9 @@ Example:
 ```
 
 ### Get live status on the services
+    GET: http://your.url/api/live
+Get live status on the services
 
 ### Get 7-days history on the status for the services
+    GET: http://your.url/api/uptime
+Get uptime statistics the last 7 days

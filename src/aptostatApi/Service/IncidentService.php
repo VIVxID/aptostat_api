@@ -26,7 +26,9 @@ class IncidentService
         }
 
         // Fetch reports for listing out which ID's the incident is coupled with
-        $reports = \IncidentReportQuery::create()->find();
+        $reports = \IncidentReportQuery::create()
+            ->withReportLastStatus()
+            ->find();
 
         return $this->formatListResult($list, $reports);
     }
@@ -58,7 +60,10 @@ class IncidentService
             ->find();
 
         // Fetch reports for listing out which ID's the incident is coupled with
-        $reports = \IncidentReportQuery::create()->find();
+        // and their last status
+        $reports = \IncidentReportQuery::create()
+            ->withReportLastStatus()
+            ->find();
 
         return $this->formatSingleResult($report, $history, $reports);
     }
@@ -149,7 +154,7 @@ class IncidentService
                 'lastMessageText' => $incident->getLatestMessageText(),
                 'lastStatus' => $incident->getLatestMessageFlag(),
                 'hidden' => (boolean) $incident->getHidden(),
-                'connectedReports' => $this->getConnectedReportsId($incident->getIdIncident(), $reports),
+                'connectedReports' => $this->getConnectedReports($incident->getIdIncident(), $reports),
             );
         }
 
@@ -174,7 +179,7 @@ class IncidentService
             'lastMessageText' => $incident->getLatestMessageText(),
             'lastStatus' => $incident->getLatestMessageFlag(),
             'hidden' => (boolean) $incident->getHidden(),
-            'connectedReports' => $this->getConnectedReportsId($incident->getIdIncident(), $reports),
+            'connectedReports' => $this->getConnectedReports($incident->getIdIncident(), $reports),
         );
 
         foreach ($history as $update) {
@@ -191,13 +196,13 @@ class IncidentService
         return $singleResultAsArray;
     }
 
-    private function getConnectedReportsId($incidentId, $reports)
+    private function getConnectedReports($incidentId, $reports)
     {
         $connectedReportsAsArray = array();
 
         foreach ($reports as $report) {
             if ($incidentId == $report->getIdIncident()) {
-                $connectedReportsAsArray[] = $report->getIdReport();
+                $connectedReportsAsArray[$report->getIdReport()] = $report->getLastReportFlag();
             }
         }
 

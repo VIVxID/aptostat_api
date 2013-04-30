@@ -5,6 +5,43 @@ namespace aptostatApi\Service;
 
 class MessageService
 {
+    public function getList($paramBag)
+    {
+        $limit = $paramBag->query->get('limit');
+        $offset = $paramBag->query->get('offset');
+        $showHidden = $paramBag->query->get('showHidden');
+
+        $list = \MessageQuery::create()
+            ->orderByTimestamp('desc')
+            ->showHidden($showHidden)
+            ->limit($limit)
+            ->offset($offset)
+            ->find();
+
+        if ($list->isEmpty()) {
+            throw new \Exception('We could not find any messages', 404);
+        }
+
+        return $this->formatListResult($list);
+    }
+
+    public function getMessageById($id)
+    {
+        if (!preg_match('/^\d+$/',$id)) {
+            throw new \Exception(sprintf('Id should be a number, %s given', $id), 400);
+        }
+
+        $message = \MessageQuery::create()
+            ->filterByIdmessage($id)
+            ->findOne();
+
+        if ($message == null) {
+            throw new \Exception(sprintf('No message found with id %s', $id), 404);
+        }
+
+        return $this->formatSingleResult($message);
+    }
+
     public function addMessage($incidentId, $paramBag)
     {
         if (!preg_match('/^\d+$/',$incidentId)) {
@@ -44,8 +81,8 @@ class MessageService
      */
     private function extractParam($param)
     {
-        if (!isset($param['author'])) {
-            throw new \Exception('No author has been passed', 400);
+        if (isset($param['author'])) {
+            $filteredParamBag['author'] = $param['author'];
         }
 
         if (isset($param['flag'])) {
@@ -53,24 +90,22 @@ class MessageService
             if (!in_array(strtoupper($param['flag']), $allowedFlags)) {
                 throw new \Exception('Invalid flag has been passed. Check it', 400);
             }
-        } else {
-            throw new \Exception('No flag has been passed', 400);
+            $filteredParamBag['flag'] = $param['flag'];
         }
 
-        if (!isset($param['messageText'])) {
-            throw new \Exception('No messageText has been passed', 400);
+        if (isset($param['messageText'])) {
+            $filteredParamBag['messageText'] = $param['messageText'];
         }
 
-        if (!isset($param['hidden'])) {
-            $param['hidden'] = false;
+        if (isset($param['hidden'])) {
+            $filteredParamBag['hidden'] = $param['hidden'];
         }
 
-        return array(
-            'author' => $param['author'],
-            'flag' => $param['flag'],
-            'messageText' => $param['messageText'],
-            'hidden' => $param['hidden'],
-        );
+        if (!isset($filteredParamBag)) {
+            throw new \Exception('No valid parameters has been passed', 400);
+        }
+
+        return $filteredParamBag;
     }
 
     private function saveNewMessageToDb($incidentId, $messageParam)
@@ -91,11 +126,54 @@ class MessageService
     {
         $message = \MessageQuery::create()->findOneByIdmessage($messageId);
 
-        $message->setAuthor($messageParam['author']);
-        $message->setFlag($messageParam['flag']);
-        $message->setText($messageParam['messageText']);
-        $message->setHidden($messageParam['hidden']);
+        if (array_key_exists('author', $messageParam)) {
+            $message->setAuthor($messageParam['author']);
+        }
+
+        if (array_key_exists('flag', $messageParam)) {
+            $message->setFlag($messageParam['flag']);
+        }
+
+        if (array_key_exists('messageText', $messageParam)) {
+            $message->setText($messageParam['messageText']);
+        }
+
+        if (array_key_exists('hidden', $messageParam)) {
+            $message->setHidden($messageParam['hidden']);
+        }
 
         $message->save();
+    }
+
+    private function formatListResult($list)
+    {
+        foreach ($list as $message) {
+            $formattedList['message'][] = array(
+                'id' => $message->getIdMessage(),
+                'connectedToIncident' => $message->getIdIncident(),
+                'flag' => $message->getFlag(),
+                'timestamp' => $message->getTimestamp(),
+                'author' => $message->getAuthor(),
+                'messageText' => $message->getText(),
+                'hidden' => $message->getHidden(),
+            );
+        }
+
+        return $formattedList;
+    }
+
+    private function formatSingleResult($message)
+    {
+        $formattedMessage['message'][] = array(
+            'id' => $message->getIdMessage(),
+            'connectedToIncident' => $message->getIdIncident(),
+            'flag' => $message->getFlag(),
+            'timestamp' => $message->getTimestamp(),
+            'author' => $message->getAuthor(),
+            'messageText' => $message->getText(),
+            'hidden' => $message->getHidden(),
+        );
+
+        return $formattedMessage;
     }
 }

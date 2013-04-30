@@ -1,6 +1,5 @@
 <?php
 
-// Load classes
 use Symfony\Component\HttpFoundation\Request;
 use aptostatApi\Service\ErrorService;
 

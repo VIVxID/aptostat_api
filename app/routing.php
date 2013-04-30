@@ -12,27 +12,19 @@ $app->before(function (Request $request) {
 
 include __DIR__ . '/../src/aptostatApi/controller/reportController.php';
 include  __DIR__ . '/../src/aptostatApi/controller/incidentController.php';
-
-$app->match('/api', function() use ($app) {
-        $out = array('statusDesc' => 'Read documentation for proper use of the API');
-        return $app->json($out, 200);
-});
-
-// Include liveController
-include '../src/aptostatApi/controller/liveController.php';
-
-// Include uptimeController
-include '../src/aptostatApi/controller/uptimeController.php';
+include  __DIR__ . '/../src/aptostatApi/controller/messageController.php';
+include __DIR__ . '/../src/aptostatApi/controller/liveController.php';
+include __DIR__ . '/../src/aptostatApi/controller/uptimeController.php';
 
 // Api
 $app->match('/api/', function() use ($app) {
 	$out = array('statusDesc' => 'Read documentation for proper use of the API');
-	return $app->json($out, 200);
+	return $app->json($out, 400);
 
 });
 
 // End user front-end
 $app->match('/', function() use ($app) {
     $out = array('statusDesc' => 'Read documentation for proper use of the API');
-    return $app->json($out, 200);
+    return $app->json($out, 400);
 });
