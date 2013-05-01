@@ -46,13 +46,13 @@ class IncidentService
 
         $report = \IncidentQuery::create()
             ->filterByIdincident($id)
-            ->withAllIncidentFields()
+            ->withNonInternalIncidentFields()
             ->findOne();
 
         if (!$report) {
             $report = \IncidentQuery::create()
                 ->filterByIdincident($id)
-                ->withInternalIncidentFields()
+                ->withAllIncidentFields()
                 ->findOne();
         }
 

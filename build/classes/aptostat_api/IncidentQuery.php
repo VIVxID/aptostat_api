@@ -21,13 +21,13 @@ class IncidentQuery extends BaseIncidentQuery
             ->withLatestMessageFields();
     }
 
-    public function withInternalIncidentFields()
+    public function withNonInternalIncidentFields()
     {
         return $this
-            ->withLatestInternalMessageFields();
+            ->withLatestNonInternalMessageFields();
     }
 
-    private function withLatestMessageFields()
+    private function withLatestNonInternalMessageFields()
     {
         return $this
             ->join('Incident.Message')
@@ -44,7 +44,7 @@ class IncidentQuery extends BaseIncidentQuery
             );
     }
 
-    private function withLatestInternalMessageFields()
+    private function withLatestMessageFields()
     {
         return $this
             ->join('Incident.Message')
