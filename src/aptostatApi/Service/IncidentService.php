@@ -84,13 +84,13 @@ class IncidentService
             $incident = new \Incident();
             $incident->setIncidentParameters($param);
             $incident->save();
-            $app['monolog']->addDebug('Incident Saved');
+
             $message = new \Message();
             $message->setMessageParameters($incident->getPrimaryKey(), $param);
             $message->save();
-            $app['monolog']->addDebug('Message Saved');
+
             $this->connectReportsWithIncident($incident->getPrimaryKey(), $param['reports']);
-            $app['monolog']->addDebug('Reports Connected');
+
             $connection->commit();
             return $this->getIncidentById($incident->getPrimaryKey());
         } catch (\Exception $e){
