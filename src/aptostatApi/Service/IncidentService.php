@@ -46,15 +46,8 @@ class IncidentService
 
         $report = \IncidentQuery::create()
             ->filterByIdincident($id)
-            ->withNonInternalIncidentFields()
+            ->withAllIncidentFields()
             ->findOne();
-
-        if (!$report) {
-            $report = \IncidentQuery::create()
-                ->filterByIdincident($id)
-                ->withAllIncidentFields()
-                ->findOne();
-        }
 
         if ($report == null) {
             throw new \Exception(sprintf('No incident found with id %s', $id), 404);
