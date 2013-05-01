@@ -21,7 +21,7 @@ class IncidentQuery extends BaseIncidentQuery
             ->withLatestMessageFields();
     }
 
-    public function withInternalMessageFields()
+    public function withInternalIncidentFields()
     {
         return $this
             ->withLatestInternalMessageFields();
