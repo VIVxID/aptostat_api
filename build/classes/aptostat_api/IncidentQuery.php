@@ -23,7 +23,7 @@ class IncidentQuery extends BaseIncidentQuery
 
     private function withLatestMessageFields()
     {
-        /*$latestNotInternal = $this
+        $latestNotInternal = $this
             ->join('Incident.Message')
             ->withColumn('Message.IdMessage', 'LatestMessageId')
             ->withColumn('Message.Author', 'LatestMessageAuthor')
@@ -35,9 +35,9 @@ class IncidentQuery extends BaseIncidentQuery
                 'Message.Timestamp IN (SELECT MAX(Timestamp)
                 FROM Message
                 WHERE Incident.IdIncident = Message.IdIncident AND (Message.Flag != "INTERNAL" AND Message.Flag != "IGNORED"))'
-            );*/
+            );
 
-        //if (!$latestNotInternal) {
+        if (!$latestNotInternal) {
             return $this
                 ->join('Incident.Message')
                 ->withColumn('Message.IdMessage', 'LatestMessageId')
@@ -51,8 +51,8 @@ class IncidentQuery extends BaseIncidentQuery
                     FROM Message
                     WHERE Incident.IdIncident = Message.IdIncident)'
                 );
-        /*} else {
+        } else {
             return $latestNotInternal;
-        }*/
+        }
     }
 }
