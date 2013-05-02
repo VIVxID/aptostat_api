@@ -1,15 +1,74 @@
-+# Aptostat_api
+# Aptostat_api
 The API-part of Aptostat. It handles API-requests and fetches data from the database.
 
 ## Installation
+Note: Most of the commands might require sudo
+### Setting up your server
+#### Initial setup your server
+You need:
+- Ubuntu 12.04 LTS x64
+
+Install the following with apt-get
+- apache2
+- php5
+- mysql-server
+- curl
+- php5-memcached
+- php5-curl
+- php5-mysql
+- git
+
+    $ sudo apt-get install apache2 php5 mysql-server curl php5-memcached php5-curl php5-mysql git
+
+#### Configure apache
+Configure your DNS with a domain to the server
+Apart from setting up apache as normal you have to:
+
+- Enable rewrite engine
+    $ sudo a2enmod rewrite
+- Change your Virtual host settings (Typically in sites-available named default)
+- Add /web to your DocumentRoot. Example: /var/www/web. (From a default of /var/www)
+- Change Directory /var/www/ into /var/www/web.
+- 'AllowOverride all' in <Directory /var/www/web/>
+
+Example file: (first few lines)
+```xml
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+
+    DocumentRoot /var/www/web
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory /var/www/web>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
+[...]
+```
+Restart apache2
+    $ sudo service apache2 restart
+
+#### Download and install Composer
+Navigate into home or any other place to store files temporarily:
+    $ curl -sS https://getcomposer.org/installer | php
+    $ mv composer.phar /usr/local/bin/composer
+
+### Set up Aptostat
+#### Clone the files
+    $ git clone https://github.com/nox27/aptostat_api.git
+    $ sudo mv aptostat_api/* /var/www/
+
+'/var/www' will be described as projectRoot folder.
+
+run 'composer install' in projectRoot folder.
+
 Apart from what is specified in composer.json:
 
 You need to build the database and classes for propel:
-
-    # May require sudo
-    $ pear channel-discover pear.phing.info
-    $ pear install phing/phing
-    $ pear install Log
 
 Create a `build.properties` file (based on `build.properties.example` and update contents.
 
@@ -17,6 +76,8 @@ Build model and create tables:
 
      $ vendor/bin/propel-gen om
      $ vendor/bin/propel-gen sql
+
+Note: If you are having problems with  permission try giving the execute-rights to phing.php. (Path will pop up in the error you might get)
 
 Create database and database user:
 
@@ -27,24 +88,20 @@ Create database and database user:
     > exit;
     $ vendor/bin/propel-gen insert-sql
 
-Create `runtime-conf.xml` and run:
+Create `runtime-conf.xml` (based on `runtime-conf.xml.example` and update contents. Then run:
 
     $ vendor/bin/propel-gen convert-conf
 
-Create log dir and make it writable:
+Create log dir, lock dir and make them writable:
 
     $ mkdir -p app/log
-    # Mac OS X
-    $ sudo chmod +a "_www allow delete,write,append,file_inherit,directory_inherit" app/log
-    $ sudo chmod +a "`whoami` allow delete,write,append,file_inherit,directory_inherit" app/log
-    #Ubuntu
-    $ sudo setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs
-    $ sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs
+    $ mkdir -p app/lock
 
-- You need Pingdom access crededtials for the Api for Live information, as well as uptime stat:
-    - Username
-    - Password
-    - API-token
+    #Ubuntu
+    $ sudo setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/log app/lock
+    $ sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/log app/lock
+
+Note: You might need to install 'acl' first.
 
 ## Usage
 
