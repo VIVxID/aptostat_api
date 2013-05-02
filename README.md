@@ -56,8 +56,9 @@ Restart apache2
 
 #### Download and install Composer
 Navigate into home or any other place to store files temporarily:
-    `$ curl -sS https://getcomposer.org/installer | php
-    $ mv composer.phar /usr/local/bin/composer`
+
+    $ curl -sS https://getcomposer.org/installer | php
+    $ mv composer.phar /usr/local/bin/composer
 
 ### Set up Aptostat
 #### Clone the files
@@ -67,10 +68,9 @@ Navigate into home or any other place to store files temporarily:
 
 `/var/www` will be described as projectRoot folder.
 
-run `composer install` in projectRoot folder.
+Run `composer install` in projectRoot folder.
 
-Apart from what is specified in composer.json:
-
+#### Set up propel
 You need to build the database and classes for propel:
 
 Create a `build.properties` file (based on `build.properties.example` and update contents.
@@ -105,6 +105,15 @@ Create log dir, lock dir and make them writable:
     $ sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/log app/lock
 
 Note: You might need to install 'acl' first.
+
+#### Test
+Test if the API is responding by trying to access your domain (Example: `yourdomain.com`) It should return:
+
+```json
+{
+    "statusDesc": "Read documentation for proper use of the API"
+}
+```
 
 ## Usage
 
