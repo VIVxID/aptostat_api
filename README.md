@@ -25,11 +25,13 @@ Configure your DNS with a domain to the server
 Apart from setting up apache as normal you have to:
 
 - Enable rewrite engine
+
     $ sudo a2enmod rewrite
+
 - Change your Virtual host settings (Typically in sites-available named default)
-- Add /web to your DocumentRoot. Example: /var/www/web. (From a default of /var/www)
-- Change Directory /var/www/ into /var/www/web.
-- 'AllowOverride all' in <Directory /var/www/web/>
+- Add /web to your DocumentRoot. Example: `/var/www/web`. (From a default of /var/www)
+- Change Directory `/var/www/` into `/var/www/web`.
+- `AllowOverride all` in <Directory /var/www/web/>
 
 Example file: (first few lines)
 ```xml
@@ -62,9 +64,9 @@ Navigate into home or any other place to store files temporarily:
     $ git clone https://github.com/nox27/aptostat_api.git
     $ sudo mv aptostat_api/* /var/www/
 
-'/var/www' will be described as projectRoot folder.
+`/var/www` will be described as projectRoot folder.
 
-run 'composer install' in projectRoot folder.
+run `composer install` in projectRoot folder.
 
 Apart from what is specified in composer.json:
 
