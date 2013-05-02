@@ -107,6 +107,13 @@ Create log dir, lock dir and make them writable:
 
 Note: You might need to install 'acl' first.
 
+### Set up deploy-config
+Read the README in `app/deploy-config` folder for more detailed info.
+
+In short:
+Change any settings you'd like, then:
+Rename it config.php and move it to the `/app` folder
+
 #### Test
 Test if the API is responding by trying to access your domain (Example: `yourdomain.com`) It should return:
 
