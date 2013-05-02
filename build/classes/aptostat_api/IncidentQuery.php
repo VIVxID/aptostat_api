@@ -27,8 +27,10 @@ class IncidentQuery extends BaseIncidentQuery
             ->join('Incident.Message')
             ->withColumn('Message.IdMessage', 'LatestMessageId')
             ->withColumn('Message.Author', 'LatestMessageAuthor')
+            ->withColumn('Message.Timestamp', 'LatestMessageTimestamp')
             ->withColumn('Message.Text', 'LatestMessageText')
             ->withColumn('Message.Flag', 'LatestMessageFlag')
+            ->withColumn('Message.Hidden', 'Hidden')
             ->where(
                 'Message.Timestamp IN (SELECT IFNULL(
                 (SELECT MAX(Timestamp)
@@ -37,7 +39,6 @@ class IncidentQuery extends BaseIncidentQuery
                 (SELECT MAX(Timestamp)
                 FROM Message
                 WHERE Incident.IdIncident = Message.IdIncident)
-                ) FROM Message)')
-            ->withColumn('Message.Hidden', 'Hidden');
+                ) FROM Message)');
     }
 }
