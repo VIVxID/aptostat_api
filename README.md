@@ -18,7 +18,7 @@ Install the following with apt-get
 - php5-mysql
 - git
 
-    $ sudo apt-get install apache2 php5 mysql-server curl php5-memcached php5-curl php5-mysql git
+    `$ sudo apt-get install apache2 php5 mysql-server curl php5-memcached php5-curl php5-mysql git`
 
 #### Configure apache
 Configure your DNS with a domain to the server
@@ -26,7 +26,7 @@ Apart from setting up apache as normal you have to:
 
 - Enable rewrite engine
 
-    $ sudo a2enmod rewrite
+    `$ sudo a2enmod rewrite`
 
 - Change your Virtual host settings (Typically in sites-available named default)
 - Add /web to your DocumentRoot. Example: `/var/www/web`. (From a default of /var/www)
@@ -56,11 +56,12 @@ Restart apache2
 
 #### Download and install Composer
 Navigate into home or any other place to store files temporarily:
-    $ curl -sS https://getcomposer.org/installer | php
-    $ mv composer.phar /usr/local/bin/composer
+    `$ curl -sS https://getcomposer.org/installer | php
+    $ mv composer.phar /usr/local/bin/composer`
 
 ### Set up Aptostat
 #### Clone the files
+
     $ git clone https://github.com/nox27/aptostat_api.git
     $ sudo mv aptostat_api/* /var/www/
 
