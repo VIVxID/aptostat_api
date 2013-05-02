@@ -1,4 +1,4 @@
-# Aptostat_api
++# Aptostat_api
 The API-part of Aptostat. It handles API-requests and fetches data from the database.
 
 ## Installation
@@ -21,9 +21,9 @@ Build model and create tables:
 Create database and database user:
 
     $ mysql -h localhost -u root -p
-    > CREATE DATABASE aptostat_api;
+    > CREATE DATABASE aptostat;
     > CREATE USER 'aptostat'@'localhost' IDENTIFIED BY 'aptostat';
-    > GRANT ALL ON aptostat_api.* TO 'aptostat'@'localhost';
+    > GRANT ALL ON aptostat.* TO 'aptostat'@'localhost';
     > exit;
     $ vendor/bin/propel-gen insert-sql
 
@@ -37,6 +37,9 @@ Create log dir and make it writable:
     # Mac OS X
     $ sudo chmod +a "_www allow delete,write,append,file_inherit,directory_inherit" app/log
     $ sudo chmod +a "`whoami` allow delete,write,append,file_inherit,directory_inherit" app/log
+    #Ubuntu
+    $ sudo setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs
+    $ sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs
 
 - You need Pingdom access crededtials for the Api for Live information, as well as uptime stat:
     - Username
