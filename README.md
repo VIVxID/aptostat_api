@@ -19,7 +19,7 @@ Install the following with apt-get
 - git
 - memcached
 
-    `$ sudo apt-get install apache2 php5 mysql-server curl php5-memcached php5-curl php5-mysql git memcac`
+    `$ sudo apt-get install apache2 php5 mysql-server curl php5-memcached php5-curl php5-mysql git memcached`
 
 #### Configure apache
 Configure your DNS with a domain to the server
