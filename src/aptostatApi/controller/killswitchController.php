@@ -10,7 +10,7 @@ $app->get('/api/killswitch',function () use ($app) {
         return $app->json($killswitchService->getSwitchStatus(), 200);
     } catch (Exception $e) {
         $app['monolog']->addCritical('System could not be shut down. Have you remembered to set the right permissions for the lock-file?');
-        return $app->json(\aptostatApi\Service\ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(\aptostatApi\Service\ErrorService::errorResponse($e), 500);
     }
 });
 
@@ -30,6 +30,6 @@ $app->put('/api/killswitch',function (Request $paramBag) use ($app) {
         return $app->json('No valid parameters was passed', 400);
     } catch (Exception $e) {
         $app['monolog']->addCritical('System could not be shut down. Have you remembered to set the right permissions for the lock-file?');
-        return $app->json(\aptostatApi\Service\ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(\aptostatApi\Service\ErrorService::errorResponse($e), 500);
     }
 });
