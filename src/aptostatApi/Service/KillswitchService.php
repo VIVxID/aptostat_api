@@ -50,7 +50,7 @@ class KillswitchService
                 'message' => 'The system is already running'
             );
         } else {
-            delete($this->gatherKillPath);
+            unlink($this->gatherKillPath);
 
             if (file_exists($this->gatherKillPath)) {
                 throw new \Exception('Could not turn on the system. Contact admin.', 500);
