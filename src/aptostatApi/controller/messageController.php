@@ -10,7 +10,7 @@ $app->get('/api/message', function(Request $paramBag) use ($app) {
     try {
         return $app->json($messageService->getList($paramBag));
     } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), 500);
     }
 });
 
@@ -21,7 +21,7 @@ $app->get('/api/message/{id}', function($id) use ($app) {
     try {
         return $app->json($messageService->getMessageById($id));
     } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), 500);
     }
 });
 
@@ -32,6 +32,6 @@ $app->put('api/message/{messageId}', function(Request $paramBag, $messageId) use
     try {
         return $app->json($messageService->editMessageById($messageId, $paramBag));
     } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), 500);
     }
 });

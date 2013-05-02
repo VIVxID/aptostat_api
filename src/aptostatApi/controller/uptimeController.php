@@ -7,7 +7,7 @@ $app->get('/api/uptime',function () use ($app) {
         $uptimeData = $liveService->getUptimeData();
         return $app->json($uptimeData, 200);
     } catch (Exception $e) {
-        return $app->json(\aptostatApi\Service\ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(\aptostatApi\Service\ErrorService::errorResponse($e), 500);
     }
 });
 

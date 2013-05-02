@@ -11,7 +11,7 @@ $app->get('/api/incident', function(Request $paramBag) use ($app) {
         $incidentList = $incidentService->getList($paramBag);
         return $app->json($incidentList);
     } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), 500);
     }
 });
 
@@ -23,7 +23,7 @@ $app->get('/api/incident/{incidentId}', function($incidentId) use ($app) {
         $incident = $incidentService->getIncidentById($incidentId);
         return $app->json($incident);
     } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), 500);
     }
 });
 
@@ -35,7 +35,7 @@ $app->get('/api/incident/{incidentId}/report', function($incidentId) use ($app) 
         $reportList = $reportService->getListByIncidentId($incidentId);
         return $app->json($reportList);
     } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), 500);
     }
 });
 
@@ -46,7 +46,7 @@ $app->post('/api/incident', function(Request $paramBag) use ($app) {
     try {
         return $app->json($incidentService->create($paramBag));
     } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), 500);
     }
 });
 
@@ -57,7 +57,7 @@ $app->put('/api/incident/{incidentId}', function(Request $paramBag, $incidentId)
     try {
         return $app->json($incidentService->modifyById($incidentId, $paramBag));
     } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), 500);
     }
 });
 
@@ -68,6 +68,6 @@ $app->post('api/incident/{incidentId}/message', function(Request $paramBag, $inc
     try {
         return $app->json($messageService->addMessage($incidentId, $paramBag));
     } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), 500);
     }
 });

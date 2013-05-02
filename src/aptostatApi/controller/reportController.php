@@ -10,7 +10,7 @@ $app->get('/api/report', function(Request $paramBag) use ($app) {
     try {
         return $app->json($reportService->getList($paramBag));
     } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), 500);
     }
 });
 
@@ -21,7 +21,7 @@ $app->get('/api/report/{reportId}', function($reportId) use ($app) {
     try {
         return $app->json($reportService->getReportById($reportId));
     } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), 500);
     }
 });
 
@@ -32,6 +32,6 @@ $app->put('/api/report/{reportId}', function(Request $paramBag, $reportId) use (
     try {
         return $app->json($reportService->modifyById($reportId, $paramBag));
     } catch (Exception $e) {
-        return $app->json(ErrorService::errorResponse($e), $e->getCode());
+        return $app->json(ErrorService::errorResponse($e), 500);
     }
 });
