@@ -37,11 +37,6 @@ class IncidentQuery extends BaseIncidentQuery
                 (SELECT MAX(Timestamp)
                 FROM Message
                 WHERE Incident.IdIncident = Message.IdIncident)
-                ) FROM Message)')
-            ->withColumn('Message.Hidden', 'Hidden')
-            ->where(
-                'Message.Timestamp IN (SELECT MAX(Timestamp)
-                FROM Message
-                WHERE Incident.IdIncident = Message.IdIncident)');
+                ) FROM Message)');
     }
 }
