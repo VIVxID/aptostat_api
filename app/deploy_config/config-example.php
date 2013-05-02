@@ -1,4 +1,4 @@
 <?php
 
 $config['monolog.level'] = 100;
-$config['debug'] = true;
+$config['debug'] = false;
