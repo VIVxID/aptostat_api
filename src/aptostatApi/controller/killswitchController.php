@@ -26,6 +26,8 @@ $app->put('/api/killswitch',function (Request $paramBag) use ($app) {
         if ($switchAction == 'off') {
             return $app->json($killswitchService->reviveSystem(), 200);
         }
+
+        return $app->json('No valid parameters was passed', 400);
     } catch (Exception $e) {
         $app['monolog']->addCritical('System could not be shut down. Have you remembered to set the right permissions for the lock-file?');
         return $app->json(\aptostatApi\Service\ErrorService::errorResponse($e), $e->getCode());
