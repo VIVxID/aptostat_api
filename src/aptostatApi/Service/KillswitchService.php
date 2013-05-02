@@ -9,7 +9,7 @@ class KillswitchService
 
     public function __construct()
     {
-        $this->gatherKillPath = __DIR__ . '../../../app/lock/gatherKill.lock';
+        $this->gatherKillPath = __DIR__ . '/../../../app/lock/gatherKill.lock';
     }
 
     public function getSwitchStatus()
