@@ -244,3 +244,30 @@ Get live status on the services
 ### Get 7-days history on the status for the services
     GET: http://your.url/api/uptime
 Get uptime statistics the last 7 days
+
+### Killswitch
+#### Get killswitch status
+    GET: http://your.url/api/killswitch
+Get killswitch status; whether or not the system is currently fetching new reports.
+
+#### Modify: Turn on the killswitch (Stop the system from collecting new reports)
+    PUT: http://your.url/api/killswitch
+Modify an incident. Parameters sent in the http body in JSON format.
+
+- Parameters
+    - action (on | off)
+        - defines you action. To turn it off or not (Mandatory)
+
+Example - Turn on killswitch:
+```json
+{
+    "action": "on"
+}
+```
+
+Example - Turn off killswitch:
+```json
+{
+    "action": "off"
+}
+```
