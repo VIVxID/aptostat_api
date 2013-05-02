@@ -15,6 +15,7 @@ include  __DIR__ . '/../src/aptostatApi/controller/incidentController.php';
 include  __DIR__ . '/../src/aptostatApi/controller/messageController.php';
 include __DIR__ . '/../src/aptostatApi/controller/liveController.php';
 include __DIR__ . '/../src/aptostatApi/controller/uptimeController.php';
+include __DIR__ . '/../src/aptostatApi/controller/killswitchController.php';
 
 // Api
 $app->match('/api/', function() use ($app) {
