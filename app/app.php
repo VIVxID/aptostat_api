@@ -28,7 +28,7 @@ if ($app['debug']) {
 }
 
 // Initiate propel
-Propel::init(__DIR__ . '/../build/conf/aptostat_api-conf.php');
+Propel::init(__DIR__ . '/../build/conf/aptostat-conf.php');
 set_include_path(__DIR__ . '/../build/classes' . PATH_SEPARATOR . get_include_path());
 
 // Initiate monolog
