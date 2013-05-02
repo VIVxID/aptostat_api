@@ -7,7 +7,7 @@ class KillswitchService
 {
     public function getSwitchStatus()
     {
-        if (file_exists('gatherKill.lock')) {
+        if (file_exists('../../../app/lock/gatherKill.lock')) {
             return array('killswitchStatus' => 'on');
         } else {
             return array('killswitchStatus' => 'off');
@@ -16,15 +16,15 @@ class KillswitchService
 
     public function killSystem()
     {
-        if (file_exists('gatherKill.lock')) {
+        if (file_exists('../../../app/lock/gatherKill.lock')) {
             return array(
                 'killswitchStatus' => 'on',
                 'message' => 'The system has already been stopped from fetching new reports'
             );
         } else {
-            touch("gatherKill.lock");
+            touch("../../../app/lock/gatherKill.lock");
 
-            if (!file_exists('gatherKill.lock')) {
+            if (!file_exists('../../../app/lock/gatherKill.lock')) {
                 throw new \Exception('Could not shut down the system. Contact admin.', 500);
             }
 
@@ -37,13 +37,13 @@ class KillswitchService
 
     public function reviveSystem()
     {
-        if (!file_exists('gatherKill.lock')) {
+        if (!file_exists('../../../app/lock/gatherKill.lock')) {
             return array(
                 'killswitchStatus' => 'off',
                 'message' => 'The system is already running'
             );
         } else {
-            delete("gatherKill.lock");
+            delete("../../../app/lock/gatherKill.lock");
 
             if (file_exists('gatherKill.lock')) {
                 throw new \Exception('Could not turn on the system. Contact admin.', 500);
