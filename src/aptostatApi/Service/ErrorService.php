@@ -12,8 +12,11 @@ class ErrorService
      */
     public static function errorResponse($e)
     {
-        $formattedErrorMsg['error']['statusCode'] = $e->getCode();
-        $formattedErrorMsg['error']['statusDesc'] = \Symfony\Component\HttpFoundation\Response::$statusTexts[$e->getCode()];
+        $code = $e->getCode();
+        $formattedErrorMsg['error']['statusCode'] = $code;
+        if (!empty($code)) {
+            $formattedErrorMsg['error']['statusDesc'] = \Symfony\Component\HttpFoundation\Response::$statusTexts[$code];
+        }
         $formattedErrorMsg['error']['errorMessage'] = $e->getMessage();
 
         return $formattedErrorMsg;
