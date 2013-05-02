@@ -21,9 +21,9 @@ Build model and create tables:
 Create database and database user:
 
     $ mysql -h localhost -u root -p
-    > CREATE DATABASE aptostat_api;
+    > CREATE DATABASE aptostat;
     > CREATE USER 'aptostat'@'localhost' IDENTIFIED BY 'aptostat';
-    > GRANT ALL ON aptostat_api.* TO 'aptostat'@'localhost';
+    > GRANT ALL ON aptostat.* TO 'aptostat'@'localhost';
     > exit;
     $ vendor/bin/propel-gen insert-sql
 
