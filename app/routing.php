@@ -19,9 +19,8 @@ include __DIR__ . '/../src/aptostatApi/controller/killswitchController.php';
 
 // Api
 $app->match('/api/', function() use ($app) {
-	$out = array('statusDesc' => 'Read documentation for proper use of the API');
-	return $app->json($out, 400);
-
+    $out = array('statusDesc' => 'Read documentation for proper use of the API');
+    return $app->json($out, 400);
 });
 
 // End user front-end

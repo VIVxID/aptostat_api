@@ -10,4 +10,3 @@ $app->get('/api/live',function () use ($app) {
         return $app->json(\aptostatApi\Service\ErrorService::errorResponse($e), 500);
     }
 });
-
