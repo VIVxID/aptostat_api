@@ -33,6 +33,7 @@ Apart from setting up apache as normal you have to:
 - Add /web to your DocumentRoot. Example: `/var/www/web`. (From a default of /var/www)
 - Change Directory `/var/www/` into `/var/www/web`.
 - `AllowOverride all` in <Directory /var/www/web/>
+- Limit POST PUT DELETE http methods to valid-users
 
 Example file: (first few lines)
 ```xml
@@ -43,6 +44,9 @@ Example file: (first few lines)
     <Directory />
         Options FollowSymLinks
         AllowOverride None
+        <Limit POST PUT DELETE>
+            Require valid-user
+        </Limit>
     </Directory>
     <Directory /var/www/web>
         Options Indexes FollowSymLinks MultiViews
