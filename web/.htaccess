@@ -1,3 +1,7 @@
+AuthType Basic
+AuthName "Restricted"
+AuthUserFile /var/wwwApi/.htpasswd
+
 Options -MultiViews
 
     RewriteEngine On
